@@ -9,7 +9,7 @@
     <uri>custom_tag</uri>
     <tag>
         <name>accessControl</name>
-        <tag-class>com.epam.Pharmacy.tag.AccessControlTag</tag-class>
+        <tag-class>com.epam.pharmacy.tag.AccessControlTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>accessRole</name>
@@ -19,12 +19,12 @@
     </tag>
     <tag>
         <name>drugTable</name>
-        <tag-class>com.epam.Pharmacy.tag.DrugTableTag</tag-class>
+        <tag-class>com.epam.pharmacy.tag.DrugTableTag</tag-class>
         <body-content>empty</body-content>
     </tag>
     <tag>
         <name>userExist</name>
-        <tag-class>com.epam.Pharmacy.tag.UserExistTag</tag-class>
+        <tag-class>com.epam.pharmacy.tag.UserExistTag</tag-class>
         <body-content>scriptless</body-content>
     </tag>
 </taglib>
