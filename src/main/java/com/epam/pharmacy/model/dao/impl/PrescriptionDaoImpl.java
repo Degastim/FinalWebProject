@@ -11,13 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PrescriptionDaoImpl implements PrescriptionDao {
-    private static final String SQL_SELECT_Prescription_BY_CUSTOMER_ID = "SELECT name,surname, drug_name, prescriptions.amount, issue_date, end_date,prescription_status FROM webdb.prescriptions LEFT JOIN webdb.users ON webdb.prescriptions.doctor_id=webdb.users.user_id LEFT JOIN webdb.drugs ON webdb.prescriptions.prescription_drug_id=webdb.drugs.drug_id LEFT JOIN webdb.prescription_statuses ON webdb.prescriptions.prescription_status_id= webdb.prescription_statuses.prescription_status_id where customer_id=?";
+    private static final String SQL_SELECT_Prescription_BY_CUSTOMER_ID_WITH_DOCTOR_NAME_AND_DOCTOR_SURNAME_AND_DRUG_NAME = "SELECT prescription_id, name,surname, drug_name, prescriptions.amount, issue_date, end_date,prescription_status FROM webdb.prescriptions LEFT JOIN webdb.users ON webdb.prescriptions.doctor_id=webdb.users.user_id LEFT JOIN webdb.drugs ON webdb.prescriptions.prescription_drug_id=webdb.drugs.drug_id LEFT JOIN webdb.prescription_statuses ON webdb.prescriptions.prescription_status_id= webdb.prescription_statuses.prescription_status_id where customer_id=?";
     private static final String SQL_UPDATE_STATUS_BY_ID = "UPDATE webdb.prescriptions SET prescription_status_id=? where prescription_id=?";
     private static final String SQL_ADD_PRESCRIPTION_BY_VALUES_CUSTOMER_ID_AND_DOCTOR_ID_AND_PRESCRIPTION_DRUG_ID = "INSERT INTO webdb.prescriptions(customer_id,doctor_id,prescription_drug_id,amount,prescription_status_id) VALUES (?,?,?,?,?)";
     private static final String SQL_FIND_PRESCRIPTION_ID_AND_CUSTOMER_NAME_AND_CUSTOMER_NAME_AND_DRUG_NAME_AND_AMOUNT_BY_DOCTOR_ID_AND_STATUS_ID = "SELECT prescription_id,name,surname,drug_name,prescriptions.amount FROM webdb.prescriptions LEFT JOIN webdb.users ON webdb.prescriptions.customer_id=webdb.users.user_id LEFT JOIN webdb.drugs ON webdb.prescriptions.prescription_drug_id=webdb.drugs.drug_id where doctor_id=? AND prescription_status_id=?";
@@ -46,35 +43,32 @@ public class PrescriptionDaoImpl implements PrescriptionDao {
     }
 
     @Override
-    public List<Prescription> findAllByCustomerIdWithDoctorNameSurnameAndDrugNameWithoutPrescriptionId(long customerId) throws DaoException {
+    public List<Prescription> findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(long customerId) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_Prescription_BY_CUSTOMER_ID)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_Prescription_BY_CUSTOMER_ID_WITH_DOCTOR_NAME_AND_DOCTOR_SURNAME_AND_DRUG_NAME)) {
             preparedStatement.setLong(1, customerId);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Prescription> prescriptionList = new ArrayList<>();
             while (resultSet.next()) {
+                long prescriptionId = resultSet.getLong(COLUMN_NAME_PRESCRIPTION_ID);
                 String doctorName = resultSet.getString(COLUMN_NAME_USER_NAME);
                 String doctorSurname = resultSet.getString(COLUMN_NAME_USER_SURNAME);
                 User doctor = new User(doctorName, doctorSurname, User.UserRole.DOCTOR);
                 String drugName = resultSet.getString(COLUMN_NAME_DRUG_NAME);
                 Drug drug = new Drug(drugName);
                 int amount = resultSet.getInt(COLUMN_NAME_AMOUNT);
-                Date issueDate;
+                Date issueDate = null;
                 if (resultSet.getLong(COLUMN_NAME_PRESCRIPTION_ISSUE_DATE) != 0) {
                     issueDate = new Date(resultSet.getLong(COLUMN_NAME_PRESCRIPTION_ISSUE_DATE));
-                } else {
-                    issueDate = null;
                 }
-                Date endDate;
+                Date endDate = null;
                 if (resultSet.getLong(COLUMN_NAME_PRESCRIPTION_ISSUE_DATE) != 0) {
                     endDate = new Date(resultSet.getLong(COLUMN_NAME_PRESCRIPTION_END_DATE));
-                } else {
-                    endDate = null;
                 }
                 User customer = new User();
                 String stringStatus = resultSet.getString(COLUMN_NAME_PRESCRIPTION_STATUS);
-                Prescription.Status status = Prescription.Status.valueOf(stringStatus);
-                Prescription prescription = new Prescription(customer, doctor, drug, amount, issueDate, endDate, status);
+                Prescription.Status status = Prescription.Status.valueOf(stringStatus.toUpperCase());
+                Prescription prescription = new Prescription(prescriptionId, customer, doctor, drug, amount, issueDate, endDate, status);
                 prescriptionList.add(prescription);
             }
             return prescriptionList;
@@ -96,7 +90,7 @@ public class PrescriptionDaoImpl implements PrescriptionDao {
     }
 
     @Override
-    public void createPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatusId(long customerId, long doctorId, int drugId, int drugAmount, int statusId) throws DaoException {
+    public void addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatusId(long customerId, long doctorId, int drugId, int drugAmount, int statusId) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_PRESCRIPTION_BY_VALUES_CUSTOMER_ID_AND_DOCTOR_ID_AND_PRESCRIPTION_DRUG_ID)) {
             preparedStatement.setLong(1, customerId);
@@ -163,7 +157,8 @@ public class PrescriptionDaoImpl implements PrescriptionDao {
                 prescription.setIssueDate(issueDate);
                 Date endDate = new Date(resultSet.getLong(COLUMN_NAME_PRESCRIPTION_END_DATE));
                 prescription.setEndDate(endDate);
-                Prescription.Status status = Prescription.Status.valueOf(resultSet.getString(COLUMN_NAME_PRESCRIPTION_STATUS));
+                String statusString=resultSet.getString(COLUMN_NAME_PRESCRIPTION_STATUS);
+                Prescription.Status status = Prescription.Status.valueOf(statusString.toUpperCase());
                 prescription.setStatus(status);
             }
             return Optional.ofNullable(prescription);

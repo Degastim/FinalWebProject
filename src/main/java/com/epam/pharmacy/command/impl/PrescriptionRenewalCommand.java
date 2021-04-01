@@ -18,7 +18,8 @@ public class PrescriptionRenewalCommand implements ActionCommand {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         long prescriptionId = Long.parseLong(request.getParameter(RequestParameter.PRESCRIPTION_ID));
         try {
-            prescriptionService.updateStatusById(Prescription.Status.PROCESSING, prescriptionId);
+            Prescription.Status processingStatus = Prescription.Status.PROCESSING;
+            prescriptionService.updateStatusById(processingStatus, prescriptionId);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

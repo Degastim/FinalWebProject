@@ -10,6 +10,7 @@ import com.epam.pharmacy.model.entity.Prescription;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.PrescriptionService;
 import com.epam.pharmacy.model.service.impl.PrescriptionServiceImpl;
+import com.epam.pharmacy.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import java.util.List;
 public class RedirectToCustomerPrescriptionTableCommand implements ActionCommand {
     private static final String REQUEST_ATTRIBUTE_PRESCRIPTION_LIST = "prescriptionList";
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();
+    private static final String MESSAGE_KEY_ERROR_MESSAGE_NO_PRESCRIPTION = "customerPrescriptionTable.error.noPrescription";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
@@ -25,7 +27,12 @@ public class RedirectToCustomerPrescriptionTableCommand implements ActionCommand
         User user = (User) session.getAttribute(SessionAttribute.USER);
         long customerId = user.getUserId();
         try {
-            List<Prescription> prescriptionList = prescriptionService.findAllByCustomerIdWithDoctorNameSurnameAndDrugNameWithoutPrescriptionId(customerId);
+            List<Prescription> prescriptionList = prescriptionService.findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(customerId);
+            if (prescriptionList.size() == 0) {
+                String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE_NO_PRESCRIPTION, locale);
+                request.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
+            }
             request.setAttribute(REQUEST_ATTRIBUTE_PRESCRIPTION_LIST, prescriptionList);
         } catch (ServiceException e) {
             throw new CommandException(e);

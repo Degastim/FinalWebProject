@@ -50,7 +50,8 @@ public class DrugOrderCommand implements ActionCommand {
         try {
             Optional<Drug> drugOptional = drugService.findDrugByDrugNameAndDosage(drugName, dosage);
             if (drugOptional.isEmpty()) {
-                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, MessageManager.getMessage(KEY_MESSAGE_ERROR_NO_DRUG, locale));
+                String errorMessage = MessageManager.getMessage(KEY_MESSAGE_ERROR_NO_DRUG, locale);
+                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
                 return commandResult;
             }
@@ -63,7 +64,8 @@ public class DrugOrderCommand implements ActionCommand {
                 return commandResult;
             }
             if (drug.getAmount() < drugAmount) {
-                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, MessageManager.getMessage(KEY_MESSAGE_ERROR_NO_DRUG_AMOUNT, locale));
+                String errorMessage = MessageManager.getMessage(KEY_MESSAGE_ERROR_NO_DRUG_AMOUNT, locale);
+                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
                 return commandResult;
             }

@@ -21,7 +21,8 @@ public class Prescription {
     public Prescription() {
     }
 
-    public Prescription(User customer, User doctor, Drug drug, int amount, Date issueDate, Date endDate, Status status) {
+    public Prescription(long prescriptionId, User customer, User doctor, Drug drug, int amount, Date issueDate, Date endDate, Status status) {
+        this.prescriptionId = prescriptionId;
         this.customer = customer;
         this.doctor = doctor;
         this.drug = drug;

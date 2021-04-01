@@ -16,7 +16,8 @@ public class DeleteDrugCommand implements ActionCommand {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        int drugId = Integer.parseInt(request.getParameter(RequestParameter.DRUG_ID));
+        String drugIdString=request.getParameter(RequestParameter.DRUG_ID);
+        int drugId = Integer.parseInt(drugIdString);
         try {
             drugService.deleteById(drugId);
         } catch (ServiceException e) {

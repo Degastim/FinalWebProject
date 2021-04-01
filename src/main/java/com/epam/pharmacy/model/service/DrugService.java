@@ -15,13 +15,13 @@ public interface DrugService {
 
     Optional<Drug> findByIdWithImages(int drugId) throws ServiceException;
 
-    void updateDrug(int drugId, String drugName, BigDecimal drugAmount, String drugDescription, boolean needPrescription, int price, int dosage) throws ServiceException;
+    boolean updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException;
 
     List<Drug> findPaginationDrugs(int startPaginationPage) throws ServiceException;
 
     void deleteById(int drugId) throws ServiceException;
 
-    void add(String drugName, int drugAmount, String drugDescription, boolean needPrescription) throws ServiceException;
+    boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws ServiceException;
 
     List<Drug> findDrugNameAndIdWithNeedPrescription(boolean value) throws ServiceException;
 

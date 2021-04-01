@@ -8,13 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
-    void add(User user, String encryptPassword) throws DaoException;
+    void add(String name, String surname, String email, String encryptPassword, int roleId) throws DaoException;
 
     void updateUserByPassword(long id, String newPassword) throws DaoException;
 
     Optional<User> findByEmailPassword(String email, String encryptPassword) throws DaoException;
-
-    Optional<String> findPasswordById(long id) throws DaoException;
 
     List<User> findByRole(User.UserRole role) throws DaoException;
 

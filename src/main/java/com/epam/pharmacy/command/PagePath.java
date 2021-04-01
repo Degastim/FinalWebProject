@@ -16,7 +16,7 @@ public class PagePath {
     public static final String ADD_DRUG_PAGE = "/jsp/add_drug.jsp";
     public static final String CHANGE_PASSWORD_PAGE = "/jsp/change_password.jsp";
     public static final String PRESCRIPTION_TABLE_PAGE = "/jsp/customer_prescription_table.jsp";
-    public static final String ADD_PRESCRIPTION_PAGE = "/jsp/add_prescription.jsp";
+    public static final String ADD_PRESCRIPTION_ORDER_PAGE = "/jsp/add_prescription_order.jsp";
     public static final String CODE_CONFIRMATION_PAGE = "/jsp/code_confirmation.jsp";
     public static final String PRESCRIPTION_ORDER_TABLE_PAGE ="/jsp/prescription_order_table.jsp";
     public static final String PRESCRIPTION_ORDER_PAGE="/jsp/prescription_order.jsp";

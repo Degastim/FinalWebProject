@@ -46,18 +46,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void add(User user, String encryptPassword) throws DaoException {
+    public void add(String name,String surname,String email,String encryptPassword,int roleId) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_ADD_USERS)) {
-            String name = user.getName();
-            String surname = user.getSurname();
-            String email = user.getEmail();
-            int roleId = user.getRole().ordinal();
+
             statement.setString(1, name);
             statement.setString(2, surname);
             statement.setString(3, email);
             statement.setString(4, encryptPassword);
-            statement.setInt(5, ++roleId);
+            statement.setInt(5, roleId);
             statement.execute();
             logger.log(Level.DEBUG, "Adding to the database");
         } catch (SQLException e) {
@@ -95,22 +92,6 @@ public class UserDaoImpl implements UserDao {
                 user = new User(userId, name, surname, email, role, amount);
             }
             return Optional.ofNullable(user);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public Optional<String> findPasswordById(long id) throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_PASSWORD_BY_ID)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            String result = null;
-            if (resultSet.next()) {
-                result = resultSet.getString(COLUMN_NAME_PASSWORD);
-            }
-            return Optional.ofNullable(result);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -209,7 +190,6 @@ public class UserDaoImpl implements UserDao {
             } catch (SQLException e) {
                 logger.log(Level.ERROR, "Exception closing connection");
             }
-
         }
     }
 }

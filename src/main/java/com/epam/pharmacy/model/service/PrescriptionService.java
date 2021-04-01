@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PrescriptionService {
-    List<Prescription> findAllByCustomerIdWithDoctorNameSurnameAndDrugNameWithoutPrescriptionId(long customerId) throws ServiceException;
+    List<Prescription> findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(long customerId) throws ServiceException;
 
     void updateStatusById(Prescription.Status status, long prescriptionId) throws ServiceException;
 
-    void createPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException;
+    void addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException;
 
     List<Prescription> findAllByDoctorIdAndStatus(long doctorId, Prescription.Status status) throws ServiceException;
 

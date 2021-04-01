@@ -6,6 +6,7 @@ import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.UserService;
 import com.epam.pharmacy.model.service.impl.UserServiceImpl;
+import com.epam.pharmacy.resource.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 public class CodeConfirmationCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
+    private static final String MESSAGE_KEY_ERROR_MESSAGE = "errorMessage";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
@@ -36,7 +38,11 @@ public class CodeConfirmationCommand implements ActionCommand {
             }
             logger.log(Level.INFO, "Successful registration");
         } else {
+            String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
+            String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, locale);
+            session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
             commandResult = new CommandResult(PagePath.CODE_CONFIRMATION_PAGE, CommandResult.Type.FORWARD);
+            logger.log(Level.INFO, "Incorrect verification code entered ");
         }
         return commandResult;
     }

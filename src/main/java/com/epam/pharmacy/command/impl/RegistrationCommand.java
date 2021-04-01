@@ -1,6 +1,9 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.*;
+import com.epam.pharmacy.command.ActionCommand;
+import com.epam.pharmacy.command.CommandResult;
+import com.epam.pharmacy.command.RequestParameter;
+import com.epam.pharmacy.command.SessionAttribute;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
@@ -19,22 +22,31 @@ import javax.servlet.http.HttpSession;
 public class RegistrationCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
-    private static final String REQUEST_ATTRIBUTE_REGISTRATION_ERROR_MESSAGE = "registrationErrorMessage";
-    private static final String ERROR_MESSAGE_KEY = "registration.message.registrationError";
+    private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
+    private static final String MESSAGE_KEY_ERROR_FORM = "registration.error.form";
+    private static final String MESSAGE_KEY_ERROR_ROLE = "registration.error.role";
     private static final String MAIL_SUBJECT = "Verification code";
-    private static final String REDIRECT_COMMAND="command=redirect_to_code_confirmation";
-    private static final String SEPARATOR="?";
+    private static final String REDIRECT_COMMAND = "command=redirect_to_code_confirmation";
+    private static final String SEPARATOR = "?";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
+        String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
         String name = request.getParameter(RequestParameter.USER_NAME);
         String surname = request.getParameter(RequestParameter.USER_SURNAME);
         String password = request.getParameter(RequestParameter.PASSWORD);
         String email = request.getParameter(RequestParameter.USER_EMAIL);
-        User.UserRole role = User.UserRole.valueOf(request.getParameter(RequestParameter.USER_ROLE).toUpperCase());
+        String roleString = request.getParameter(RequestParameter.USER_ROLE).toUpperCase();
+        User.UserRole role = User.UserRole.valueOf(roleString);
         CommandResult commandResult;
         try {
+            if (role == User.UserRole.PHARMACIST) {
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_FORM, locale);
+                session.setAttribute(MESSAGE_KEY_ERROR_ROLE, errorMessage);
+                commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+                return commandResult;
+            }
             if (userService.checkRegistrationForm(name, surname, password, email)) {
                 int verificationCode = Randomizer.random(4);
                 session.setAttribute(SessionAttribute.VERIFICATION_CODE, verificationCode);
@@ -43,9 +55,10 @@ public class RegistrationCommand implements ActionCommand {
                 session.setAttribute(SessionAttribute.PASSWORD, password);
                 MailSender mailSender = new MailSender(email, MAIL_SUBJECT, String.valueOf(verificationCode));
                 mailSender.send();
-                commandResult=new CommandResult(request.getRequestURL()+SEPARATOR+REDIRECT_COMMAND, CommandResult.Type.REDIRECT);
+                commandResult = new CommandResult(request.getRequestURL() + SEPARATOR + REDIRECT_COMMAND, CommandResult.Type.REDIRECT);
             } else {
-                session.setAttribute(REQUEST_ATTRIBUTE_REGISTRATION_ERROR_MESSAGE, MessageManager.getMessage(ERROR_MESSAGE_KEY, (String) session.getAttribute(SessionAttribute.LOCALE)));
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_FORM, locale);
+                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
                 logger.log(Level.INFO, "Unsuccessful registration");
             }

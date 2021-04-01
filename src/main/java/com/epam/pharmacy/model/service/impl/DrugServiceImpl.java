@@ -59,9 +59,15 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public void updateDrug(int drugId, String drugName, BigDecimal drugAmount, String drugDescription, boolean needPrescription, int price, int dosage) throws ServiceException {
+    public boolean updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException {
         try {
-            drugDao.updateDrug(drugId, drugName, drugAmount, drugDescription, needPrescription, dosage, price);
+            Optional<Drug> drug = drugDao.findByNameAndDosage(drugName, dosage);
+            if (drug.isEmpty()) {
+                drugDao.updateDrug(drugId, drugName, drugAmount, drugDescription, needPrescription, price, dosage);
+                return true;
+            } else {
+                return false;
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -109,9 +115,15 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public void add(String drugName, int drugAmount, String drugDescription, boolean needPrescription) throws ServiceException {
+    public boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws ServiceException {
         try {
-            drugDao.add(drugName, drugAmount, drugDescription, needPrescription);
+            Optional<Drug> drug = drugDao.findByNameAndDosage(drugName, dosage);
+            if (drug.isEmpty()) {
+                drugDao.add(drugName, drugAmount, drugDescription, needPrescription, dosage, price);
+                return true;
+            } else {
+                return false;
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -130,9 +142,8 @@ public class DrugServiceImpl implements DrugService {
     @Override
     public boolean checkNeedPrescriptionByDrugName(String drugName, boolean value) throws ServiceException {
         try {
-            boolean needPrescription = drugDao.findNeedPrescriptionByDrugName(drugName);
-            boolean result = needPrescription == value;
-            return result;
+            Optional<Boolean> needPrescription = drugDao.findNeedPrescriptionByDrugName(drugName);
+            return needPrescription.orElse(false);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

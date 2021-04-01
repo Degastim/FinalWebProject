@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PrescriptionDao {
-    List<Prescription> findAllByCustomerIdWithDoctorNameSurnameAndDrugNameWithoutPrescriptionId(long customerId) throws DaoException;
+    List<Prescription> findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(long customerId) throws DaoException;
 
     void updateStatusById(int statusId, long prescriptionId) throws DaoException;
 
-    void createPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatusId(long customerId, long doctorId, int drugId, int drugAmount, int statusId) throws DaoException;
+    void addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatusId(long customerId, long doctorId, int drugId, int drugAmount, int statusId) throws DaoException;
 
     List<Prescription> findPrescriptionIdAndCustomerNameAndCustomerSurNameAndDrugNameAndAmountByDoctorIdAndStatusId(long doctorId, int statusId) throws DaoException;
 

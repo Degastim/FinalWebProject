@@ -32,15 +32,15 @@ public class RedirectToPrescriptionOrder implements ActionCommand {
         try {
             Optional<Prescription> prescriptionOptional = prescriptionService.findPrescriptionByIdWithoutDoctor(prescriptionId);
             if (prescriptionOptional.isPresent()) {
-                Prescription prescription=prescriptionOptional.get();
+                Prescription prescription = prescriptionOptional.get();
                 request.setAttribute(REQUEST_ATTRIBUTE_PRESCRIPTION, prescription);
                 int currentYear = timeService.findCurrentYear();
                 request.setAttribute(REQUEST_ATTRIBUTE_CURRENT_YEAR, currentYear);
                 int maxYear = currentYear + NUMBER_YEARS_HIGHER_PRESENT;
                 request.setAttribute(REQUEST_ATTRIBUTE_MAX_YEAR, maxYear);
             } else {
-                String errorMessage=MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, (String) session.getAttribute(SessionAttribute.LOCALE));
-                request.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE,errorMessage);
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, (String) session.getAttribute(SessionAttribute.LOCALE));
+                request.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
             }
             CommandResult commandResult = new CommandResult(PagePath.PRESCRIPTION_ORDER_PAGE, CommandResult.Type.FORWARD);
             return commandResult;

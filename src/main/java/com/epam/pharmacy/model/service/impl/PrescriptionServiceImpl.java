@@ -25,9 +25,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public List<Prescription> findAllByCustomerIdWithDoctorNameSurnameAndDrugNameWithoutPrescriptionId(long customerId) throws ServiceException {
+    public List<Prescription> findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(long customerId) throws ServiceException {
         try {
-            List<Prescription> prescriptionList = prescriptionDao.findAllByCustomerIdWithDoctorNameSurnameAndDrugNameWithoutPrescriptionId(customerId);
+            List<Prescription> prescriptionList = prescriptionDao.findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(customerId);
             return prescriptionList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -45,10 +45,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public void createPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException {
+    public void addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException {
         try {
             int statusId = status.ordinal() + 1;
-            prescriptionDao.createPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatusId(customerId, doctorId, drugId, drugAmount, statusId);
+            prescriptionDao.addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatusId(customerId, doctorId, drugId, drugAmount, statusId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -88,7 +88,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public boolean checkPrescription(long customerId, String drugName) throws ServiceException {
         try {
-            boolean needPrescription = drugDao.findNeedPrescriptionByDrugName(drugName);
+            Optional<Boolean> needPrescriptionOptional = drugDao.findNeedPrescriptionByDrugName(drugName);
+            if (needPrescriptionOptional.isEmpty()) {
+                return false;
+            }
+            boolean needPrescription = needPrescriptionOptional.get();
             if (!needPrescription) {
                 return true;
             }

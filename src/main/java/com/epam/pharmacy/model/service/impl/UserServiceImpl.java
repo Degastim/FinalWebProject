@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-    private static final UserDao dao = UserDaoImpl.getInstance();
+    private static final UserDao userDao = UserDaoImpl.getInstance();
 
     @Override
     public boolean add(User user, String password) throws ServiceException {
@@ -32,7 +32,8 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         if (UserValidator.isNameValid(name) && UserValidator.isSurnameValid(surname) && UserValidator.isPasswordValid(password) && UserValidator.isEmailValid(email)) {
             try {
-                dao.add(user, Encrypter.encrypt(password));
+                int roleId = user.getRole().ordinal() + 1;
+                userDao.add(name, surname, email, Encrypter.encrypt(password), roleId);
                 result = true;
             } catch (DaoException e) {
                 throw new ServiceException(e);
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmailPassword(String email, String password) throws ServiceException {
         Optional<User> result;
         try {
-            result = dao.findByEmailPassword(email, Encrypter.encrypt(password));
+            result = userDao.findByEmailPassword(email, Encrypter.encrypt(password));
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -56,10 +57,10 @@ public class UserServiceImpl implements UserService {
     public boolean updateByPassword(long userId, String newPassword, String oldPassword) throws ServiceException {
         boolean result = false;
         try {
-            boolean passwordComparisonResult=dao.existByPasswordAndUserId(userId,Encrypter.encrypt(oldPassword));
-            if(passwordComparisonResult) {
+            boolean passwordComparisonResult = userDao.existByPasswordAndUserId(userId, Encrypter.encrypt(oldPassword));
+            if (passwordComparisonResult) {
                 if (UserValidator.isPasswordValid(newPassword)) {
-                    dao.updateUserByPassword(userId, Encrypter.encrypt(newPassword));
+                    userDao.updateUserByPassword(userId, Encrypter.encrypt(newPassword));
                     result = true;
                 }
             }
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByRole(User.UserRole role) throws ServiceException {
         try {
-            List<User> userList = dao.findByRole(role);
+            List<User> userList = userDao.findByRole(role);
             return userList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkRegistrationForm(String name, String surname, String password, String email) throws ServiceException {
         try {
-            return UserValidator.isNameValid(name) && UserValidator.isSurnameValid(surname) && UserValidator.isPasswordValid(password) && UserValidator.isEmailValid(email) && dao.existByEmail(email);
+            return UserValidator.isNameValid(name) && UserValidator.isSurnameValid(surname) && UserValidator.isPasswordValid(password) && UserValidator.isEmailValid(email) && userDao.existByEmail(email);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

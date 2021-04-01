@@ -94,14 +94,14 @@ public enum CommandType {
             this.command = new PrescriptionRenewalCommand();
         }
     },
-    REDIRECT_TO_ADD_PRESCRIPTION {
+    REDIRECT_TO_ADD_PRESCRIPTION_ORDER {
         {
-            this.command = new RedirectToAddPrescription();
+            this.command = new RedirectToAddPrescriptionOrder();
         }
     },
-    CREATE_PRESCRIPTION_REQUEST {
+    ADD_PRESCRIPTION_ORDER {
         {
-            this.command = new AddPrescriptionRequestCommand();
+            this.command = new AddPrescriptionOrderCommand();
         }
     },
     CODE_CONFIRMATION {

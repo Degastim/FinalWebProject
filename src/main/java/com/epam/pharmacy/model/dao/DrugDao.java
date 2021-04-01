@@ -14,15 +14,15 @@ public interface DrugDao {
 
     List<Drug> findAllDrugs() throws DaoException;
 
-    void updateDrug(int drugId, String drugName, BigDecimal drugAmount, String drugDescription, boolean needPrescription, int price, int dosage) throws DaoException;
+    void updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, int dosage) throws DaoException;
 
     void deleteById(int drugId) throws DaoException;
 
-    void add(String drugName, int drugAmount, String drugDescription, boolean needPrescription) throws DaoException;
+    void add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws DaoException;
 
     List<Drug> findDrugNameAndIdWithNeedPrescription(boolean value) throws DaoException;
 
-    boolean findNeedPrescriptionByDrugName(String drugName) throws DaoException;
+    Optional<Boolean> findNeedPrescriptionByDrugName(String drugName) throws DaoException;
 
     int findDrugByDrugName(String drugName) throws DaoException;
 
