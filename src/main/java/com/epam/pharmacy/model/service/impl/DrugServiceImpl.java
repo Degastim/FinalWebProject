@@ -3,7 +3,7 @@ package com.epam.pharmacy.model.service.impl;
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.dao.DrugDao;
-import com.epam.pharmacy.model.dao.impl.DrugDaoImpl;
+import com.epam.pharmacy.model.dao.EntityTransaction;
 import com.epam.pharmacy.model.entity.Drug;
 import com.epam.pharmacy.model.service.DrugService;
 
@@ -22,7 +22,7 @@ public class DrugServiceImpl implements DrugService {
         return instance;
     }
 
-    private static final DrugDao drugDao = DrugDaoImpl.getInstance();
+    private static final DrugDao drugDao = DrugDao.getInstance();
     private static final int DRUGS_NUMBER_PER_PAGE = 4;
     private static final String PAGINATION_PAGE_NEXT = "next";
     private static final String Pagination_PAGE_PREVIOUS = "previous";
@@ -30,67 +30,95 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public List<Drug> findAllDrugs() throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            List<Drug> result = drugDao.findAllDrugs();
+            List<Drug> result = drugDao.findAll();
             return result;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 
     @Override
     public int countPaginationPageAmount() throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            int result = (int) Math.ceil((double) drugDao.showDrugsNumber() / DRUGS_NUMBER_PER_PAGE);
+            List<Drug> drugList = drugDao.findAll();
+            int drugsNumber = drugList.size();
+            int result = (int) Math.ceil((double) drugsNumber / DRUGS_NUMBER_PER_PAGE);
             return result;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 
     @Override
-    public Optional<Drug> findByIdWithImages(int drugId) throws ServiceException {
+    public Optional<Drug> findByIdWithImages(long drugId) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            Optional<Drug> drug = drugDao.findByIdWithImages(drugId);
+            Optional<Drug> drug = drugDao.findById(drugId);
             return drug;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 
     @Override
-    public boolean updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException {
+    public boolean updateDrug(int drugId, String drugName, int drugAmount, String description, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            Optional<Drug> drug = drugDao.findByNameAndDosage(drugName, dosage);
-            if (drug.isEmpty()) {
-                drugDao.updateDrug(drugId, drugName, drugAmount, drugDescription, needPrescription, price, dosage);
-                return true;
+            Optional<Drug> drugDaoOptional = drugDao.findByNameAndDosage(drugName, dosage);
+            if (drugDaoOptional.isPresent()) {
+                Drug drug = drugDaoOptional.get();
+                if (drug.getId() == drugId) {
+                    drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
+                    drugDao.update(drug);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return false;
+                Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
+                drugDao.update(drug);
+                return true;
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 
 
     public List<Drug> findPaginationDrugs(int currentPaginationPage) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         List<Drug> drugList = new ArrayList<>();
         int lastDrugNumberPerPage = DRUGS_NUMBER_PER_PAGE * currentPaginationPage;
         try {
-            Optional<Drug> drugOptional = drugDao.findByIdWithImages(lastDrugNumberPerPage - 3);
+            Optional<Drug> drugOptional = drugDao.findById(lastDrugNumberPerPage - 3);
             if (drugOptional.isPresent()) {
                 Drug drug = drugOptional.get();
                 drugList.add(drug);
-                drugOptional = drugDao.findByIdWithImages(lastDrugNumberPerPage - 2);
+                drugOptional = drugDao.findById(lastDrugNumberPerPage - 2);
                 if (drugOptional.isPresent()) {
                     drug = drugOptional.get();
                     drugList.add(drug);
-                    drugOptional = drugDao.findByIdWithImages(lastDrugNumberPerPage - 1);
+                    drugOptional = drugDao.findById(lastDrugNumberPerPage - 1);
                     if (drugOptional.isPresent()) {
                         drug = drugOptional.get();
                         drugList.add(drug);
-                        drugOptional = drugDao.findByIdWithImages(lastDrugNumberPerPage);
+                        drugOptional = drugDao.findById(lastDrugNumberPerPage);
                         if (drugOptional.isPresent()) {
                             drug = drugOptional.get();
                             drugList.add(drug);
@@ -101,59 +129,80 @@ public class DrugServiceImpl implements DrugService {
             return drugList;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
-
     }
 
     @Override
     public void deleteById(int drugId) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.initTransaction(drugDao);
         try {
-            drugDao.deleteById(drugId);
+            drugDao.delete(drugId);
+            drugDao.changeAutoincrement(drugId);
+            transaction.commit();
         } catch (DaoException e) {
+            transaction.rollback();
             throw new ServiceException(e);
+        } finally {
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            Optional<Drug> drug = drugDao.findByNameAndDosage(drugName, dosage);
-            if (drug.isEmpty()) {
-                drugDao.add(drugName, drugAmount, drugDescription, needPrescription, dosage, price);
-                return true;
-            } else {
+            boolean exist = drugDao.existByDrugNameAndDosage(drugName, dosage);
+            if (exist) {
                 return false;
             }
+            Drug drug = new Drug(drugName, drugAmount, drugDescription, needPrescription, dosage, price);
+            drugDao.add(drug);
+            return true;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 
     @Override
-    public List<Drug> findDrugNameAndIdWithNeedPrescription(boolean value) throws ServiceException {
+    public List<Drug> findDrugByNeedPrescription(boolean value) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            List<Drug> drugList = drugDao.findDrugNameAndIdWithNeedPrescription(value);
+            List<Drug> drugList = drugDao.findDrugByNeedPrescription(value);
             return drugList;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 
     @Override
-    public boolean checkNeedPrescriptionByDrugName(String drugName, boolean value) throws ServiceException {
+    public boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, int dosage, boolean value) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            Optional<Boolean> needPrescription = drugDao.findNeedPrescriptionByDrugName(drugName);
+            Optional<Boolean> needPrescription = drugDao.checkNeedPrescriptionByDrugNameAndDosage(drugName, dosage);
             return needPrescription.orElse(false);
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
-
     }
 
     @Override
-    public int findDrugIdByDrugName(String drugName) throws ServiceException {
+    public Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, int dosage) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
-            int result = drugDao.findDrugByDrugName(drugName);
+            Optional<Integer> result = drugDao.findDrugIdByDrugNameAndDosage(drugName, dosage);
             return result;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -162,11 +211,15 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public Optional<Drug> findDrugByDrugNameAndDosage(String drugName, int dosage) throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
         try {
             Optional<Drug> drugOptional = drugDao.findByNameAndDosage(drugName, dosage);
             return drugOptional;
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            transaction.end();
         }
     }
 

@@ -4,4 +4,6 @@ import com.epam.pharmacy.exception.ServiceException;
 
 public interface DrugPictureService {
     void add(String drugPicture, int pictureDrugId) throws ServiceException;
+
+    void delete(long drugPictureId) throws ServiceException;
 }

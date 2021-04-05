@@ -19,5 +19,5 @@ public interface PrescriptionService {
 
     void updateIssueDateAndEndDateAndStatusById(long prescriptionId, long issueDate, long endDate, Prescription.Status status) throws ServiceException;
 
-    boolean checkPrescription(long customerId, String drugName) throws ServiceException;
+    boolean checkPrescription(long customerId, String drugName, int dosage) throws ServiceException;
 }

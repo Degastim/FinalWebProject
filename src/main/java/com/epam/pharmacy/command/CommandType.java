@@ -148,10 +148,45 @@ public enum CommandType {
         {
             this.command = new DeleteDrugCommand();
         }
+    },
+    DELETE_DRUG_PICTURE {
+        {
+            this.command = new DeleteDrugPictureCommand();
+        }
+    },
+    REDIRECT_TO_CUSTOMER_ORDER_TABLE {
+        {
+            this.command = new RedirectToCustomerOrderTable();
+        }
+    },
+    REDIRECT_TO_PHARMACIST_DRUG_ORDER_TABLE {
+        {
+            this.command = new RedirectToPharmacistDrugOrderTable();
+        }
+    },
+    CONFIRM_DRUG_ORDER {
+        {
+            this.command = new ConfirmDrugOrder();
+        }
+    },
+    REFUSE_DRUG_ORDER {
+        {
+            this.command = new RefuseDrugOrder();
+        }
+    },
+    REDIRECT_TO_ACCOUNT_REPLENISHMENT {
+        {
+            this.command = new RedirectToAccountReplenishment();
+        }
+    },
+    ACCOUNT_REPLENISHMENT {
+        {
+            this.command = new AccountReplenishment();
+        }
     };
     ActionCommand command;
 
     public ActionCommand getCurrentCommand() {
         return command;
     }
-}
+    }

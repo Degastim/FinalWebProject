@@ -2,15 +2,14 @@ package com.epam.pharmacy.model.entity;
 
 import java.math.BigDecimal;
 
-public class User {
-    private long userId;
+public class User extends Entity {
     private String name;
     private String surname;
     private String email;
-    private UserRole role;
+    private Role role;
     private BigDecimal amount;
 
-    public enum UserRole {
+    public enum Role {
         CUSTOMER,
         DOCTOR,
         PHARMACIST;
@@ -19,15 +18,19 @@ public class User {
     public User() {
     }
 
-    public User(String name, String surname, String email, UserRole role) {
+    public User(long userId) {
+        super(userId);
+    }
+
+    public User(String name, String surname, String email, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.role = role;
     }
 
-    public User(long userId, String name, String surname, String email, UserRole role, BigDecimal amount) {
-        this.userId = userId;
+    public User(long userId, String name, String surname, String email, Role role, BigDecimal amount) {
+        super(userId);
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -35,26 +38,17 @@ public class User {
         this.amount = amount;
     }
 
-    public User(String name, String surname, UserRole role) {
+    public User(String name, String surname, Role role) {
         this.name = name;
         this.surname = surname;
         this.role = role;
     }
 
 
-
     public User(long userId, String name, String surname) {
-        this.userId = userId;
+        super(userId);
         this.name = name;
         this.surname = surname;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 
     public String getName() {
@@ -81,11 +75,11 @@ public class User {
         this.email = email;
     }
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -99,10 +93,7 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!super.equals(o)) {
             return false;
         }
         User user = (User) o;
@@ -118,31 +109,27 @@ public class User {
         if (role != null ? !role.equals(user.role) : user.role != null) {
             return false;
         }
-        if (amount != null ? !amount.equals(user.amount) : user.amount != null) {
-            return false;
-        }
-        return user.userId == userId;
+        return amount != null ? !amount.equals(user.amount) : user.amount != null;
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-        result += 31 * (name != null ? name.hashCode() : 0);
-        result += 29 * (surname != null ? surname.hashCode() : 0);
-        result += 23 * (email != null ? email.hashCode() : 0);
-        result += 19 * (role != null ? role.hashCode() : 0);
-        result += Long.hashCode(userId);
+        int result = super.hashCode();
+        result += 7 * (name != null ? name.hashCode() : 0);
+        result += 5 * (surname != null ? surname.hashCode() : 0);
+        result += 3 * (email != null ? email.hashCode() : 0);
+        result += 2 * (role != null ? role.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
-        sb.append("userId=").append(userId);
-        sb.append(", name='").append(name).append('\'');
+        sb.append("name='").append(name).append('\'');
         sb.append(", surname='").append(surname).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", role=").append(role);
+        sb.append(", amount=").append(amount);
         sb.append('}');
         return sb.toString();
     }

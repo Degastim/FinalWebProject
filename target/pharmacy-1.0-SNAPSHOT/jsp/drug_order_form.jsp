@@ -14,7 +14,7 @@
         <div class="row g-3">
             <div class="col-md-7 col-lg-9">
                 <h4 class="mb-3"><fmt:message key="drugOrderForm.data"/></h4>
-                <form action="controller" method="post">
+                <form action="controller" method="POST">
                     <input type="hidden" name="command" value="drug_order">
                     <div class="row g-3">
 
@@ -33,7 +33,7 @@
                                 <label for="drugAmount" class="col-form-label"><fmt:message key="drugOrderForm.amount"/>:</label>
                             </div>
                             <div class="col-sm-1">
-                                <input type="number" class="form-control" id="drugAmount" name="drugAmount" required>
+                                <input type="number" class="form-control" id="drugAmount" name="drugAmount" min="1" required>
                             </div>
                         </div>
 
@@ -42,7 +42,7 @@
                                 <label for="dosage" class="col-form-label"><fmt:message key="drugOrderForm.dosage"/>%:</label>
                             </div>
                             <div class="col-sm-1">
-                                <input type="number" class="form-control" id="dosage" name="dosage" value="${dosage}" required>
+                                <input type="number" class="form-control" id="dosage" name="dosage" value="${dosage}" min="0" step="any" required>
                             </div>
                         </div>
                     </div>

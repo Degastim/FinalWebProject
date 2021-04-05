@@ -3,6 +3,7 @@ package com.epam.pharmacy.model.service;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,11 @@ public interface UserService {
 
     boolean updateByPassword(long id, String newPassword, String oldPassword) throws ServiceException;
 
-    List<User> findByRole(User.UserRole role) throws ServiceException;
+    List<User> findByRole(User.Role role) throws ServiceException;
 
     boolean checkRegistrationForm(String name, String surname, String password, String email) throws ServiceException;
+
+    void updateByAmount(User user, BigDecimal amount) throws ServiceException;
+
+    Optional<User> findById(long userId) throws ServiceException;
 }

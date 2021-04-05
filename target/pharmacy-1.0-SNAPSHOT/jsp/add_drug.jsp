@@ -15,7 +15,7 @@
         <div class="row g-3">
             <div class="col-md-7 col-lg-9">
                 <h4 class="mb-3"><fmt:message key="addDrug.data"/></h4>
-                <form action="controller" method="post">
+                <form action="controller" method="POST">
                     <div class="row g-3">
 
                         <div class="row g-2">

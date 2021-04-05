@@ -13,7 +13,7 @@ public interface DrugService {
 
     int countPaginationPageAmount() throws ServiceException;
 
-    Optional<Drug> findByIdWithImages(int drugId) throws ServiceException;
+    Optional<Drug> findByIdWithImages(long drugId) throws ServiceException;
 
     boolean updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException;
 
@@ -23,11 +23,11 @@ public interface DrugService {
 
     boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws ServiceException;
 
-    List<Drug> findDrugNameAndIdWithNeedPrescription(boolean value) throws ServiceException;
+    List<Drug> findDrugByNeedPrescription(boolean value) throws ServiceException;
 
-    boolean checkNeedPrescriptionByDrugName(String drugName, boolean value) throws ServiceException;
+    boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, int dosage, boolean value) throws ServiceException;
 
-    int findDrugIdByDrugName(String drugName) throws ServiceException;
+    Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, int dosage) throws ServiceException;
 
     Optional<Drug> findDrugByDrugNameAndDosage(String drugName, int dosage) throws ServiceException;
 

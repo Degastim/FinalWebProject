@@ -15,9 +15,9 @@
         <div class="row g-3">
             <div class="col-md-7 col-lg-9">
                 <h4 class="mb-3"><fmt:message key="prescriptionOrder.data"/></h4>
-                <form action="controller" method="post">
+                <form action="controller" method="POST">
                     <input type="hidden" name="command" value="prescription_order_confirmation">
-                    <input type="hidden" name="prescriptionId" value="${prescription.prescriptionId}">
+                    <input type="hidden" name="prescriptionId" value="${prescription.id}">
                     <div class="row g-3">
 
                         <div class="row g-2">

@@ -27,8 +27,8 @@ public class RedirectToPrescriptionOrder implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
-        int prescriptionId = Integer.parseInt(request.getParameter(RequestParameter.PRESCRIPTION_ID));
-        request.setAttribute(RequestParameter.PRESCRIPTION_ID, prescriptionId);
+        String prescriptionIdString = request.getParameter(RequestParameter.PRESCRIPTION_ID);
+        long prescriptionId = Integer.parseInt(prescriptionIdString);
         try {
             Optional<Prescription> prescriptionOptional = prescriptionService.findPrescriptionByIdWithoutDoctor(prescriptionId);
             if (prescriptionOptional.isPresent()) {
@@ -39,7 +39,8 @@ public class RedirectToPrescriptionOrder implements ActionCommand {
                 int maxYear = currentYear + NUMBER_YEARS_HIGHER_PRESENT;
                 request.setAttribute(REQUEST_ATTRIBUTE_MAX_YEAR, maxYear);
             } else {
-                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, (String) session.getAttribute(SessionAttribute.LOCALE));
+                String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, locale);
                 request.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
             }
             CommandResult commandResult = new CommandResult(PagePath.PRESCRIPTION_ORDER_PAGE, CommandResult.Type.FORWARD);

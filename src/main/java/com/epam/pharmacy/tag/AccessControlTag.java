@@ -19,8 +19,8 @@ public class AccessControlTag extends TagSupport {
         HttpSession session = pageContext.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         if (user != null) {
-            User.UserRole userRole = user.getRole();
-            if ((User.UserRole.valueOf(accessRole.toUpperCase())) == userRole) {
+            User.Role userRole = user.getRole();
+            if ((User.Role.valueOf(accessRole.toUpperCase())) == userRole) {
                 return EVAL_BODY_INCLUDE;
             }
         }

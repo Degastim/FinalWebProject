@@ -27,6 +27,7 @@ public class CodeConfirmationCommand implements ActionCommand {
         CommandResult commandResult;
         if (verificationCode == emailVerificationCode) {
             User user = (User) session.getAttribute(SessionAttribute.POSSIBLE_USER);
+            session.removeAttribute(SessionAttribute.POSSIBLE_USER);
             String password = (String) session.getAttribute(SessionAttribute.PASSWORD);
             try {
                 userService.add(user, password);

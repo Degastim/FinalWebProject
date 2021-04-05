@@ -26,8 +26,8 @@
                            placeholder="<fmt:message key="login.password"/>">
                 </div>
                 <br>
-                ${errorLoginPassMessage}
-                ${errorLoginPassMessage=null}
+                <h5 style="color: red">${errorMessage}</h5>
+                ${errorMessage=null}
                 <br>
             </div>
             <button class="w-100 btn btn-md btn-primary" type="submit"><fmt:message key="login.button.submit"/></button>

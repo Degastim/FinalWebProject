@@ -25,7 +25,7 @@ public class RedirectToCustomerPrescriptionTableCommand implements ActionCommand
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        long customerId = user.getUserId();
+        long customerId = user.getId();
         try {
             List<Prescription> prescriptionList = prescriptionService.findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(customerId);
             if (prescriptionList.size() == 0) {

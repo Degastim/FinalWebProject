@@ -4,97 +4,60 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Drug {
-    private int drugId;
+public class Drug extends Entity {
     private String drugName;
-    private int amount;
+    private int drugAmount;
     private int dosage;
     private String description;
-    boolean needPrescription;
-    BigDecimal price;
-    private List<String> images;
+    private boolean needPrescription;
+    private BigDecimal price;
+    private List<DrugPicture> drugPictureList;
 
-    public Drug(int drugId, String drugName, int amount, String description, int dosage) {
-        this.drugId = drugId;
+    public Drug(long drugId, String drugName, int drugAmount, String description, int dosage, BigDecimal price) {
+        super(drugId);
         this.drugName = drugName;
-        this.amount = amount;
-        this.description = description;
-        this.dosage = dosage;
-    }
-
-    public Drug(int drugId, String drugName, int amount, String description, int dosage, BigDecimal price) {
-        this.drugId = drugId;
-        this.drugName = drugName;
-        this.amount = amount;
+        this.drugAmount = drugAmount;
         this.description = description;
         this.dosage = dosage;
         this.price = price;
-    }
-
-    public Drug(int drugId, String drugName, int amount, String description, boolean needPrescription, List<String> imageList) {
-        this.drugId = drugId;
-        this.drugName = drugName;
-        this.amount = amount;
-        this.description = description;
-        this.needPrescription = needPrescription;
-        this.images = new ArrayList<>(imageList);
-    }
-
-    public Drug(int drugId, String drugName, int amount, String description, boolean needPrescription) {
-        this.drugId = drugId;
-        this.drugName = drugName;
-        this.amount = amount;
-        this.description = description;
-        this.needPrescription = needPrescription;
     }
 
     public Drug(String drugName) {
         this.drugName = drugName;
     }
 
-
-    public Drug(int drugId, String drugName) {
-        this.drugId = drugId;
+    public Drug(long drugId, String drugName, int drugAmount, String description, boolean needPrescription, int dosage, BigDecimal price, List<DrugPicture> drugPictureList) {
+        super(drugId);
         this.drugName = drugName;
-    }
-
-    public Drug(int drugId, String drugName, int amount, String description, boolean needPrescription, int dosage, List<String> images) {
-        this.drugId = drugId;
-        this.drugName = drugName;
-        this.amount = amount;
-        this.description = description;
-        this.needPrescription = needPrescription;
-        this.dosage = dosage;
-        this.images = new ArrayList<>(images);
-    }
-
-    public Drug(int drugId, String drugName, int amount, String description, boolean needPrescription, int dosage, BigDecimal price, List<String> images) {
-        this.drugId = drugId;
-        this.drugName = drugName;
-        this.amount = amount;
+        this.drugAmount = drugAmount;
         this.description = description;
         this.needPrescription = needPrescription;
         this.dosage = dosage;
         this.price = price;
-        this.images = new ArrayList<>(images);
+        this.drugPictureList = new ArrayList<>(drugPictureList);
     }
 
-    public Drug(int drugId, String drugName, int amount, String description, boolean needPrescription, int dosage, BigDecimal price) {
-        this.drugId = drugId;
+    public Drug(long drugId, String drugName, int drugAmount, String description, boolean needPrescription, int dosage, BigDecimal price) {
+        super(drugId);
         this.drugName = drugName;
-        this.amount = amount;
+        this.drugAmount = drugAmount;
         this.description = description;
         this.needPrescription = needPrescription;
         this.dosage = dosage;
         this.price = price;
     }
 
-    public int getDrugId() {
-        return drugId;
+    public Drug(String drugName, int drugAmount, String description, boolean needPrescription, int dosage, BigDecimal price) {
+        this.drugName = drugName;
+        this.drugAmount = drugAmount;
+        this.description = description;
+        this.needPrescription = needPrescription;
+        this.dosage = dosage;
+        this.price = price;
     }
 
-    public void setDrugId(int drugId) {
-        this.drugId = drugId;
+    public Drug(int drugId) {
+        super(drugId);
     }
 
     public String getDrugName() {
@@ -105,20 +68,20 @@ public class Drug {
         this.drugName = drugName;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getDrugAmount() {
+        return drugAmount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setDrugAmount(int drugAmount) {
+        this.drugAmount = drugAmount;
     }
 
-    public List<String> getImages() {
-        return images;
+    public List<DrugPicture> getDrugPictureList() {
+        return new ArrayList<>(drugPictureList);
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setDrugPictureList(List<DrugPicture> drugPictureList) {
+        this.drugPictureList = drugPictureList;
     }
 
     public String getDescription() {
@@ -155,20 +118,17 @@ public class Drug {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!super.equals(o)) {
             return false;
         }
         Drug drug = (Drug) o;
         if (drugName != null ? !drugName.equals(drug.drugName) : drug.drugName != null) {
             return false;
         }
-        if (amount != drug.amount) {
+        if (drugAmount != drug.drugAmount) {
             return false;
         }
-        if (images != null ? !images.equals(drug.images) : drug.images != null) {
+        if (drugPictureList != null ? !drugPictureList.equals(drug.drugPictureList) : drug.drugPictureList != null) {
             return false;
         }
         if (description != null ? !description.equals(drug.description) : drug.description != null) {
@@ -180,37 +140,33 @@ public class Drug {
         if (dosage != drug.dosage) {
             return false;
         }
-        if (price != drug.price) {
-            return false;
-        }
-        return drugId == drug.drugId;
+        return price.equals(drug.price);
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-        result += 31 * (drugName != null ? drugName.hashCode() : 0);
-        result += 29 * amount;
-        result += 23 * (images != null ? images.hashCode() : 0);
-        result += 19 * (description != null ? description.hashCode() : 0);
-        result += 17 * Boolean.hashCode(needPrescription);
-        result += 11 * drugId;
-        result += 7 * price.hashCode();
-        result += dosage;
+        int result = super.hashCode();
+        result += 19 * (drugName != null ? drugName.hashCode() : 0);
+        result += 17 * drugAmount;
+        result += 13 * (drugPictureList != null ? drugPictureList.hashCode() : 0);
+        result += 11 * (description != null ? description.hashCode() : 0);
+        result += 7 * Boolean.hashCode(needPrescription);
+        result += 3 * price.hashCode();
+        result += 2 * dosage;
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Drug{");
-        sb.append("drugId=").append(drugId);
+        sb.append("drugId=").append(getId()).append('\'');
         sb.append(", drugName='").append(drugName).append('\'');
-        sb.append(", amount=").append(amount);
+        sb.append(", amount=").append(drugAmount);
         sb.append(", dosage=").append(dosage);
         sb.append(", description='").append(description).append('\'');
         sb.append(", needPrescription=").append(needPrescription);
         sb.append(", price=").append(price);
-        sb.append(", images=").append(images);
+        sb.append(", images=").append(drugPictureList);
         sb.append('}');
         return sb.toString();
     }

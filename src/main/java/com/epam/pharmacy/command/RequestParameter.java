@@ -30,4 +30,7 @@ public class RequestParameter {
     public static final String YEAR = "year";
     public static final String DOSAGE = "dosage";
     public static final String PRICE = "price";
+    public static final String DRUG_PICTURE_ID = "drugPictureId";
+    public static final String DRUG_ORDER_ID = "drugOrderId";
+    public static final String AMOUNT="amount";
 }

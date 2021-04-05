@@ -34,7 +34,7 @@ public class EditDrugCommand implements ActionCommand {
         boolean needPrescription = Boolean.parseBoolean(needPrescriptionString);
         try {
             boolean updateResult = drugService.updateDrug(drugId, drugName, drugAmount, drugDescription, needPrescription, price, dosage);
-            if (updateResult) {
+            if (!updateResult) {
                 String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, locale);
                 session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);

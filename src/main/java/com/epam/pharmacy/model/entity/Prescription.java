@@ -2,8 +2,7 @@ package com.epam.pharmacy.model.entity;
 
 import java.util.Date;
 
-public class Prescription {
-    private long prescriptionId;
+public class Prescription extends Entity {
     private User customer;
     private User doctor;
     private Drug drug;
@@ -22,7 +21,7 @@ public class Prescription {
     }
 
     public Prescription(long prescriptionId, User customer, User doctor, Drug drug, int amount, Date issueDate, Date endDate, Status status) {
-        this.prescriptionId = prescriptionId;
+        super(prescriptionId);
         this.customer = customer;
         this.doctor = doctor;
         this.drug = drug;
@@ -32,16 +31,16 @@ public class Prescription {
         this.status = status;
     }
 
+    public Prescription(User customer, User doctor, Drug drug, int amount, Status status) {
+        this.customer = customer;
+        this.doctor = doctor;
+        this.drug = drug;
+        this.amount = amount;
+        this.status = status;
+    }
+
     public Status getStatus() {
         return status;
-    }
-
-    public long getPrescriptionId() {
-        return prescriptionId;
-    }
-
-    public void setPrescriptionId(long prescriptionId) {
-        this.prescriptionId = prescriptionId;
     }
 
     public User getCustomer() {
@@ -98,8 +97,9 @@ public class Prescription {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) {
+            return false;
+        }
         Prescription prescription = (Prescription) o;
         if (customer != null ? !customer.equals(prescription.customer) : prescription.customer != null) {
             return false;
@@ -116,33 +116,29 @@ public class Prescription {
         if (endDate != null ? !endDate.equals(prescription.endDate) : prescription.endDate != null) {
             return false;
         }
-        if (amount != prescription.amount) {
-            return false;
-        }
         if (status != null ? !status.equals(prescription.status) : prescription.status != null) {
             return false;
         }
-        return prescription.prescriptionId == prescriptionId;
+        return amount != prescription.amount;
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-        result += 31 * (customer != null ? customer.hashCode() : 0);
-        result += 29 * (doctor != null ? doctor.hashCode() : 0);
-        result += 23 * (drug != null ? drug.hashCode() : 0);
-        result += 19 * (issueDate != null ? issueDate.hashCode() : 0);
-        result += 17 * (endDate != null ? endDate.hashCode() : 0);
-        result += 13 * (status != null ? status.hashCode() : 0);
-        result += 11 * Long.hashCode(prescriptionId);
-        result += amount;
+        int result = super.hashCode();
+        result += 17 * (customer != null ? customer.hashCode() : 0);
+        result += 13 * (doctor != null ? doctor.hashCode() : 0);
+        result += 11 * (drug != null ? drug.hashCode() : 0);
+        result += 7 * (issueDate != null ? issueDate.hashCode() : 0);
+        result += 5 * (endDate != null ? endDate.hashCode() : 0);
+        result += 3 * (status != null ? status.hashCode() : 0);
+        result += 2 * amount;
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Prescription{");
-        sb.append("prescriptionId=").append(prescriptionId);
+        sb.append("prescriptionId=").append(getId());
         sb.append(", customer=").append(customer);
         sb.append(", doctor=").append(doctor);
         sb.append(", drug=").append(drug);

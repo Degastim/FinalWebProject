@@ -38,10 +38,10 @@ public class RegistrationCommand implements ActionCommand {
         String password = request.getParameter(RequestParameter.PASSWORD);
         String email = request.getParameter(RequestParameter.USER_EMAIL);
         String roleString = request.getParameter(RequestParameter.USER_ROLE).toUpperCase();
-        User.UserRole role = User.UserRole.valueOf(roleString);
+        User.Role role = User.Role.valueOf(roleString);
         CommandResult commandResult;
         try {
-            if (role == User.UserRole.PHARMACIST) {
+            if (role == User.Role.PHARMACIST) {
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_FORM, locale);
                 session.setAttribute(MESSAGE_KEY_ERROR_ROLE, errorMessage);
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);

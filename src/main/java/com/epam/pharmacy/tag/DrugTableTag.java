@@ -34,11 +34,11 @@ public class DrugTableTag extends TagSupport {
             for (Drug drug : drugList) {
                 out.write("<tr>");
                 out.write("<td>" + drug.getDrugName() + "</td>");
-                out.write("<td>" + drug.getAmount() + "</td>");
+                out.write("<td>" + drug.getDrugAmount() + "</td>");
                 out.write("<td>" + drug.getDescription() + "</td>");
                 out.write("<td>" + drug.getDosage() + "</td>");
                 out.write("<td>" + drug.getPrice() + "</td>");
-                out.write("<td><button class=\"btn btn-info\" type=\"submit\" name=\"drugId\" value=\"" + drug.getDrugId() + "\">" + MessageManager.getMessage("drugTable.edit", locale) + "</button></td>");
+                out.write("<td><button class=\"btn btn-info\" type=\"submit\" name=\"drugId\" value=\"" + drug.getId() + "\">" + MessageManager.getMessage("drugTable.edit", locale) + "</button></td>");
                 out.write("</tr>");
             }
             out.write("</table>");

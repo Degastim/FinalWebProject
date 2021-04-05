@@ -11,17 +11,17 @@
                 <form method="GET" action="controller">
                     <input type="hidden" name="command" value="redirect_to_drug_order_form">
                     <div class="card  h-100" style="width: 20rem">
-                        <c:if test="${drug.images.size()!=0}">
+                        <c:if test="${drug.drugPictureList.size()!=0}">
                             <div id="drugCard${drugCounter.count}" class="carousel carousel-dark slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <c:forEach var="image" items="${drug.images}" varStatus="counter">
+                                    <c:forEach var="picture" items="${drug.drugPictureList}" varStatus="counter">
                                         <button type="button" data-bs-target="#drugCard${drugCounter.count}" data-bs-slide-to="${counter.count-1}" class="${counter.count==1?'active':''}"></button>
                                     </c:forEach>
                                 </div>
                                 <div class="carousel-inner">
-                                    <c:forEach var="image" items="${drug.images}" varStatus="counter">
+                                    <c:forEach var="picture" items="${drug.drugPictureList}" varStatus="counter">
                                         <div class="carousel-item ${counter.count==1?'active':''}">
-                                            <img src="data:;base64,${image}" class="card-img-top">
+                                            <img src="data:;base64,${picture.drugPicture}" class="card-img-top">
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -41,8 +41,8 @@
                         <div class="card-footer">
                             <input type="hidden" name="drugName" value="${drug.drugName}">
                             <input type="hidden" name="dosage" value="${drug.dosage}">
-                            <button class="btn btn-primary me-4" type="submit"><fmt:message key="main.drugCard.footer.button.buy"/></button>
-                            <a><fmt:message key="main.drugCard.footer.amount"/>:${drug.amount}</a>
+                            <button class="btn btn-primary me-4 ${user.role!='CUSTOMER'?'disabled':''}" type="submit"><fmt:message key="main.drugCard.footer.button.buy"/></button>
+                            <a><fmt:message key="main.drugCard.footer.amount"/>:${drug.drugAmount}</a>
                             <a><fmt:message key="main.drugCard.footer.price"/>:${drug.dosage}</a>
                         </div>
                     </div>

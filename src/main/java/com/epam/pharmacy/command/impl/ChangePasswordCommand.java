@@ -1,6 +1,9 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.*;
+import com.epam.pharmacy.command.ActionCommand;
+import com.epam.pharmacy.command.CommandResult;
+import com.epam.pharmacy.command.RequestParameter;
+import com.epam.pharmacy.command.SessionAttribute;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
@@ -24,8 +27,9 @@ public class ChangePasswordCommand implements ActionCommand {
         String newPassword = request.getParameter(RequestParameter.NEW_PASSWORD);
         String oldPassword = request.getParameter(RequestParameter.OLD_PASSWORD);
         User user = (User) session.getAttribute(SessionAttribute.USER);
+        long userId = user.getId();
         try {
-            if (userService.updateByPassword(user.getUserId(), newPassword, oldPassword)) {
+            if (userService.updateByPassword(userId, newPassword, oldPassword)) {
                 session.setAttribute(REQUEST_ATTRIBUTE_PASSWORD_CHANGE_RESULT, MessageManager.getMessage(MESSAGE_KEY_SUCCESSFUL_PASSWORD_CHANGE, (String) session.getAttribute(SessionAttribute.LOCALE)));
             } else {
                 session.setAttribute(REQUEST_ATTRIBUTE_PASSWORD_CHANGE_RESULT, MessageManager.getMessage(MESSAGE_KEY_UNSUCCESSFUL_PASSWORD_CHANGE, (String) session.getAttribute(SessionAttribute.LOCALE)));

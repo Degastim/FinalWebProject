@@ -18,7 +18,7 @@ import java.util.Optional;
 public class LoginCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
-    private static final String REQUEST_ATTRIBUTE_ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
+    private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
     private static final String MESSAGE_KEY_LOGIN_ERROR = "message.loginError";
 
     @Override
@@ -35,7 +35,7 @@ public class LoginCommand implements ActionCommand {
                 commandResult = new CommandResult(PagePath.START_PAGE, CommandResult.Type.FORWARD);
                 logger.log(Level.INFO, "Successful login");
             } else {
-                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_LOGIN_PASS_MESSAGE, MessageManager.getMessage(MESSAGE_KEY_LOGIN_ERROR, (String) session.getAttribute(SessionAttribute.LOCALE)));
+                session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, MessageManager.getMessage(MESSAGE_KEY_LOGIN_ERROR, (String) session.getAttribute(SessionAttribute.LOCALE)));
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
                 logger.log(Level.INFO, "Unsuccessful login");
             }

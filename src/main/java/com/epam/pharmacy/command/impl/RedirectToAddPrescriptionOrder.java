@@ -34,15 +34,15 @@ public class RedirectToAddPrescriptionOrder implements ActionCommand {
         HttpSession session=request.getSession();
         String locale= (String) session.getAttribute(SessionAttribute.LOCALE);
         try {
-            List<User> doctorList = userService.findByRole(User.UserRole.DOCTOR);
-            List<Drug> drugList = drugService.findDrugNameAndIdWithNeedPrescription(true);
+            List<User> doctorList = userService.findByRole(User.Role.DOCTOR);
+            List<Drug> drugList = drugService.findDrugByNeedPrescription(true);
             if(doctorList.size()==0){
                 String noDoctorMessage= MessageManager.getMessage(MESSAGE_KEY_ERROR_NO_DOCTOR,locale);
                 request.setAttribute(REQUEST_ATTRIBUTE_NO_DOCTOR_MESSAGE,noDoctorMessage);
             }
             if(drugList.size()==0){
-                String noDrugMessage= MessageManager.getMessage(REQUEST_ATTRIBUTE_NO_DRUG_MESSAGE,locale);
-                request.setAttribute(REQUEST_ATTRIBUTE_NO_DOCTOR_MESSAGE,noDrugMessage);
+                String noDrugMessage=MessageManager.getMessage(MESSAGE_KEY_ERROR_NO_DRUG,locale);
+                request.setAttribute(REQUEST_ATTRIBUTE_NO_DRUG_MESSAGE,noDrugMessage);
             }
             request.setAttribute(REQUEST_ATTRIBUTE_DOCTOR_LIST, doctorList);
             request.setAttribute(REQUEST_ATTRIBUTE_DRUG_LIST, drugList);

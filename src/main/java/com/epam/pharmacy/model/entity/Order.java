@@ -1,18 +1,29 @@
 package com.epam.pharmacy.model.entity;
 
-public class Order {
-    private long orderId;
+public class Order extends Entity {
     private User customer;
     private Drug drug;
-    private int amount;
-    private Prescription prescription;
+    private int drugsNumber;
+    private Status status;
 
-    public long getOrderId() {
-        return orderId;
+    public enum Status {
+        PROCESSING,
+        APPROVED,
+        REJECTED
     }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
+    public Order(User customer, Drug drug, int drugsNumber, Order.Status status) {
+        this.customer = customer;
+        this.drug = drug;
+        this.drugsNumber = drugsNumber;
+        this.status = status;
+    }
+    public Order(long drugOrderId, User customer, Drug drug, int drugsNumber, Order.Status status) {
+        super(drugOrderId);
+        this.customer = customer;
+        this.drug = drug;
+        this.drugsNumber = drugsNumber;
+        this.status = status;
     }
 
     public User getCustomer() {
@@ -31,26 +42,27 @@ public class Order {
         this.drug = drug;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getDrugsNumber() {
+        return drugsNumber;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setDrugsNumber(int drugsNumber) {
+        this.drugsNumber = drugsNumber;
     }
 
-    public Prescription getPrescription() {
-        return prescription;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setPrescription(Prescription prescription) {
-        this.prescription = prescription;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) {
+            return false;
+        }
         Order order = (Order) o;
         if (customer != null ? !customer.equals(order.customer) : order.customer != null) {
             return false;
@@ -58,34 +70,29 @@ public class Order {
         if (drug != null ? !drug.equals(order.drug) : order.drug != null) {
             return false;
         }
-        if (prescription != null ? !prescription.equals(order.prescription) : order.prescription != null) {
+        if (status != order.status) {
             return false;
         }
-        if (amount != order.amount) {
-            return false;
-        }
-        return order.orderId == orderId;
+        return drugsNumber != order.drugsNumber;
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-        result += 11 * amount;
-        result += 7 * orderId;
+        int result = super.hashCode();
+        result += 7 * drugsNumber;
         result += 5 * customer.hashCode();
         result += 3 * drug.hashCode();
-        result += prescription.hashCode();
+        result += status.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");
-        sb.append("orderId=").append(orderId);
-        sb.append(", customer=").append(customer);
+        sb.append("customer=").append(customer);
         sb.append(", drug=").append(drug);
-        sb.append(", amount=").append(amount);
-        sb.append(", prescription=").append(prescription);
+        sb.append(", amount=").append(drugsNumber);
+        sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
     }

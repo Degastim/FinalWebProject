@@ -18,8 +18,11 @@ public class PagePath {
     public static final String PRESCRIPTION_TABLE_PAGE = "/jsp/customer_prescription_table.jsp";
     public static final String ADD_PRESCRIPTION_ORDER_PAGE = "/jsp/add_prescription_order.jsp";
     public static final String CODE_CONFIRMATION_PAGE = "/jsp/code_confirmation.jsp";
-    public static final String PRESCRIPTION_ORDER_TABLE_PAGE ="/jsp/prescription_order_table.jsp";
-    public static final String PRESCRIPTION_ORDER_PAGE="/jsp/prescription_order.jsp";
-    public static final String DRUG_ORDER_PAGE="/jsp/drug_order_form.jsp";
+    public static final String PRESCRIPTION_ORDER_TABLE_PAGE = "/jsp/prescription_order_table.jsp";
+    public static final String PRESCRIPTION_ORDER_PAGE = "/jsp/prescription_order.jsp";
+    public static final String DRUG_ORDER_PAGE = "/jsp/drug_order_form.jsp";
+    public static final String CUSTOMER_DRUG_ORDER_TABLE_PAGE = "/jsp/customer_drug_order_table.jsp";
+    public static final String PHARMACIST_DRUG_ORDER_TABLE_PAGE = "/jsp/pharmacist_drug_order_table.jsp";
+    public static final String ACCOUNT_REPLENISHMENT_PAGE="/jsp/account_replenishment.jsp";
 }
 

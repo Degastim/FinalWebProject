@@ -16,12 +16,13 @@ import com.epam.pharmacy.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 public class AddPrescriptionOrderCommand implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();
     private static final DrugService drugService = DrugServiceImpl.getInstance();
 
-    private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "addPrescriptionErrorMessage";
+    private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
     private static final String ERROR_MESSAGE_KEY = "customerPrescriptionTable.errorMessage";
 
     @Override
@@ -31,14 +32,22 @@ public class AddPrescriptionOrderCommand implements ActionCommand {
         String doctorIdString = request.getParameter(RequestParameter.DOCTOR);
         String drugName = request.getParameter(RequestParameter.DRUG_NAME);
         String drugAmountString = request.getParameter(RequestParameter.DRUG_AMOUNT);
+        String dosageString = request.getParameter(RequestParameter.DOSAGE);
         User user = (User) session.getAttribute(SessionAttribute.USER);
         long doctorId = Long.parseLong(doctorIdString);
-        long customerId = user.getUserId();
+        long customerId = user.getId();
         int drugAmount = Integer.parseInt(drugAmountString);
+        int dosage = Integer.parseInt(dosageString);
         try {
-            boolean comparisonResult = drugService.checkNeedPrescriptionByDrugName(drugName, true);
+            int drugId = 0;
+            boolean comparisonResult = drugService.checkNeedPrescriptionByDrugNameAndDosage(drugName, dosage, true);
+            Optional<Integer> drugIdOptional = drugService.findDrugIdByDrugNameAndDosage(drugName, dosage);
+            if (drugIdOptional.isEmpty()) {
+                comparisonResult = false;
+            } else {
+                drugId = drugIdOptional.get();
+            }
             if (comparisonResult) {
-                int drugId = drugService.findDrugIdByDrugName(drugName);
                 prescriptionService.addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(customerId, doctorId, drugId, drugAmount, Prescription.Status.PROCESSING);
             } else {
                 String locale = (String) session.getAttribute(SessionAttribute.LOCALE);

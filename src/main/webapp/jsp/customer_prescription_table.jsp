@@ -4,7 +4,7 @@
     <title><fmt:message key="customerPrescriptionTable.title"/></title>
 </head>
 <body>
-<form action="controller" method="post">
+<form action="controller" method="POST">
     <input type="hidden" name="command" value="prescription_renewal">
 
     <table class="table table-dark table-hover table-bordered">
@@ -28,7 +28,7 @@
                 <td>${prescription.endDate}</td>
                 <td>
                 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="<fmt:message key="customerPrescriptionTable.button.title"/>">
-                    <button class="btn btn-info ${prescription.status!='APPROVED' ? 'disabled' : ''} " type="submit" name="prescriptionId" value="${prescription.prescriptionId}"><fmt:message key="customerPrescriptionTable.column.submit"/></button>
+                    <button class="btn btn-info ${prescription.status!='APPROVED' ? 'disabled' : ''} " type="submit" name="prescriptionId" value="${prescription.id}"><fmt:message key="customerPrescriptionTable.column.submit"/></button>
                 </span>
                 </td>
                 <c:choose>
