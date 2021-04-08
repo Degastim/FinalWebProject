@@ -9,9 +9,11 @@ import java.util.regex.Pattern;
 
 public class UserValidator {
     private static final Logger logger = LogManager.getLogger();
+    private UserValidator() {
+    }
     private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,15}$";
-    private static final String NAME_REGEX = "[a-zA-Zа-яА-Я_0-9-.]{5,45}";
-    private static final String SURNAME_REGEX = "[a-zA-Zа-яА-Я_0-9-.]{5,50}";
+    private static final String NAME_REGEX = "[a-zA-Zа-яА-Я]{5,45}";
+    private static final String SURNAME_REGEX = "[a-zA-Zа-яА-Я]{5,50}";
     private static final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public static boolean isPasswordValid(String password) {

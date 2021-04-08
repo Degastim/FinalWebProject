@@ -54,7 +54,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public void addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException {
+    public void add(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {

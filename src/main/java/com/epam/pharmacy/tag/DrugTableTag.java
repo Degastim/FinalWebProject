@@ -22,6 +22,9 @@ public class DrugTableTag extends TagSupport {
         JspWriter out = pageContext.getOut();
         try {
             List<Drug> drugList = (List<Drug>) pageContext.getRequest().getAttribute(RequestParameter.DRUG_LIST);
+            if (drugList.size() == 0) {
+                out.write("<h3>" + MessageManager.getMessage("drugTable.message", locale) + "</h3>");
+            }
             out.write("<form method=\"get\" action=\"controller\">");
             out.write("<input type=\"hidden\" name=\"command\" value=\"redirect_to_edit_drug\">");
             out.write("<table class=\"table table-dark table-hover table-bordered\"><tr>");
@@ -45,7 +48,7 @@ public class DrugTableTag extends TagSupport {
             out.write("</form>");
             out.write("<form method=\"get\" action=\"controller\">");
             out.write("<input type=\"hidden\" name=\"command\" value=\"redirect_to_add_drug\">");
-            out.write("<button class=\"btn btn-success w-100\" type=\"submit\">"+ MessageManager.getMessage("drugTable.add", locale) +  "</button>");
+            out.write("<button class=\"btn btn-success w-100\" type=\"submit\">" + MessageManager.getMessage("drugTable.add", locale) + "</button>");
             out.write("</form>");
         } catch (IOException e) {
             throw new JspTagException(e);

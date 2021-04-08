@@ -4,16 +4,16 @@ import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.Drug;
-import com.epam.pharmacy.model.entity.DrugPicture;
+import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugService;
 import com.epam.pharmacy.model.service.impl.DrugServiceImpl;
 import com.epam.pharmacy.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Optional;
 
+@CommandAccessLevel(User.Role.PHARMACIST)
 public class RedirectToEditDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
     private static final String REQUEST_ATTRIBUTE_EDIT_DRUG = "editDrug";

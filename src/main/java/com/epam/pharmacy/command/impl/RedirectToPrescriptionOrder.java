@@ -4,6 +4,7 @@ import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.Prescription;
+import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.PrescriptionService;
 import com.epam.pharmacy.model.service.TimeService;
 import com.epam.pharmacy.model.service.impl.PrescriptionServiceImpl;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+@CommandAccessLevel(User.Role.DOCTOR)
 public class RedirectToPrescriptionOrder implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();
     private static final TimeService timeService = TimeServiceImpl.getInstance();

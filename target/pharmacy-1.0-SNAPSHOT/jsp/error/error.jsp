@@ -1,13 +1,15 @@
-<%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/jsp/header.jsp" %>
 <html>
-<head><title>Error Page</title></head>
+<head>
+    <title><fmt:message key="error.title"</title>
+</head>
 <body>
-Request from ${pageContext.errorData.requestURI} is failed
+<fmt:message key="error.request1"/> ${pageContext.errorData.requestURI} <fmt:message key="error.request2"/>
 <br/>
-Servlet name or type: ${pageContext.errorData.servletName}
+<fmt:message key="error.servlet"/> : ${pageContext.errorData.servletName}
 <br/>
-Status code: ${pageContext.errorData.statusCode}
+<fmt:message key="error.statusCode"/> : ${pageContext.errorData.statusCode}
 <br/>
-Exception: ${pageContext.errorData.throwable}
+<fmt:message key="error.exception"/> : ${pageContext.errorData.throwable}
 </body>
 </html>

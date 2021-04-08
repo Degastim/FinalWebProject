@@ -1,13 +1,12 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.ActionCommand;
-import com.epam.pharmacy.command.CommandResult;
-import com.epam.pharmacy.command.PagePath;
-import com.epam.pharmacy.command.RequestParameter;
+import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
+import com.epam.pharmacy.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 
+@CommandAccessLevel(User.Role.CUSTOMER)
 public class RedirectToDrugOrderForm implements ActionCommand {
     private static final String REQUEST_ATTRIBUTE_DRUG_NAME = "drugName";
     private static final String REQUEST_ATTRIBUTE_DOSAGE = "dosage";

@@ -1,9 +1,6 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.ActionCommand;
-import com.epam.pharmacy.command.CommandResult;
-import com.epam.pharmacy.command.RequestParameter;
-import com.epam.pharmacy.command.SessionAttribute;
+import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.Prescription;
@@ -18,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+@CommandAccessLevel(User.Role.CUSTOMER)
 public class AddPrescriptionOrderCommand implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();
     private static final DrugService drugService = DrugServiceImpl.getInstance();
@@ -48,7 +46,7 @@ public class AddPrescriptionOrderCommand implements ActionCommand {
                 drugId = drugIdOptional.get();
             }
             if (comparisonResult) {
-                prescriptionService.addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(customerId, doctorId, drugId, drugAmount, Prescription.Status.PROCESSING);
+                prescriptionService.add(customerId, doctorId, drugId, drugAmount, Prescription.Status.PROCESSING);
             } else {
                 String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
                 String errorMessage = MessageManager.getMessage(ERROR_MESSAGE_KEY, locale);

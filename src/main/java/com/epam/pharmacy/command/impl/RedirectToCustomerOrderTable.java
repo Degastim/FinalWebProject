@@ -1,9 +1,6 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.ActionCommand;
-import com.epam.pharmacy.command.CommandResult;
-import com.epam.pharmacy.command.PagePath;
-import com.epam.pharmacy.command.SessionAttribute;
+import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.Order;
@@ -15,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@CommandAccessLevel(User.Role.CUSTOMER)
 public class RedirectToCustomerOrderTable implements ActionCommand {
     private static final DrugOrderService drugOrderService = DrugOrderServiceImpl.getInstance();
     private static final String REQUEST_ATTRIBUTE_DRUG_ORDER_LIST = "drugOrderList";
@@ -30,8 +28,8 @@ public class RedirectToCustomerOrderTable implements ActionCommand {
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        String page= PagePath.CUSTOMER_DRUG_ORDER_TABLE_PAGE;
-        CommandResult commandResult=new CommandResult(page,CommandResult.Type.FORWARD);
+        String page = PagePath.CUSTOMER_DRUG_ORDER_TABLE_PAGE;
+        CommandResult commandResult = new CommandResult(page, CommandResult.Type.FORWARD);
         return commandResult;
     }
 }

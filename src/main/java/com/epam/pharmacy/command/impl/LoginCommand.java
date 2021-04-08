@@ -28,7 +28,7 @@ public class LoginCommand implements ActionCommand {
         String password = request.getParameter(RequestParameter.PASSWORD);
         CommandResult commandResult;
         try {
-            Optional<User> optional = userService.findByEmailPassword(email, password);
+            Optional<User> optional = userService.findByEmailAndPassword(email, password);
             if (optional.isPresent()) {
                 User user = optional.get();
                 session.setAttribute(SessionAttribute.USER, user);

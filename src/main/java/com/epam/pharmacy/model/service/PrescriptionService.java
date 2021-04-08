@@ -11,7 +11,7 @@ public interface PrescriptionService {
 
     void updateStatusById(Prescription.Status status, long prescriptionId) throws ServiceException;
 
-    void addPrescriptionByDoctorIdAndCustomerIdAndDrugNameAndAmountAndStatus(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException;
+    void add(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException;
 
     List<Prescription> findAllByDoctorIdAndStatus(long doctorId, Prescription.Status status) throws ServiceException;
 

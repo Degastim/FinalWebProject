@@ -20,13 +20,12 @@ class ConnectionCreator {
 
     static {
         try {
-            PROPERTIES.load(ConnectionCreator.class.getClassLoader().getResourceAsStream(PROPERTIES_PATH));
+            PROPERTIES.load(ConnectionCreator.class.getResourceAsStream(PROPERTIES_PATH));
             String driver = PROPERTIES.getProperty(DRIVER_PROPERTY);
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
             logger.log(Level.FATAL, "MySQL drives not found", e);
             throw new RuntimeException("MySQL drives not found", e);
-
         } catch (IOException e) {
             logger.log(Level.FATAL, "Database configuration not found.Path" + PROPERTIES_PATH, e);
             throw new RuntimeException("Database configuration not found.Path" + PROPERTIES_PATH, e);

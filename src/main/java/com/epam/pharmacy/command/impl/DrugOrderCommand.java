@@ -1,9 +1,6 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.ActionCommand;
-import com.epam.pharmacy.command.CommandResult;
-import com.epam.pharmacy.command.RequestParameter;
-import com.epam.pharmacy.command.SessionAttribute;
+import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.Drug;
@@ -11,22 +8,20 @@ import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import com.epam.pharmacy.model.service.DrugService;
 import com.epam.pharmacy.model.service.PrescriptionService;
-import com.epam.pharmacy.model.service.UserService;
 import com.epam.pharmacy.model.service.impl.DrugOrderServiceImpl;
 import com.epam.pharmacy.model.service.impl.DrugServiceImpl;
 import com.epam.pharmacy.model.service.impl.PrescriptionServiceImpl;
-import com.epam.pharmacy.model.service.impl.UserServiceImpl;
 import com.epam.pharmacy.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+@CommandAccessLevel(User.Role.CUSTOMER)
 public class DrugOrderCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();
     private static final DrugOrderService drugOrderService = DrugOrderServiceImpl.getInstance();
-    private static final UserService userService = UserServiceImpl.getInstance();
     private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
     private static final String KEY_MESSAGE_ERROR_NO_DRUG = "drugOrderForm.error.noDrug";
     private static final String KEY_MESSAGE_ERROR_NO_PRESCRIPTION = "drugOrderForm.error.noPrescription";

@@ -28,11 +28,11 @@ public class UserFilter implements Filter {
         User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
         if (sessionUser == null) {
             filterChain.doFilter(servletRequest, servletResponse);
+            return;
         }
         long sessionUserId = sessionUser.getId();
         try {
             Optional<User> userDao = userService.findById(sessionUserId);
-            System.out.println(userDao);
             if (userDao.isEmpty()) {
                 session.removeAttribute(SessionAttribute.USER);
                 String locale = (String) session.getAttribute(SessionAttribute.LOCALE);

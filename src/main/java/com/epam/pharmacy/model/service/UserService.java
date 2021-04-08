@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     boolean add(User user, String password) throws ServiceException;
 
-    Optional<User> findByEmailPassword(String email, String password) throws ServiceException;
+    Optional<User> findByEmailAndPassword(String email, String password) throws ServiceException;
 
     boolean updateByPassword(long id, String newPassword, String oldPassword) throws ServiceException;
 

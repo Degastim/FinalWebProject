@@ -1,9 +1,6 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.ActionCommand;
-import com.epam.pharmacy.command.CommandResult;
-import com.epam.pharmacy.command.RequestParameter;
-import com.epam.pharmacy.command.SessionAttribute;
+import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
@@ -15,9 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
+@CommandAccessLevel({User.Role.CUSTOMER,User.Role.PHARMACIST})
 public class AccountReplenishment implements ActionCommand {
     private static final UserService userService = UserServiceImpl.getInstance();
-    private static final String MESSAGE_KEY_SUCCESS_MESSAGE = "account_replenishment.message.success";
+    private static final String MESSAGE_KEY_SUCCESS_MESSAGE = "pharmacist_drug_order_table.message.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

@@ -68,7 +68,7 @@ public class Controller extends HttpServlet {
     public void destroy() {
         try {
             ConnectionPool.INSTANCE.destroyPool();
-            logger.log(Level.INFO,"Destroy pool");
+            logger.log(Level.INFO, "Destroy pool");
         } catch (ConnectionPoolException e) {
             logger.log(Level.ERROR, "ConnectionPool closing error", e);
         }

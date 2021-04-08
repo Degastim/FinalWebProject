@@ -48,18 +48,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmailPassword(String email, String password) throws ServiceException {
-        Optional<User> result;
+    public Optional<User> findByEmailAndPassword(String email, String password) throws ServiceException {
+        Optional<User> userOptional;
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {
-            result = userDao.findByEmailPassword(email, Encrypter.encrypt(password));
+            userOptional = userDao.findByEmail(email);
+            Optional<String> encryptPasswordOptional = userDao.findPasswordByEmail(email);
+            if (encryptPasswordOptional.isEmpty()) {
+                return userOptional;
+            }
+            String encryptPassword = encryptPasswordOptional.get();
+            boolean check = Encrypter.check(password, encryptPassword);
+            if (check) {
+                return userOptional;
+            } else {
+                return Optional.empty();
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {
             transaction.end();
         }
-        return result;
+
     }
 
     @Override

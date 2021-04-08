@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@CommandAccessLevel({User.Role.CUSTOMER, User.Role.DOCTOR})
 public class CodeConfirmationCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();

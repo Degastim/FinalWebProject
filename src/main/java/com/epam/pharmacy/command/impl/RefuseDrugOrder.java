@@ -1,11 +1,9 @@
 package com.epam.pharmacy.command.impl;
 
-import com.epam.pharmacy.command.ActionCommand;
-import com.epam.pharmacy.command.CommandResult;
-import com.epam.pharmacy.command.RequestParameter;
-import com.epam.pharmacy.command.SessionAttribute;
+import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
+import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import com.epam.pharmacy.model.service.impl.DrugOrderServiceImpl;
 import com.epam.pharmacy.resource.MessageManager;
@@ -13,9 +11,10 @@ import com.epam.pharmacy.resource.MessageManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@CommandAccessLevel(User.Role.PHARMACIST)
 public class RefuseDrugOrder implements ActionCommand {
     private static final DrugOrderService drugOrderService = DrugOrderServiceImpl.getInstance();
-    private static final String MESSAGE_KEY_ERROR_MESSAGE_NO_DRUG_ORDER = "customer_drug_order_table.error.noDrugOrder";
+    private static final String MESSAGE_KEY_ERROR_MESSAGE_NO_DRUG_ORDER = "pharmacist_drug_order_table.error.noDrugOrder";
     private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
 
     @Override

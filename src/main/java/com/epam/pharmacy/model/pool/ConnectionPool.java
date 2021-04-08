@@ -19,6 +19,7 @@ public enum ConnectionPool {
     INSTANCE;
 
     private final Logger logger = LogManager.getLogger();
+    private static final String DATA_BASE_POOL_SIZE_CONFIG = "db.poolSize";
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> busyConnections;
     private static final int DEFAULT_POOL_SIZE = 8;
@@ -26,7 +27,7 @@ public enum ConnectionPool {
 
     ConnectionPool() {
         try {
-            poolSize = Integer.parseInt(DataBaseConfigManager.getProperty("db.poolSize"));
+            poolSize = Integer.parseInt(DataBaseConfigManager.getProperty(DATA_BASE_POOL_SIZE_CONFIG));
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);
             poolSize = DEFAULT_POOL_SIZE;
