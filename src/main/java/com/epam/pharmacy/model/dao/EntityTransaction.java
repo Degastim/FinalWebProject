@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class EntityTransaction {
+    /**
+     * Logger for writing logs.
+     */
     private static final Logger logger = LogManager.getLogger();
     private Connection connection;
 

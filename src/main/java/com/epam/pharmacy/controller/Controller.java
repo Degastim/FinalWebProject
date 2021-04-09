@@ -24,6 +24,9 @@ import java.io.IOException;
  */
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
+    /**
+     * Logger for writing logs.
+     */
     private static final Logger logger = LogManager.getLogger();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

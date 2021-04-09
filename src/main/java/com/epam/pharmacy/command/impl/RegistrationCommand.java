@@ -25,6 +25,9 @@ import javax.servlet.http.HttpSession;
  * @author Yauheni Tsitou
  */
 public class RegistrationCommand implements ActionCommand {
+    /**
+     * Logger for writing logs.
+     */
     private static final Logger logger = LogManager.getLogger();
     private static final UserService userService = UserServiceImpl.getInstance();
     private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";

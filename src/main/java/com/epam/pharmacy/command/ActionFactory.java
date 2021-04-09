@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author Yauheni Tsitou
  */
 public class ActionFactory {
+    /**
+     * Logger for writing logs.
+     */
     private static final Logger logger = LogManager.getLogger();
 
     /**

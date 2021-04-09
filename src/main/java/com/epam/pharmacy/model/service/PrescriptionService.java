@@ -38,7 +38,7 @@ public interface PrescriptionService {
      * @param doctorId   long value prescription doctor ID.
      * @param drugId     long value prescription drug ID.
      * @param drugAmount int value prescription drug amount.
-     * @param status  {@link Prescription.Status} object new status for prescription.
+     * @param status     {@link Prescription.Status} object new status for prescription.
      * @throws ServiceException if an error occurs while processing.
      */
     void add(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException;
@@ -78,8 +78,8 @@ public interface PrescriptionService {
      * Checks whether a prescription is needed and whether the customer has one for the given drug
      *
      * @param customerId long value prescription customer ID.
-     * @param drugName Names of drug for which the need for a prescription is checked.
-     * @param dosage Dosage of the drug for which the need for a prescription is checked.
+     * @param drugName   Names of drug for which the need for a prescription is checked.
+     * @param dosage     Dosage of the drug for which the need for a prescription is checked.
      * @return boolean value Result of checking.
      * @throws ServiceException if an error occurs while processing.
      */

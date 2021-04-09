@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class DrugOrderDao extends AbstractDao<DrugOrder> {
+    /**
+     * Logger for writing logs.
+     */
     private static final Logger logger = LogManager.getLogger();
     private static final DrugOrderDao instance = new DrugOrderDao();
 

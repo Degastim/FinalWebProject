@@ -16,6 +16,9 @@ import javax.servlet.http.HttpSession;
  */
 @CommandAccessLevel({User.Role.CUSTOMER, User.Role.DOCTOR, User.Role.PHARMACIST})
 public class LogoutCommand implements ActionCommand {
+    /**
+     * Logger for writing logs.
+     */
     private static final Logger logger = LogManager.getLogger();
 
     @Override
