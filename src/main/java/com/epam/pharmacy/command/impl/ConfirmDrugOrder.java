@@ -6,13 +6,18 @@ import com.epam.pharmacy.command.CommandResult;
 import com.epam.pharmacy.command.RequestParameter;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
-import com.epam.pharmacy.model.entity.Order;
+import com.epam.pharmacy.model.entity.DrugOrder;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import com.epam.pharmacy.model.service.impl.DrugOrderServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to confirm order for a drug from a pharmacist
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class ConfirmDrugOrder implements ActionCommand {
     private static final DrugOrderService drugOrderService = DrugOrderServiceImpl.getInstance();
@@ -22,7 +27,7 @@ public class ConfirmDrugOrder implements ActionCommand {
         String drugOrderIdString = request.getParameter(RequestParameter.DRUG_ORDER_ID);
         long drugOrderId = Long.parseLong(drugOrderIdString);
         try {
-            drugOrderService.updateStatusById(drugOrderId, Order.Status.APPROVED);
+            drugOrderService.updateStatusById(drugOrderId, DrugOrder.Status.APPROVED);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

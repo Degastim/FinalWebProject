@@ -7,6 +7,11 @@ import com.epam.pharmacy.exception.CommandException;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to code confirmation page from email
+ *
+ * @author Yauheni Tsitou
+ */
 public class RedirectToCodeConfirmation implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

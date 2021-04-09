@@ -17,6 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Action command for ordering the drug by the customer
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class DrugOrderCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();

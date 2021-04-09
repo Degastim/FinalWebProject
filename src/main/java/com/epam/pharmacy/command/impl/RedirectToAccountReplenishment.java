@@ -9,6 +9,11 @@ import com.epam.pharmacy.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to the account replenishment page
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel({User.Role.CUSTOMER, User.Role.PHARMACIST})
 public class RedirectToAccountReplenishment implements ActionCommand {
     @Override

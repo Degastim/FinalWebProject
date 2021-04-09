@@ -12,7 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
-@CommandAccessLevel({User.Role.CUSTOMER,User.Role.PHARMACIST})
+/**
+ * Action command to fund user account
+ *
+ * @author Yauheni Tsitou
+ */
+@CommandAccessLevel({User.Role.CUSTOMER, User.Role.PHARMACIST})
 public class AccountReplenishment implements ActionCommand {
     private static final UserService userService = UserServiceImpl.getInstance();
     private static final String MESSAGE_KEY_SUCCESS_MESSAGE = "pharmacist_drug_order_table.message.success";

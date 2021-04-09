@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Filter that updates the values of user fields
+ *
+ * @author Yauheni Tsitou
+ */
 @WebFilter(urlPatterns = {"/*"})
 public class UserFilter implements Filter {
     private static final UserService userService = UserServiceImpl.getInstance();

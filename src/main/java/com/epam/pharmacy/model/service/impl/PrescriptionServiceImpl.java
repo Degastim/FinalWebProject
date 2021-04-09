@@ -10,27 +10,51 @@ import com.epam.pharmacy.model.entity.Prescription;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.PrescriptionService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class-service for working with {@Prescription}.
+ *
+ * @author Yauheni Tsitou.
+ * @see Prescription
+ */
 public class PrescriptionServiceImpl implements PrescriptionService {
+
+    /**
+     * Reference to an object of class {@code PrescriptionDao}.
+     */
     private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
+
+    /**
+     * Reference to an object of class {@code DrugDao}.
+     */
     private static final DrugDao drugDao = DrugDao.getInstance();
+
+    /**
+     * Reference to an object of class {@code PrescriptionServiceImpl}.
+     */
     private static final PrescriptionService instance = new PrescriptionServiceImpl();
 
     private PrescriptionServiceImpl() {
     }
 
+    /**
+     * Method that returns a reference to an object.
+     *
+     * @return Reference to an object of class {@code PrescriptionServiceImpl}.
+     */
     public static PrescriptionService getInstance() {
         return instance;
     }
 
     @Override
-    public List<Prescription> findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(long customerId) throws ServiceException {
+    public List<Prescription> findAllByCustomerId(long customerId) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
-            List<Prescription> prescriptionList = prescriptionDao.findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(customerId);
+            List<Prescription> prescriptionList = prescriptionDao.findAllByCustomerId(customerId);
             return prescriptionList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -40,16 +64,24 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public void updateStatusById(Prescription.Status status, long prescriptionId) throws ServiceException {
+    public boolean updateStatusById(Prescription.Status status, long prescriptionId) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
-        transaction.init(prescriptionDao);
+        transaction.initTransaction(prescriptionDao);
         try {
-            int statusId = status.ordinal() + 1;
-            prescriptionDao.updateStatusById(statusId, prescriptionId);
+            Optional<Prescription> prescriptionOptional = prescriptionDao.findById(prescriptionId);
+            if (prescriptionOptional.isEmpty()) {
+                return false;
+            }
+            Prescription prescription = prescriptionOptional.get();
+            prescription.setStatus(status);
+            prescriptionDao.update(prescription);
+            transaction.commit();
+            return true;
         } catch (DaoException e) {
+            transaction.rollback();
             throw new ServiceException(e);
         } finally {
-            transaction.end();
+            transaction.endTransaction();
         }
     }
 
@@ -61,7 +93,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             User customer = new User(customerId);
             User doctor = new User(doctorId);
             Drug drug = new Drug(drugId);
-            Prescription prescription = new Prescription(customer, doctor, drug, drugAmount, status);
+            Date issueDate = new Date(0);
+            Date endDate = new Date(0);
+            Prescription prescription = new Prescription(customer, doctor, drug, drugAmount, issueDate, endDate, status);
             prescriptionDao.add(prescription);
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -76,7 +110,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         transaction.init(prescriptionDao);
         try {
             int statusId = status.ordinal() + 1;
-            List<Prescription> prescriptionList = prescriptionDao.findPrescriptionIdAndCustomerNameAndCustomerSurNameAndDrugNameAndAmountByDoctorIdAndStatusId(doctorId, statusId);
+            List<Prescription> prescriptionList = prescriptionDao.findByDoctorIdAndStatusId(doctorId, statusId);
             return prescriptionList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -86,11 +120,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public Optional<Prescription> findPrescriptionByIdWithoutDoctor(long prescriptionId) throws ServiceException {
+    public Optional<Prescription> findPrescriptionById(long prescriptionId) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
-            Optional<Prescription> prescription = prescriptionDao.findPrescriptionByIdWithoutDoctor(prescriptionId);
+            Optional<Prescription> prescription = prescriptionDao.findById(prescriptionId);
             return prescription;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -100,12 +134,20 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public void updateIssueDateAndEndDateAndStatusById(long prescriptionId, long issueDate, long endDate, Prescription.Status status) throws ServiceException {
+    public boolean updateIssueDateAndEndDateAndStatusById(long prescriptionId, long issueDate, long endDate, Prescription.Status status) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
-            int statusId = status.ordinal() + 1;
-            prescriptionDao.updateIssueDateAndEndDateAndStatusIdById(prescriptionId, issueDate, endDate, statusId);
+            Optional<Prescription> prescriptionOptional = prescriptionDao.findById(prescriptionId);
+            if (prescriptionOptional.isEmpty()) {
+                return false;
+            }
+            Prescription prescription = prescriptionOptional.get();
+            prescription.setIssueDate(new Date(issueDate));
+            prescription.setEndDate(new Date(endDate));
+            prescription.setStatus(status);
+            prescriptionDao.update(prescription);
+            return true;
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {

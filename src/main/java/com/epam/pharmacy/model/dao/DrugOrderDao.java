@@ -2,7 +2,7 @@ package com.epam.pharmacy.model.dao;
 
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.model.entity.Drug;
-import com.epam.pharmacy.model.entity.Order;
+import com.epam.pharmacy.model.entity.DrugOrder;
 import com.epam.pharmacy.model.entity.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DrugOrderDao extends AbstractDao<Order> {
+public class DrugOrderDao extends AbstractDao<DrugOrder> {
     private static final Logger logger = LogManager.getLogger();
     private static final DrugOrderDao instance = new DrugOrderDao();
 
@@ -51,14 +51,14 @@ public class DrugOrderDao extends AbstractDao<Order> {
     private static final String COLUMN_NAME_DRUG_ORDER_STATUS = "drug_order_status";
 
     @Override
-    public void add(Order order) throws DaoException {
+    public void add(DrugOrder order) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_ORDER)) {
             User customer = order.getCustomer();
             long customerId = customer.getId();
             Drug drug = order.getDrug();
             long drugId = drug.getId();
             int amount = order.getDrugsNumber();
-            Order.Status status = order.getStatus();
+            DrugOrder.Status status = order.getStatus();
             long statusId = status.ordinal() + 1;
             preparedStatement.setLong(1, customerId);
             preparedStatement.setLong(2, drugId);
@@ -71,8 +71,8 @@ public class DrugOrderDao extends AbstractDao<Order> {
         }
     }
 
-    public List<Order> findByCustomerId(long customerId) throws DaoException {
-        List<Order> drugOrderList = new ArrayList<>();
+    public List<DrugOrder> findByCustomerId(long customerId) throws DaoException {
+        List<DrugOrder> drugOrderList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_CUSTOMER_ID)) {
             preparedStatement.setLong(1, customerId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -95,8 +95,8 @@ public class DrugOrderDao extends AbstractDao<Order> {
                 Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 int drugsNumber = resultSet.getInt(COLUMN_NAME_DRUGS_NUMBER);
                 String drugOrderStatusString = resultSet.getString(COLUMN_NAME_DRUG_ORDER_STATUS);
-                Order.Status drugOrderStatus = Order.Status.valueOf(drugOrderStatusString.toUpperCase());
-                Order drugOrder = new Order(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
+                DrugOrder.Status drugOrderStatus = DrugOrder.Status.valueOf(drugOrderStatusString.toUpperCase());
+                DrugOrder drugOrder = new DrugOrder(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
                 drugOrderList.add(drugOrder);
             }
             return drugOrderList;
@@ -105,8 +105,8 @@ public class DrugOrderDao extends AbstractDao<Order> {
         }
     }
 
-    public List<Order> findByStatus(Order.Status status) throws DaoException {
-        List<Order> drugOrderList = new ArrayList<>();
+    public List<DrugOrder> findByStatus(DrugOrder.Status status) throws DaoException {
+        List<DrugOrder> drugOrderList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BY_STATUS)) {
             long statusId = status.ordinal() + 1;
             preparedStatement.setLong(1, statusId);
@@ -131,8 +131,8 @@ public class DrugOrderDao extends AbstractDao<Order> {
                 Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 int drugsNumber = resultSet.getInt(COLUMN_NAME_DRUGS_NUMBER);
                 String drugOrderStatusString = resultSet.getString(COLUMN_NAME_DRUG_ORDER_STATUS);
-                Order.Status drugOrderStatus = Order.Status.valueOf(drugOrderStatusString.toUpperCase());
-                Order drugOrder = new Order(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
+                DrugOrder.Status drugOrderStatus = DrugOrder.Status.valueOf(drugOrderStatusString.toUpperCase());
+                DrugOrder drugOrder = new DrugOrder(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
                 drugOrderList.add(drugOrder);
             }
             return drugOrderList;
@@ -151,8 +151,8 @@ public class DrugOrderDao extends AbstractDao<Order> {
         }
     }
 
-    public Optional<Order> findById(long drugOrderId) throws DaoException {
-        Order drugOrder = null;
+    public Optional<DrugOrder> findById(long drugOrderId) throws DaoException {
+        DrugOrder drugOrder = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             preparedStatement.setLong(1, drugOrderId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -175,8 +175,8 @@ public class DrugOrderDao extends AbstractDao<Order> {
                 Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 int drugsNumber = resultSet.getInt(COLUMN_NAME_DRUGS_NUMBER);
                 String drugOrderStatusString = resultSet.getString(COLUMN_NAME_DRUG_ORDER_STATUS);
-                Order.Status drugOrderStatus = Order.Status.valueOf(drugOrderStatusString.toUpperCase());
-                drugOrder = new Order(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
+                DrugOrder.Status drugOrderStatus = DrugOrder.Status.valueOf(drugOrderStatusString.toUpperCase());
+                drugOrder = new DrugOrder(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
             }
             return Optional.ofNullable(drugOrder);
         } catch (SQLException e) {

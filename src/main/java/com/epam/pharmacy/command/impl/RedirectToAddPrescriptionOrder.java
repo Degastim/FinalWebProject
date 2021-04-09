@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Action command to go to the page for adding an order for a drug
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class RedirectToAddPrescriptionOrder implements ActionCommand {
     private static final UserService userService = UserServiceImpl.getInstance();

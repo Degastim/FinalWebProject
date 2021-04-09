@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Filter checking user access rights
+ *
+ * @author Yauheni Tsitou
+ */
 @WebFilter(urlPatterns = {"/*"})
 public class SecurityFilter implements Filter {
     @Override

@@ -14,6 +14,11 @@ import com.epam.pharmacy.resource.MessageManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Action command to change user password
+ *
+ * @author Yauheni Tsitou
+ */
 public class ChangePasswordCommand implements ActionCommand {
     private static final UserService userService = UserServiceImpl.getInstance();
 

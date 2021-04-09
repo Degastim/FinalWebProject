@@ -6,9 +6,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * Class-service for working with time.
+ *
+ * @author Yauheni Tsitou.
+ */
 public class TimeServiceImpl implements TimeService {
+
+    /**
+     * Reference to an object of class {@code TimeServiceImpl}.
+     */
     private static final TimeService instance = new TimeServiceImpl();
 
+    /**
+     * Method that returns a reference to an object.
+     *
+     * @return Reference to an object of class {@code TimeServiceImpl}.
+     */
     public static TimeService getInstance() {
         return instance;
     }
@@ -16,12 +30,14 @@ public class TimeServiceImpl implements TimeService {
     private TimeServiceImpl() {
     }
 
+
     @Override
     public int findCurrentYear() {
         Calendar calendar = new GregorianCalendar();
         int result = calendar.getWeekYear();
         return result;
     }
+
 
     @Override
     public boolean isDayInMonth(int day, int month, int year) {
@@ -35,6 +51,7 @@ public class TimeServiceImpl implements TimeService {
         }
         return result;
     }
+
 
     @Override
     public long findCurrentTime() {

@@ -9,6 +9,11 @@ import com.epam.pharmacy.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to the page for adding a drug
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class RedirectToAddDrugCommand implements ActionCommand {
 

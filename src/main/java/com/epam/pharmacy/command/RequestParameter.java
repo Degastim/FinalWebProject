@@ -1,5 +1,10 @@
 package com.epam.pharmacy.command;
 
+/**
+ * Class containing request parameters
+ *
+ * @author Yauheni Tsitou
+ */
 public class RequestParameter {
 
     private RequestParameter() {
@@ -32,5 +37,5 @@ public class RequestParameter {
     public static final String PRICE = "price";
     public static final String DRUG_PICTURE_ID = "drugPictureId";
     public static final String DRUG_ORDER_ID = "drugOrderId";
-    public static final String AMOUNT="amount";
+    public static final String AMOUNT = "amount";
 }

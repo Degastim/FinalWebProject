@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Action command for adding a prescription order
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class AddPrescriptionOrderCommand implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();

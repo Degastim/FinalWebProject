@@ -7,6 +7,11 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * Listener setting initial session attributes
+ *
+ * @author Yauheni Tsitou
+ */
 @WebListener
 public class SessionListener implements HttpSessionListener {
     private static final String DEFAULT_LOCALE = "ru";

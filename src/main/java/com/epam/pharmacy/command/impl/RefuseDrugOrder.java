@@ -11,6 +11,11 @@ import com.epam.pharmacy.resource.MessageManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Action command for drug order rejection
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class RefuseDrugOrder implements ActionCommand {
     private static final DrugOrderService drugOrderService = DrugOrderServiceImpl.getInstance();

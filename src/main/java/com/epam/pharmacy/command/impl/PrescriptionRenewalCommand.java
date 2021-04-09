@@ -13,6 +13,11 @@ import com.epam.pharmacy.model.service.impl.PrescriptionServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to renewal a prescription order by a customer
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class PrescriptionRenewalCommand implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();

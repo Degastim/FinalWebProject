@@ -1,5 +1,10 @@
 package com.epam.pharmacy.exception;
 
+/**
+ * An exception that provides information on errors thrown by a ConnectionPool.
+ *
+ * @author Yauheni Tsitou
+ */
 public class ConnectionPoolException extends Exception {
     public ConnectionPoolException() {
         super();

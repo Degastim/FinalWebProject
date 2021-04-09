@@ -13,16 +13,33 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class-service for working with {@User}.
+ *
+ * @author Yauheni Tsitou.
+ * @see User
+ */
 public class UserServiceImpl implements UserService {
+
+    /**
+     * Reference to an object of class {@code UserServiceImpl}.
+     */
     private static final UserService instance = new UserServiceImpl();
 
     private UserServiceImpl() {
     }
 
+    /**
+     * Method that returns a reference to an object.
+     *
+     * @return Reference to an object of class {@code UserServiceImpl}.
+     */
     public static UserService getInstance() {
         return instance;
     }
-
+    /**
+     * Reference to an object of class {@code UserDao}.
+     */
     private static final UserDao userDao = UserDao.getInstance();
 
     @Override

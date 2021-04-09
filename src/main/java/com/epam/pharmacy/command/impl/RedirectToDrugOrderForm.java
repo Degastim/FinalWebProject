@@ -6,6 +6,11 @@ import com.epam.pharmacy.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to the drug order form page
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class RedirectToDrugOrderForm implements ActionCommand {
     private static final String REQUEST_ATTRIBUTE_DRUG_NAME = "drugName";

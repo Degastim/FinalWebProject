@@ -27,17 +27,6 @@ public class DrugServiceImplTest {
         return new Object[][]{{1, 2}, {2, 3}, {6, 3}};
     }
 
-    @Test
-    public void testCountPaginationPageAmount() {
-        int actual = 0;
-        int expected = 3;
-        try {
-            actual = drugService.countPaginationPageAmount();
-        } catch (ServiceException e) {
-            Assert.fail(e.getMessage(), e);
-        }
-        Assert.assertEquals(actual, expected);
-    }
 
     @Test
     public void testFindCurrentPaginationPage() {
@@ -61,7 +50,12 @@ public class DrugServiceImplTest {
 
     @Test(dataProvider = "lastPaginationPages")
     public void testCountLastPaginationPage(int currentPaginationPage, int expected) {
-        int actual = drugService.countLastPaginationPage(currentPaginationPage, 3);
+        int actual = 0;
+        try {
+            actual = drugService.countLastPaginationPage(currentPaginationPage);
+        } catch (ServiceException e) {
+            Assert.fail(e.getMessage(), e);
+        }
         assertEquals(actual, expected);
     }
 }

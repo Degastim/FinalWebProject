@@ -14,6 +14,11 @@ import com.epam.pharmacy.resource.MessageManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Action command to confirm prescription order by doctor
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.DOCTOR)
 public class PrescriptionOrderConfirmationCommand implements ActionCommand {
     private static final TimeService timeService = TimeServiceImpl.getInstance();

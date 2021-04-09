@@ -12,6 +12,11 @@ import com.epam.pharmacy.model.service.impl.DrugPictureServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command for deleting a picture of a drug from the database
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class DeleteDrugPictureCommand implements ActionCommand {
     private static final DrugPictureService drugPictureService = DrugPictureServiceImpl.getInstance();

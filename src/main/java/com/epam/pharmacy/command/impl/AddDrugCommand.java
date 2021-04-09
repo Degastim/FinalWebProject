@@ -12,9 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
+/**
+ * Action command to add a drug
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class AddDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
+
+
     private static final String MESSAGE_KEY_ERROR_WRONG_DRUG = "addDrug.error.drug";
 
     @Override

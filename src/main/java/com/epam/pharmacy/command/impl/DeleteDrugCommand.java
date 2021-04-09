@@ -12,6 +12,11 @@ import com.epam.pharmacy.model.service.impl.DrugServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to remove a drug from the database
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class DeleteDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();

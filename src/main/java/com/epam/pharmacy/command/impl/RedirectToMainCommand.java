@@ -15,10 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Action command to go to the main page
+ *
+ * @author Yauheni Tsitou
+ */
 public class RedirectToMainCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
     private static final String REQUEST_ATTRIBUTE_CARDS_DRUG_LIST = "cardsDrugList";
-    private static final String REQUEST_ATTRIBUTE_PAGINATION_PAGE_AMOUNT = "paginationPageAmount";
     private static final String REQUEST_ATTRIBUTE_START_PAGINATION_PAGE = "startPaginationPage";
     private static final String REQUEST_ATTRIBUTE_LAST_PAGINATION_PAGE = "lastPaginationPage";
     private static final String REQUEST_ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
@@ -37,12 +41,10 @@ public class RedirectToMainCommand implements ActionCommand {
                 request.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
                 return commandResult;
             }
-            int paginationPageAmount = drugService.countPaginationPageAmount();
             request.setAttribute(REQUEST_ATTRIBUTE_CARDS_DRUG_LIST, drugList);
-            request.setAttribute(REQUEST_ATTRIBUTE_PAGINATION_PAGE_AMOUNT, paginationPageAmount);
             int startPaginationPage = drugService.countStartPaginationPage(currentPaginationPage);
             request.setAttribute(REQUEST_ATTRIBUTE_START_PAGINATION_PAGE, startPaginationPage);
-            int lastPaginationPage = drugService.countLastPaginationPage(currentPaginationPage, paginationPageAmount);
+            int lastPaginationPage = drugService.countLastPaginationPage(currentPaginationPage);
             request.setAttribute(REQUEST_ATTRIBUTE_LAST_PAGINATION_PAGE, lastPaginationPage);
             return commandResult;
         } catch (ServiceException e) {

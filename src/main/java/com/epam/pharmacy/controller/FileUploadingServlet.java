@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * File servlet
+ *
+ * @author Yauheni Tsitou
+ */
 @WebServlet(urlPatterns = {"/upload/*"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class FileUploadingServlet extends HttpServlet {
@@ -30,7 +35,7 @@ public class FileUploadingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String drugIdString = request.getParameter(RequestParameter.DRUG_ID);
-        int drugId = Integer.parseInt(drugIdString);
+        long drugId = Long.parseLong(drugIdString);
         Part part = request.getPart(PART_NAME);
         part.getInputStream();
         InputStream inputStream = part.getInputStream();

@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Action command to go to the page with the table of orders for reps for the doctor
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.DOCTOR)
 public class RedirectToPrescriptionOrderTable implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();

@@ -12,20 +12,56 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class-service for working with {@Drug}.
+ *
+ * @author Yauheni Tsitou.
+ * @see Drug
+ */
 public class DrugServiceImpl implements DrugService {
+
+    /**
+     * Reference to an object of class {@code DrugServiceImpl}.
+     */
     private static final DrugService instance = new DrugServiceImpl();
 
     private DrugServiceImpl() {
     }
 
+    /**
+     * Method that returns a reference to an object.
+     *
+     * @return Reference to an object of class {@code DrugPictureServiceImpl}.
+     */
     public static DrugService getInstance() {
         return instance;
     }
 
+    /**
+     * Method that returns a reference to an object.
+     *
+     * @return Reference to an object of class {@code DrugDao}.
+     */
     private static final DrugDao drugDao = DrugDao.getInstance();
+
+    /**
+     * Field containing the number of drugs on one main page.
+     */
     private static final int DRUGS_NUMBER_PER_PAGE = 4;
+
+    /**
+     * A string containing the type of next pagination.
+     */
     private static final String PAGINATION_PAGE_NEXT = "next";
+
+    /**
+     * A string containing the type of previous pagination.
+     */
     private static final String Pagination_PAGE_PREVIOUS = "previous";
+
+    /**
+     * Number of links in pagination
+     */
     private static final int NUMBER_PAGINATION_LINKS = 3;
 
     @Override
@@ -34,22 +70,6 @@ public class DrugServiceImpl implements DrugService {
         transaction.init(drugDao);
         try {
             List<Drug> result = drugDao.findAll();
-            return result;
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        } finally {
-            transaction.end();
-        }
-    }
-
-    @Override
-    public int countPaginationPageAmount() throws ServiceException {
-        EntityTransaction transaction = new EntityTransaction();
-        transaction.init(drugDao);
-        try {
-            List<Drug> drugList = drugDao.findAll();
-            int drugsNumber = drugList.size();
-            int result = (int) Math.ceil((double) drugsNumber / DRUGS_NUMBER_PER_PAGE);
             return result;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -135,7 +155,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public void deleteById(int drugId) throws ServiceException {
+    public void deleteById(long drugId) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugDao);
         try {
@@ -252,9 +272,25 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public int countLastPaginationPage(int currentPaginationPage, int paginationPageAmount) {
+    public int countLastPaginationPage(int currentPaginationPage) throws ServiceException {
+        int paginationPageAmount = countPaginationPageAmount();
         int possibleLastPaginationPage = currentPaginationPage + NUMBER_PAGINATION_LINKS / 2;
         int result = Math.min(possibleLastPaginationPage, paginationPageAmount);
         return result;
+    }
+
+    private int countPaginationPageAmount() throws ServiceException {
+        EntityTransaction transaction = new EntityTransaction();
+        transaction.init(drugDao);
+        try {
+            List<Drug> drugList = drugDao.findAll();
+            int drugsNumber = drugList.size();
+            int result = (int) Math.ceil((double) drugsNumber / DRUGS_NUMBER_PER_PAGE);
+            return result;
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        } finally {
+            transaction.end();
+        }
     }
 }

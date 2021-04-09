@@ -7,7 +7,7 @@ import com.epam.pharmacy.model.dao.DrugOrderDao;
 import com.epam.pharmacy.model.dao.EntityTransaction;
 import com.epam.pharmacy.model.dao.UserDao;
 import com.epam.pharmacy.model.entity.Drug;
-import com.epam.pharmacy.model.entity.Order;
+import com.epam.pharmacy.model.entity.DrugOrder;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import com.epam.pharmacy.model.service.UserService;
@@ -16,16 +16,45 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class-service for working with {@code Order}.
+ * @see DrugOrder
+ * @author Yauheni Tsitou.
+ */
 public class DrugOrderServiceImpl implements DrugOrderService {
+
+    /**
+     * Reference to an object of class {@code DrugOrderServiceImpl}.
+     */
     private static final DrugOrderService instance = new DrugOrderServiceImpl();
+
+    /**
+     * Reference to an object of class {@code UserServiceImpl}.
+     */
     private static final UserService userService = UserServiceImpl.getInstance();
+
+    /**
+     * Reference to an object of class {@code UserDao}.
+     */
     private static final UserDao userDao = UserDao.getInstance();
+    /**
+     * Reference to an object of class {@code DrugOrderDao}.
+     */
     private static final DrugOrderDao drugOrderDao = DrugOrderDao.getInstance();
+
+    /**
+     * Reference to an object of class {@code DrugDao}.
+     */
     private static final DrugDao drugDao = DrugDao.getInstance();
 
     private DrugOrderServiceImpl() {
     }
 
+    /**
+     * Method that returns a reference to an object
+     *
+     * @return Reference to an object of class {@code DrugOrderServiceImpl}.
+     */
     public static DrugOrderService getInstance() {
         return instance;
     }
@@ -45,7 +74,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
             List<User> pharmacistList = userDao.findByRole(User.Role.PHARMACIST);
             User pharmacist = pharmacistList.get(0);
             userService.updateByAmount(pharmacist, orderPrice);
-            Order order = new Order(customer, drug, drugAmount, Order.Status.PROCESSING);
+            DrugOrder order = new DrugOrder(customer, drug, drugAmount, DrugOrder.Status.PROCESSING);
             drugOrderDao.add(order);
             int newDrugAmount = drug.getDrugAmount() - drugAmount;
             drug.setDrugAmount(newDrugAmount);
@@ -61,11 +90,11 @@ public class DrugOrderServiceImpl implements DrugOrderService {
     }
 
     @Override
-    public List<Order> findByCustomerId(long customerId) throws ServiceException {
+    public List<DrugOrder> findByCustomerId(long customerId) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
-            List<Order> drugOrderList = drugOrderDao.findByCustomerId(customerId);
+            List<DrugOrder> drugOrderList = drugOrderDao.findByCustomerId(customerId);
             return drugOrderList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -75,11 +104,11 @@ public class DrugOrderServiceImpl implements DrugOrderService {
     }
 
     @Override
-    public List<Order> findByStatus(Order.Status status) throws ServiceException {
+    public List<DrugOrder> findByStatus(DrugOrder.Status status) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
-            List<Order> drugOrderList = drugOrderDao.findByStatus(status);
+            List<DrugOrder> drugOrderList = drugOrderDao.findByStatus(status);
             return drugOrderList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -89,7 +118,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
     }
 
     @Override
-    public void updateStatusById(long drugOrderId, Order.Status status) throws ServiceException {
+    public void updateStatusById(long drugOrderId, DrugOrder.Status status) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
@@ -107,13 +136,13 @@ public class DrugOrderServiceImpl implements DrugOrderService {
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugOrderDao, drugDao, userDao);
         try {
-            long statusId = Order.Status.REJECTED.ordinal() + 1;
+            long statusId = DrugOrder.Status.REJECTED.ordinal() + 1;
             drugOrderDao.updateStatusById(drugOrderId, statusId);
-            Optional<Order> drugOrderOptional = drugOrderDao.findById(drugOrderId);
+            Optional<DrugOrder> drugOrderOptional = drugOrderDao.findById(drugOrderId);
             if (drugOrderOptional.isEmpty()) {
                 return false;
             }
-            Order drugOrder = drugOrderOptional.get();
+            DrugOrder drugOrder = drugOrderOptional.get();
             Drug drug = drugOrder.getDrug();
             BigDecimal drugPrice = drug.getPrice();
             int orderDrugsNumber = drugOrder.getDrugsNumber();

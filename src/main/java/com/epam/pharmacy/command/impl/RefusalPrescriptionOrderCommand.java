@@ -13,6 +13,11 @@ import com.epam.pharmacy.model.service.impl.PrescriptionServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command for refusing to issue a prescription to a customer
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.DOCTOR)
 public class RefusalPrescriptionOrderCommand implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();

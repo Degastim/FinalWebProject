@@ -1,17 +1,42 @@
 package com.epam.pharmacy.model.entity;
 
+/**
+ * {@link Entity} class represents an {@link DrugPicture}.
+ *
+ * @author Yauheni Tsitou.
+ */
 public class DrugPicture extends Entity {
+
+    /**
+     * String value containing string representation of a drug picture.
+     */
     private String drugPicture;
 
+    /**
+     * Constructs an {@link DrugPicture} object with given drugPicture id, picture.
+     *
+     * @param pictureDrugId
+     * @param drugPicture
+     */
     public DrugPicture(long pictureDrugId, String drugPicture) {
         super(pictureDrugId);
         this.drugPicture = drugPicture;
     }
 
+    /**
+     * Getter method of drug picture.
+     *
+     * @return drug picture String value.
+     */
     public String getDrugPicture() {
         return drugPicture;
     }
 
+    /**
+     * Setter method of drug picture.
+     *
+     * @param drugPicture drug picture String value.
+     */
     public void setDrugPicture(String drugPicture) {
         this.drugPicture = drugPicture;
     }

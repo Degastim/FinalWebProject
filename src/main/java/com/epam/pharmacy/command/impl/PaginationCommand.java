@@ -12,6 +12,11 @@ import com.epam.pharmacy.model.service.impl.DrugServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Action command to navigate through the pages of the drug list
+ *
+ * @author Yauheni Tsitou
+ */
 public class PaginationCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
 

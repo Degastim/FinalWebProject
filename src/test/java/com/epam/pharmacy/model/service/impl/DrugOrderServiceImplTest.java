@@ -1,7 +1,7 @@
 package com.epam.pharmacy.model.service.impl;
 
 import com.epam.pharmacy.exception.ServiceException;
-import com.epam.pharmacy.model.entity.Order;
+import com.epam.pharmacy.model.entity.DrugOrder;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -20,8 +20,8 @@ public class DrugOrderServiceImplTest {
 
     @Test
     public void testFindByCustomerId() {
-        List<Order> expected = new ArrayList<>();
-        List<Order> actual = new ArrayList<>();
+        List<DrugOrder> expected = new ArrayList<>();
+        List<DrugOrder> actual = new ArrayList<>();
         long customerId = 0;
         try {
             actual = drugOrderService.findByCustomerId(customerId);
@@ -33,9 +33,9 @@ public class DrugOrderServiceImplTest {
 
     @Test
     public void testFindByStatus() {
-        Order.Status status = Order.Status.PROCESSING;
-        List<Order> expected = new ArrayList<>();
-        List<Order> actual = new ArrayList<>();
+        DrugOrder.Status status = DrugOrder.Status.PROCESSING;
+        List<DrugOrder> expected = new ArrayList<>();
+        List<DrugOrder> actual = new ArrayList<>();
         long customerId = 0;
         try {
             actual = drugOrderService.findByStatus(status);

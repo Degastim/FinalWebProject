@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Action command to go to the page for editing drug parameters
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class RedirectToEditDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();

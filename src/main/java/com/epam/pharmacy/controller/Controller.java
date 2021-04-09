@@ -17,6 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The controller receives requests and responses and, depending on the command, executes forward or redirect
+ *
+ * @author Yauheni Tsitou
+ */
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();

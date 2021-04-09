@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Action command to go to the customer's prescription page
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class RedirectToCustomerPrescriptionTableCommand implements ActionCommand {
     private static final String REQUEST_ATTRIBUTE_PRESCRIPTION_LIST = "prescriptionList";
@@ -23,7 +28,7 @@ public class RedirectToCustomerPrescriptionTableCommand implements ActionCommand
         User user = (User) session.getAttribute(SessionAttribute.USER);
         long customerId = user.getId();
         try {
-            List<Prescription> prescriptionList = prescriptionService.findAllByCustomerIdWithDoctorNameAndDoctorSurnameAndDrugName(customerId);
+            List<Prescription> prescriptionList = prescriptionService.findAllByCustomerId(customerId);
             request.setAttribute(REQUEST_ATTRIBUTE_PRESCRIPTION_LIST, prescriptionList);
         } catch (ServiceException e) {
             throw new CommandException(e);

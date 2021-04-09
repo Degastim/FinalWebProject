@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Action command to go to the prescription order page
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.DOCTOR)
 public class RedirectToPrescriptionOrder implements ActionCommand {
     private static final PrescriptionService prescriptionService = PrescriptionServiceImpl.getInstance();
@@ -32,7 +37,7 @@ public class RedirectToPrescriptionOrder implements ActionCommand {
         String prescriptionIdString = request.getParameter(RequestParameter.PRESCRIPTION_ID);
         long prescriptionId = Integer.parseInt(prescriptionIdString);
         try {
-            Optional<Prescription> prescriptionOptional = prescriptionService.findPrescriptionByIdWithoutDoctor(prescriptionId);
+            Optional<Prescription> prescriptionOptional = prescriptionService.findPrescriptionById(prescriptionId);
             if (prescriptionOptional.isPresent()) {
                 Prescription prescription = prescriptionOptional.get();
                 request.setAttribute(REQUEST_ATTRIBUTE_PRESCRIPTION, prescription);

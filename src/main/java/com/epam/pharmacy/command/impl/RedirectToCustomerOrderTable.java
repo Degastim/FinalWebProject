@@ -3,7 +3,7 @@ package com.epam.pharmacy.command.impl;
 import com.epam.pharmacy.command.*;
 import com.epam.pharmacy.exception.CommandException;
 import com.epam.pharmacy.exception.ServiceException;
-import com.epam.pharmacy.model.entity.Order;
+import com.epam.pharmacy.model.entity.DrugOrder;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import com.epam.pharmacy.model.service.impl.DrugOrderServiceImpl;
@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Action command to go to the customer's drug orders page
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.CUSTOMER)
 public class RedirectToCustomerOrderTable implements ActionCommand {
     private static final DrugOrderService drugOrderService = DrugOrderServiceImpl.getInstance();
@@ -23,7 +28,7 @@ public class RedirectToCustomerOrderTable implements ActionCommand {
         User customer = (User) session.getAttribute(SessionAttribute.USER);
         long customerId = customer.getId();
         try {
-            List<Order> drugOrderList = drugOrderService.findByCustomerId(customerId);
+            List<DrugOrder> drugOrderList = drugOrderService.findByCustomerId(customerId);
             request.setAttribute(REQUEST_ATTRIBUTE_DRUG_ORDER_LIST, drugOrderList);
         } catch (ServiceException e) {
             throw new CommandException(e);

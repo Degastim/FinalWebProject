@@ -11,6 +11,11 @@ import com.epam.pharmacy.model.service.impl.DrugServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * Action command to go to the drug table page from the database
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class RedirectToDrugTableCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();

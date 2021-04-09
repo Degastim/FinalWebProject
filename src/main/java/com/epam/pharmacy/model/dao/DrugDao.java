@@ -52,10 +52,11 @@ public class DrugDao extends AbstractDao<Drug> {
                 long drugId = resultSet.getLong(COLUMN_NAME_DRUG_ID);
                 String drugName = resultSet.getString(COLUMN_NAME_DRUG_NAME);
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
+                boolean needPrescription = resultSet.getBoolean(COLUMN_NAME_NEED_PRESCRIPTION);
                 String description = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
                 BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
-                Drug drug = new Drug(drugId, drugName, drugAmount, description, dosage, price);
+                Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 drugList.add(drug);
             }
             return drugList;
@@ -245,9 +246,9 @@ public class DrugDao extends AbstractDao<Drug> {
             List<Drug> drugList = new ArrayList<>();
             while (resultSet.next()) {
                 long drugId = resultSet.getLong(COLUMN_NAME_DRUG_ID);
-                long drugPictureId=resultSet.getLong(COLUMN_NAME_DRUG_PICTURE_ID);
+                long drugPictureId = resultSet.getLong(COLUMN_NAME_DRUG_PICTURE_ID);
                 String picture = resultSet.getString(COLUMN_NAME_DRUG_PICTURE);
-                DrugPicture drugPicture=new DrugPicture(drugPictureId,picture);
+                DrugPicture drugPicture = new DrugPicture(drugPictureId, picture);
                 List<DrugPicture> imageList = null;
                 if (drugList.size() < drugId) {
                     String drugName = resultSet.getString(COLUMN_NAME_DRUG_NAME);

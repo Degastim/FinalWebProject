@@ -10,12 +10,35 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Class used to create Connection objects.
+ *
+ * @author Yauheni Tsitou.
+ */
 class ConnectionCreator {
+
+    /**
+     * Logger for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
+
+    /**
+     * Contains properties {@link ConnectionCreator}.
+     */
     private static final Properties PROPERTIES = new Properties();
 
+    /**
+     * String value containing the path to the properties file
+     */
     private static final String PROPERTIES_PATH = "/dataBaseConfig.properties";
+
+    /**
+     * String value containing driver key for registration.
+     */
     private static final String DRIVER_PROPERTY = "db.driver";
+    /**
+     * String value containing url key to get connection.
+     */
     private static final String URL_PROPERTY = "db.url";
 
     static {
@@ -35,6 +58,12 @@ class ConnectionCreator {
     private ConnectionCreator() {
     }
 
+    /**
+     * Creates a Connection object.
+     *
+     * @return Connection object.
+     * @throws SQLException if a database access error occurs or the url is null.
+     */
     static Connection createConnection() throws SQLException {
         return DriverManager.getConnection(PROPERTIES.getProperty(URL_PROPERTY), PROPERTIES);
     }

@@ -6,10 +6,15 @@ import com.epam.pharmacy.command.PagePath;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to registration page
+ *
+ * @author Yauheni Tsitou
+ */
 public class RedirectToRegistrationCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) {
-        CommandResult commandResult=new CommandResult(PagePath.REGISTRATION_PAGE, CommandResult.Type.FORWARD);
+        CommandResult commandResult = new CommandResult(PagePath.REGISTRATION_PAGE, CommandResult.Type.FORWARD);
         return commandResult;
     }
 }

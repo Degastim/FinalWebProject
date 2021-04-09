@@ -14,15 +14,45 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+/**
+ * Enumeration with a single object in it (thread-safe singleton) used to contain, give and manage Connection objects.
+ *
+ * @author Vladislav Drobot
+ */
 public enum ConnectionPool {
 
+    /**
+     * Represents a singleton pattern realization.
+     */
     INSTANCE;
 
+    /**
+     * Logger for writing logs
+     */
     private final Logger logger = LogManager.getLogger();
+
+    /**
+     * String value containing the key to the pool size
+     */
     private static final String DATA_BASE_POOL_SIZE_CONFIG = "db.poolSize";
+
+    /**
+     * Blocking queues containing free connections.
+     */
     private final BlockingQueue<ProxyConnection> freeConnections;
+
+    /**
+     * Blocking queues containing busy connections.
+     */
     private final Queue<ProxyConnection> busyConnections;
+
+    /**
+     * Int value containing the default pool size value.
+     */
     private static final int DEFAULT_POOL_SIZE = 8;
+    /**
+     * Int value containing the pool size value.
+     */
     private int poolSize;
 
     ConnectionPool() {
@@ -46,6 +76,11 @@ public enum ConnectionPool {
         }
     }
 
+    /**
+     * Getter method that issues a connection and moves it from freeConnections to busyConnections.
+     *
+     * @return connection {@link ProxyConnection} value.
+     */
     public Connection getConnection() {
         ProxyConnection connection = null;
         try {
@@ -58,6 +93,12 @@ public enum ConnectionPool {
         return connection;
     }
 
+    /**
+     * Method moves the connection from busyConnections to freeConnections.
+     * Checks if the connection is an object of the {@link ProxyConnection} class
+     *
+     * @param connection {@link Connection} value
+     */
     void releaseConnection(Connection connection) {
         if (connection.getClass() == ProxyConnection.class) {
             ProxyConnection proxyConnection = (ProxyConnection) connection;
@@ -70,6 +111,11 @@ public enum ConnectionPool {
 
     }
 
+    /**
+     * A method that closes all connections and deregister drivers.
+     *
+     * @throws ConnectionPoolException
+     */
     public void destroyPool() throws ConnectionPoolException {
         for (int i = 0; i < poolSize; i++) {
             try {
@@ -84,6 +130,9 @@ public enum ConnectionPool {
         deregisterDrivers();
     }
 
+    /**
+     * Method for deregister drivers for the database.
+     */
     private void deregisterDrivers() {
         DriverManager.getDrivers().asIterator().forEachRemaining(driver -> {
             try {

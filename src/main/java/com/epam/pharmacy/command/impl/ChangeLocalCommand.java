@@ -9,6 +9,11 @@ import com.epam.pharmacy.exception.CommandException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Action command to change language
+ *
+ * @author Yauheni Tsitou
+ */
 public class ChangeLocalCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

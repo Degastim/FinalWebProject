@@ -2,32 +2,34 @@ package com.epam.pharmacy.model.dao;
 
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.model.entity.Entity;
-import com.epam.pharmacy.model.entity.Order;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Optional;
 
+/**
+ * Class {@code AbstractDao} is the root of the dao class hierarchy.
+ *
+ * @param <T> class inherited from class Entity
+ * @author Yauheni Tsitou
+ */
 public abstract class AbstractDao<T extends Entity> {
-    private static final Logger logger = LogManager.getLogger();
+    /**
+     * The value is used to store the connection to the database.
+     */
     protected Connection connection;
+
+    /**
+     * Method for adding entity to database
+     *
+     * @param entity
+     * @throws DaoException Bug throwing on an error in a dao layer
+     */
     public abstract void add(T entity) throws DaoException;
 
-
-    public void close(Statement statement) {
-        try {
-            if (statement != null) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, "Exception closing statement");
-        }
-    }
-
+    /**
+     * Database connection method
+     *
+     * @param connection Database connections
+     */
     public void setConnection(Connection connection) {
         this.connection = connection;
     }

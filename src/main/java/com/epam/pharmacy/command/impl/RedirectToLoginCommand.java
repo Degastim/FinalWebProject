@@ -6,6 +6,11 @@ import com.epam.pharmacy.command.PagePath;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to login page
+ *
+ * @author Yauheni Tsitou
+ */
 public class RedirectToLoginCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) {

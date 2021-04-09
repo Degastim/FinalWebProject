@@ -1,5 +1,10 @@
 package com.epam.pharmacy.command;
 
+/**
+ * Class containing paths to jsp
+ *
+ * @author Yauheni Tsitou
+ */
 public class PagePath {
 
     private PagePath() {

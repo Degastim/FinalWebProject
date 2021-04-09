@@ -11,6 +11,12 @@ import com.epam.pharmacy.resource.MessageManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+
+/**
+ * Action command to edit a drug by a doctor
+ *
+ * @author Yauheni Tsitou
+ */
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class EditDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();

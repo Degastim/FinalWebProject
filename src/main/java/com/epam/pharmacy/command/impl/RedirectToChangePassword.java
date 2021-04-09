@@ -7,6 +7,11 @@ import com.epam.pharmacy.exception.CommandException;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Action command to go to the password change page
+ *
+ * @author Yauheni Tsitou
+ */
 public class RedirectToChangePassword implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
