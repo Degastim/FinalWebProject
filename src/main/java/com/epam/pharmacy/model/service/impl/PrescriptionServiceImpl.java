@@ -156,21 +156,16 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public boolean checkPrescription(long customerId, String drugName, int dosage) throws ServiceException {
+    public boolean checkPrescription(long customerId, Drug drug) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugDao, prescriptionDao);
         try {
-            Optional<Drug> drugOptional = drugDao.findByNameAndDosage(drugName, dosage);
-            if (drugOptional.isEmpty()) {
-                return false;
-            }
-            Drug drug = drugOptional.get();
             boolean needPrescription = drug.isNeedPrescription();
             if (!needPrescription) {
                 return true;
             }
             long drugId = drug.getId();
-            boolean existPrescription = prescriptionDao.existPrescriptionByDrugId(drugId);
+            boolean existPrescription = prescriptionDao.existPrescriptionByDrugIdAndCustomerId(drugId,customerId);
             transaction.commit();
             return existPrescription;
         } catch (DaoException e) {

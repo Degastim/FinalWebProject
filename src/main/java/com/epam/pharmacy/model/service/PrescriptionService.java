@@ -1,6 +1,7 @@
 package com.epam.pharmacy.model.service;
 
 import com.epam.pharmacy.exception.ServiceException;
+import com.epam.pharmacy.model.entity.Drug;
 import com.epam.pharmacy.model.entity.Prescription;
 
 import java.util.List;
@@ -78,10 +79,9 @@ public interface PrescriptionService {
      * Checks whether a prescription is needed and whether the customer has one for the given drug
      *
      * @param customerId long value prescription customer ID.
-     * @param drugName   Names of drug for which the need for a prescription is checked.
-     * @param dosage     Dosage of the drug for which the need for a prescription is checked.
+     * @param drug {@link Drug} object to search for a prescription.
      * @return boolean value Result of checking.
      * @throws ServiceException if an error occurs while processing.
      */
-    boolean checkPrescription(long customerId, String drugName, int dosage) throws ServiceException;
+    boolean checkPrescription(long customerId, Drug drug) throws ServiceException;
 }
