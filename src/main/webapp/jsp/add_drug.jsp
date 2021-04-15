@@ -46,7 +46,7 @@
                                 <label for="dosage" class="col-form-label"><fmt:message key="addDrug.dosage"/>:</label>
                             </div>
                             <div class="col-sm-6">
-                                <input type="number" class="form-control" id="dosage" name="dosage" min="0" required>
+                                <input type="number" class="form-control" id="dosage" name="dosage" min="0" step="any" required>
                             </div>
                         </div>
 

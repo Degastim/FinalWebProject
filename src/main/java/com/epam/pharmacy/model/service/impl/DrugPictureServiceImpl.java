@@ -8,14 +8,14 @@ import com.epam.pharmacy.model.entity.DrugPicture;
 import com.epam.pharmacy.model.service.DrugPictureService;
 
 /**
- * Class-service for working with {@DrugPicture}.
- * @see DrugPicture
+ * Class-service for working with {@link DrugPicture}.
+ *
  * @author Yauheni Tsitou.
  */
 public class DrugPictureServiceImpl implements DrugPictureService {
 
     /**
-     * Reference to an object of class {@code DrugPictureServiceImpl}.
+     * Reference to an object of class {@link DrugPictureServiceImpl}.
      */
     private static final DrugPictureService instance = new DrugPictureServiceImpl();
 
@@ -25,14 +25,14 @@ public class DrugPictureServiceImpl implements DrugPictureService {
     /**
      * Method that returns a reference to an object
      *
-     * @return Reference to an object of class {@code DrugPictureServiceImpl}.
+     * @return Reference to an object of class {@link DrugPictureServiceImpl}.
      */
     public static DrugPictureService getInstance() {
         return instance;
     }
 
     /**
-     * Reference to an object of class {@code DrugPictureDao}.
+     * Reference to an object of class {@link DrugPictureDao}.
      */
     private static final DrugPictureDao drugPictureDao = DrugPictureDao.getInstance();
 
@@ -58,7 +58,6 @@ public class DrugPictureServiceImpl implements DrugPictureService {
         transaction.initTransaction(drugPictureDao);
         try {
             drugPictureDao.delete(drugPictureId);
-            drugPictureDao.changeAutoincrement(drugPictureId);
             transaction.commit();
         } catch (DaoException e) {
             transaction.rollback();

@@ -29,7 +29,7 @@ public class AccountReplenishment implements ActionCommand {
         BigDecimal amount = new BigDecimal(amountString);
         User user = (User) session.getAttribute(SessionAttribute.USER);
         try {
-            userService.updateByAmount(user, amount);
+            userService.updateByAddAmount(user, amount);
             String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
             String informationMessage = MessageManager.getMessage(MESSAGE_KEY_SUCCESS_MESSAGE, locale);
             session.setAttribute(SessionAttribute.INFORMATION_MESSAGE, informationMessage);

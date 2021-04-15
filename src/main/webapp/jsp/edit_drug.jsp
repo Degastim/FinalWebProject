@@ -110,7 +110,7 @@
                 </form>
             </div>
             <c:choose>
-                <c:when test="${editDrug.drugPictureList.size()==0}">
+                <c:when test="${editDrug.drugPictureList.isEmpty()}">
                     <h2><fmt:message key="editDrug.informationMessage.noDrugPictureList"/></h2>
                 </c:when>
                 <c:otherwise>

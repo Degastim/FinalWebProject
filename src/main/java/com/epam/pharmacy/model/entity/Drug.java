@@ -267,7 +267,7 @@ public class Drug extends Entity {
         if (dosage != drug.dosage) {
             return false;
         }
-        return price.equals(drug.price);
+        return price != null ? price.compareTo(drug.price) == 0 : drug.price != null;
     }
 
     @Override

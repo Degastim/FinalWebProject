@@ -246,7 +246,7 @@ public class Prescription extends Entity {
         if (status != null ? !status.equals(prescription.status) : prescription.status != null) {
             return false;
         }
-        return amount != prescription.amount;
+        return amount == prescription.amount;
     }
 
     @Override

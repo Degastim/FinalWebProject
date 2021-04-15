@@ -47,9 +47,9 @@ public class LoginCommand implements ActionCommand {
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
                 logger.log(Level.INFO, "Unsuccessful login");
             }
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return commandResult;
     }
 }

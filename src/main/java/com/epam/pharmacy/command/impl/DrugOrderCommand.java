@@ -54,7 +54,7 @@ public class DrugOrderCommand implements ActionCommand {
             }
             Drug drug = drugOptional.get();
             long customerId = customer.getId();
-            boolean checkPrescriptionResult = prescriptionService.checkPrescription(customerId, drug);
+            boolean checkPrescriptionResult = prescriptionService.checkPrescription(customerId, drug, drugAmount);
             if (!checkPrescriptionResult) {
                 session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, MessageManager.getMessage(KEY_MESSAGE_ERROR_NO_PRESCRIPTION, locale));
                 commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);

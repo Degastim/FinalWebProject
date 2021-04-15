@@ -35,6 +35,7 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
     private static final String SQL_SELECT_BY_STATUS = "SELECT drug_order_id,customer_id, name, surname, email, role, users.amount, drug_order_drug_id, drug_name, drug_amount, description, need_prescription, dosage, price, drugs_number, drug_order_status FROM webdb.drug_orders JOIN webdb.drug_order_statuses ON drug_orders.drug_order_status_id=drug_order_statuses.drug_order_status_id JOIN webdb.users ON customer_id=user_id JOIN webdb.roles ON users.role_id=roles.role_id JOIN webdb.drugs ON drug_orders.drug_order_drug_id=drugs.drug_id WHERE drug_orders.drug_order_status_id=?";
     private static final String SQL_UPDATE_STATUS_BY_ID = "UPDATE webdb.drug_orders SET drug_order_status_id=? WHERE drug_order_id=?";
     private static final String SQL_FIND_BY_ID = "SELECT drug_order_id,customer_id, name, surname, email, role, users.amount, drug_order_drug_id, drug_name, drug_amount, description, need_prescription, dosage, price, drugs_number, drug_order_status FROM webdb.drug_orders JOIN webdb.drug_order_statuses ON drug_orders.drug_order_status_id=drug_order_statuses.drug_order_status_id JOIN webdb.users ON customer_id=user_id JOIN webdb.roles ON users.role_id=roles.role_id JOIN webdb.drugs ON drug_orders.drug_order_drug_id=drugs.drug_id WHERE drug_orders.drug_order_id=?";
+    private static final String SQL_DELETE_BY_DRUG_ID = "DELETE FROM webdb.drug_orders WHERE drug_order_drug_id=?";
 
     private static final String COLUMN_NAME_DRUG_ORDER_ID = "drug_order_id";
     private static final String COLUMN_NAME_CUSTOMER_ID = "customer_id";
@@ -53,6 +54,12 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
     private static final String COLUMN_NAME_DRUGS_NUMBER = "drugs_number";
     private static final String COLUMN_NAME_DRUG_ORDER_STATUS = "drug_order_status";
 
+    /**
+     * Adds a drug to the database.
+     *
+     * @param order {@link DrugOrder} object to be changed to.
+     * @throws DaoException if the database throws SQLException.
+     */
     @Override
     public void add(DrugOrder order) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_ORDER)) {
@@ -62,11 +69,11 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
             long drugId = drug.getId();
             int amount = order.getDrugsNumber();
             DrugOrder.Status status = order.getStatus();
-            long statusId = status.ordinal() + 1;
+            int statusId = status.ordinal() + 1;
             preparedStatement.setLong(1, customerId);
             preparedStatement.setLong(2, drugId);
             preparedStatement.setInt(3, amount);
-            preparedStatement.setLong(4, statusId);
+            preparedStatement.setInt(4, statusId);
             preparedStatement.execute();
             logger.log(Level.INFO, "Adding a new drug order");
         } catch (SQLException e) {
@@ -74,6 +81,13 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
         }
     }
 
+    /**
+     * Searches for drugs by customer ID.
+     *
+     * @param customerId long value ID of the customer who made the order
+     * @return {@link List} object that contains the order for the drugs.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<DrugOrder> findByCustomerId(long customerId) throws DaoException {
         List<DrugOrder> drugOrderList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_CUSTOMER_ID)) {
@@ -108,6 +122,13 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
         }
     }
 
+    /**
+     * Searches for drugs by customer ID.
+     *
+     * @param status the status by which the search will be performed.
+     * @return {@link List} object that contains the order for the drugs.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<DrugOrder> findByStatus(DrugOrder.Status status) throws DaoException {
         List<DrugOrder> drugOrderList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BY_STATUS)) {
@@ -144,16 +165,31 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
         }
     }
 
-    public void updateStatusById(long drugOrderId, long statusId) throws DaoException {
+    /**
+     * Changes the status of the drug.
+     *
+     * @param drugOrderId long value order ID for the drug to be changed.
+     * @param statusId    the status of the order for the drug to which will be changed.
+     * @throws DaoException if the database throws SQLException.
+     */
+    public void updateStatusById(long drugOrderId, int statusId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_STATUS_BY_ID)) {
-            preparedStatement.setLong(1, statusId);
+            preparedStatement.setInt(1, statusId);
             preparedStatement.setLong(2, drugOrderId);
             preparedStatement.execute();
+            logger.log(Level.INFO, "The status of the drug with ID " + drugOrderId + " has been changed ");
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
+    /**
+     * {@link Optional} object that contains the order for the drug.
+     *
+     * @param drugOrderId ID of the order for the drug that is being searched for.
+     * @return {@link Optional} object that contains the order for the drug
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<DrugOrder> findById(long drugOrderId) throws DaoException {
         DrugOrder drugOrder = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_ID)) {
@@ -182,6 +218,21 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
                 drugOrder = new DrugOrder(drugOrderId, customer, drug, drugsNumber, drugOrderStatus);
             }
             return Optional.ofNullable(drugOrder);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    /**
+     * Removes a drug from the database
+     *
+     * @param drugId long value ID of the drug to be removed
+     * @throws DaoException if the database throws SQLException.
+     */
+    public void deleteByDrugId(long drugId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_BY_DRUG_ID)) {
+            preparedStatement.setLong(1, drugId);
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

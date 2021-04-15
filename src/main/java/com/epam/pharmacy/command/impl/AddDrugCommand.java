@@ -20,8 +20,6 @@ import java.math.BigDecimal;
 @CommandAccessLevel(User.Role.PHARMACIST)
 public class AddDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
-
-
     private static final String MESSAGE_KEY_ERROR_WRONG_DRUG = "addDrug.error.drug";
 
     @Override

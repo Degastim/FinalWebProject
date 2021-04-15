@@ -28,10 +28,10 @@ public class ConfirmDrugOrder implements ActionCommand {
         long drugOrderId = Long.parseLong(drugOrderIdString);
         try {
             drugOrderService.updateStatusById(drugOrderId, DrugOrder.Status.APPROVED);
+            CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }

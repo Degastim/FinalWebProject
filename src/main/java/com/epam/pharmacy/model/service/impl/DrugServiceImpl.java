@@ -3,7 +3,9 @@ package com.epam.pharmacy.model.service.impl;
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.dao.DrugDao;
+import com.epam.pharmacy.model.dao.DrugOrderDao;
 import com.epam.pharmacy.model.dao.EntityTransaction;
+import com.epam.pharmacy.model.dao.PrescriptionDao;
 import com.epam.pharmacy.model.entity.Drug;
 import com.epam.pharmacy.model.service.DrugService;
 
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class-service for working with {@Drug}.
+ * Class-service for working with {@link Drug}.
  *
  * @author Yauheni Tsitou.
  * @see Drug
@@ -21,7 +23,7 @@ import java.util.Optional;
 public class DrugServiceImpl implements DrugService {
 
     /**
-     * Reference to an object of class {@code DrugServiceImpl}.
+     * Reference to an object of class {@link DrugServiceImpl}.
      */
     private static final DrugService instance = new DrugServiceImpl();
 
@@ -38,12 +40,17 @@ public class DrugServiceImpl implements DrugService {
     }
 
     /**
-     * Method that returns a reference to an object.
-     *
-     * @return Reference to an object of class {@code DrugDao}.
+     * Reference to an object of class {@link DrugDao}.
      */
     private static final DrugDao drugDao = DrugDao.getInstance();
-
+    /**
+     * Reference to an object of class {@link PrescriptionDao}.
+     */
+    private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
+    /**
+     * Reference to an object of class {@link PrescriptionDao}.
+     */
+    private static final DrugOrderDao drugOrderDao = DrugOrderDao.getInstance();
     /**
      * Field containing the number of drugs on one main page.
      */
@@ -57,7 +64,7 @@ public class DrugServiceImpl implements DrugService {
     /**
      * A string containing the type of previous pagination.
      */
-    private static final String Pagination_PAGE_PREVIOUS = "previous";
+    private static final String PAGINATION_PAGE_PREVIOUS = "previous";
 
     /**
      * Number of links in pagination
@@ -126,25 +133,14 @@ public class DrugServiceImpl implements DrugService {
         List<Drug> drugList = new ArrayList<>();
         int lastDrugNumberPerPage = DRUGS_NUMBER_PER_PAGE * currentPaginationPage;
         try {
-            Optional<Drug> drugOptional = drugDao.findById(lastDrugNumberPerPage - 3);
-            if (drugOptional.isPresent()) {
-                Drug drug = drugOptional.get();
+            List<Drug> allDrugList = drugDao.findAll();
+            int allDrugSize = allDrugList.size();
+            int index = lastDrugNumberPerPage - 4;
+            Drug drug;
+            while (index < allDrugSize && index != lastDrugNumberPerPage) {
+                drug = allDrugList.get(index);
                 drugList.add(drug);
-                drugOptional = drugDao.findById(lastDrugNumberPerPage - 2);
-                if (drugOptional.isPresent()) {
-                    drug = drugOptional.get();
-                    drugList.add(drug);
-                    drugOptional = drugDao.findById(lastDrugNumberPerPage - 1);
-                    if (drugOptional.isPresent()) {
-                        drug = drugOptional.get();
-                        drugList.add(drug);
-                        drugOptional = drugDao.findById(lastDrugNumberPerPage);
-                        if (drugOptional.isPresent()) {
-                            drug = drugOptional.get();
-                            drugList.add(drug);
-                        }
-                    }
-                }
+                index++;
             }
             return drugList;
         } catch (DaoException e) {
@@ -157,10 +153,11 @@ public class DrugServiceImpl implements DrugService {
     @Override
     public void deleteById(long drugId) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
-        transaction.initTransaction(drugDao);
+        transaction.initTransaction(drugDao, drugOrderDao, prescriptionDao);
         try {
+            drugOrderDao.deleteByDrugId(drugId);
+            prescriptionDao.deleteByDrugId(drugId);
             drugDao.delete(drugId);
-            drugDao.changeAutoincrement(drugId);
             transaction.commit();
         } catch (DaoException e) {
             transaction.rollback();
@@ -194,7 +191,7 @@ public class DrugServiceImpl implements DrugService {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
-            List<Drug> drugList = drugDao.findDrugByNeedPrescription(value);
+            List<Drug> drugList = drugDao.findByNeedPrescription(value);
             return drugList;
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -208,7 +205,7 @@ public class DrugServiceImpl implements DrugService {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
-            Optional<Boolean> needPrescription = drugDao.checkNeedPrescriptionByDrugNameAndDosage(drugName, dosage);
+            Optional<Boolean> needPrescription = drugDao.findNeedPrescriptionByDrugNameAndDosage(drugName, dosage);
             return needPrescription.orElse(false);
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -252,7 +249,7 @@ public class DrugServiceImpl implements DrugService {
             } else {
                 result = currentPaginationPage;
             }
-        } else if (paginationPage.equals(Pagination_PAGE_PREVIOUS)) {
+        } else if (paginationPage.equals(PAGINATION_PAGE_PREVIOUS)) {
             if (currentPaginationPage > 1) {
                 result = --currentPaginationPage;
             } else {

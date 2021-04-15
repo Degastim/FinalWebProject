@@ -34,10 +34,10 @@ public class RefuseDrugOrder implements ActionCommand {
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE_NO_DRUG_ORDER, locale);
                 session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
             }
+            CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }

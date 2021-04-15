@@ -57,10 +57,10 @@ public class AddPrescriptionOrderCommand implements ActionCommand {
                 String errorMessage = MessageManager.getMessage(ERROR_MESSAGE_KEY, locale);
                 session.setAttribute(REQUEST_ATTRIBUTE_ERROR_MESSAGE, errorMessage);
             }
+            commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }

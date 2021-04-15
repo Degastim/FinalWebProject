@@ -21,7 +21,8 @@
 
                         <div class="row g-2">
                             <div class="col-sm-3">
-                                <label for="doctor" class="col-form-label"><fmt:message key="addPrescriptionOrder.doctor"/>:</label>
+                                <label for="doctor" class="col-form-label"><fmt:message
+                                        key="addPrescriptionOrder.doctor"/>:</label>
                             </div>
                             <div class="col-sm-4">
                                 <select class="form-select" id="doctor" name="doctor">
@@ -30,9 +31,11 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div class="col-sm-5">
-                                <h5>${noDoctorMessage}</h5>
-                            </div>
+                            <c:if test="${doctorList.isEmpty()}">
+                                <div class="col-sm-5">
+                                    <fmt:message key="addPrescriptionOrder.error.noDoctor"/>
+                                </div>
+                            </c:if>
                         </div>
 
                         <div class="row g-2">
@@ -42,9 +45,12 @@
                             <div class="col-sm-4">
                                 <input class="form-control" id="drugName" type="search" placeholder="<fmt:message key="addPrescriptionOrder.drugName.placeholder"/>" list="drugList" name="drugName" required>
                             </div>
-                            <div class="col-sm-5">
-                                <h5>${noDrugMessage}</h5>
-                            </div>
+
+                            <c:if test="${drugList.isEmpty()}">
+                                <div class="col-sm-5">
+                                    <fmt:message key="addPrescriptionOrder.error.noDrug"/>
+                                </div>
+                            </c:if>
                         </div>
 
                         <datalist id="drugList">
@@ -55,7 +61,8 @@
 
                         <div class="row g-2">
                             <div class="col-sm-3">
-                                <label for="dosage" class="col-form-label"><fmt:message key="addPrescriptionOrder.dosage"/>:</label>
+                                <label for="dosage" class="col-form-label"><fmt:message
+                                        key="addPrescriptionOrder.dosage"/>:</label>
                             </div>
                             <div class="col-sm-4">
                                 <input class="form-control" id="dosage" type="number" name="dosage" min="0" required>
@@ -67,7 +74,8 @@
                                 <label for="drugAmount" class="col-form-label"><fmt:message key="addPrescriptionOrder.drugAmount"/>:</label>
                             </div>
                             <div class="col-sm-4">
-                                <input class="form-control" id="drugAmount" type="number" name="drugAmount" min="0" required>
+                                <input class="form-control" id="drugAmount" type="number" name="drugAmount" min="0"
+                                       required>
                             </div>
                         </div>
 

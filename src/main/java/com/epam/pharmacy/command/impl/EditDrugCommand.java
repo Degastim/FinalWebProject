@@ -43,10 +43,10 @@ public class EditDrugCommand implements ActionCommand {
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, locale);
                 session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
             }
+            CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }

@@ -32,17 +32,16 @@ public class ChangePasswordCommand implements ActionCommand {
         String newPassword = request.getParameter(RequestParameter.NEW_PASSWORD);
         String oldPassword = request.getParameter(RequestParameter.OLD_PASSWORD);
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        long userId = user.getId();
         try {
-            if (userService.updateByPassword(userId, newPassword, oldPassword)) {
+            if (userService.updateByPassword(user, newPassword, oldPassword)) {
                 session.setAttribute(REQUEST_ATTRIBUTE_PASSWORD_CHANGE_RESULT, MessageManager.getMessage(MESSAGE_KEY_SUCCESSFUL_PASSWORD_CHANGE, (String) session.getAttribute(SessionAttribute.LOCALE)));
             } else {
                 session.setAttribute(REQUEST_ATTRIBUTE_PASSWORD_CHANGE_RESULT, MessageManager.getMessage(MESSAGE_KEY_UNSUCCESSFUL_PASSWORD_CHANGE, (String) session.getAttribute(SessionAttribute.LOCALE)));
             }
+            CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }

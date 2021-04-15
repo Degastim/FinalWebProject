@@ -2,12 +2,10 @@ package com.epam.pharmacy.model.service.impl;
 
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.exception.ServiceException;
-import com.epam.pharmacy.model.dao.DrugDao;
-import com.epam.pharmacy.model.dao.DrugOrderDao;
-import com.epam.pharmacy.model.dao.EntityTransaction;
-import com.epam.pharmacy.model.dao.UserDao;
+import com.epam.pharmacy.model.dao.*;
 import com.epam.pharmacy.model.entity.Drug;
 import com.epam.pharmacy.model.entity.DrugOrder;
+import com.epam.pharmacy.model.entity.Prescription;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugOrderService;
 import com.epam.pharmacy.model.service.UserService;
@@ -17,35 +15,40 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class-service for working with {@code Order}.
- * @see DrugOrder
+ * Class-service for working with {@link DrugOrder}.
+ *
  * @author Yauheni Tsitou.
+ * @see DrugOrder
  */
 public class DrugOrderServiceImpl implements DrugOrderService {
 
     /**
-     * Reference to an object of class {@code DrugOrderServiceImpl}.
+     * Reference to an object of class {@link DrugOrderServiceImpl}.
      */
     private static final DrugOrderService instance = new DrugOrderServiceImpl();
 
     /**
-     * Reference to an object of class {@code UserServiceImpl}.
+     * Reference to an object of class {@link UserServiceImpl}.
      */
     private static final UserService userService = UserServiceImpl.getInstance();
 
     /**
-     * Reference to an object of class {@code UserDao}.
+     * Reference to an object of class {@link UserDao}.
      */
     private static final UserDao userDao = UserDao.getInstance();
     /**
-     * Reference to an object of class {@code DrugOrderDao}.
+     * Reference to an object of class {@link DrugOrderDao}.
      */
     private static final DrugOrderDao drugOrderDao = DrugOrderDao.getInstance();
 
     /**
-     * Reference to an object of class {@code DrugDao}.
+     * Reference to an object of class {@link DrugDao}.
      */
     private static final DrugDao drugDao = DrugDao.getInstance();
+    /**
+     * Reference to an object of class {@link PrescriptionDao}.
+     */
+    private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
 
     private DrugOrderServiceImpl() {
     }
@@ -62,7 +65,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
     @Override
     public boolean orderPayment(User customer, Drug drug, int drugAmount) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
-        transaction.initTransaction(userDao, drugOrderDao, drugDao);
+        transaction.initTransaction(userDao, drugOrderDao, drugDao, prescriptionDao);
         try {
             BigDecimal drugPrice = drug.getPrice();
             BigDecimal orderPrice = drugPrice.multiply(BigDecimal.valueOf(drugAmount));
@@ -70,10 +73,37 @@ public class DrugOrderServiceImpl implements DrugOrderService {
             if (compareResult < 0) {
                 return false;
             }
-            userService.updateByAmount(customer, orderPrice.multiply(BigDecimal.valueOf(-1)));
+            boolean resultPrescriptionChange = true;
+            if (drug.isNeedPrescription()) {
+                resultPrescriptionChange=false;
+                long customerId = customer.getId();
+                long drugId = drug.getId();
+                List<Prescription> prescriptionList = prescriptionDao.findByCustomerIdAndDrugId(customerId, drugId);
+                for (Prescription prescription : prescriptionList) {
+                    int prescriptionAmount = prescription.getAmount();
+                    if (prescriptionAmount >= drugAmount) {
+                        prescriptionAmount -= drugAmount;
+                        prescription.setAmount(prescriptionAmount);
+                        prescriptionDao.update(prescription);
+                        resultPrescriptionChange = true;
+                        break;
+                    }
+                }
+            }
+            if (!resultPrescriptionChange) {
+                return false;
+            }
+            System.out.println(22222);
+            BigDecimal oldCustomerAmount = customer.getAmount();
+            BigDecimal newCustomerAmount = oldCustomerAmount.add(orderPrice.multiply(BigDecimal.valueOf(-1)));
+            customer.setAmount(newCustomerAmount);
+            userDao.update(customer);
             List<User> pharmacistList = userDao.findByRole(User.Role.PHARMACIST);
             User pharmacist = pharmacistList.get(0);
-            userService.updateByAmount(pharmacist, orderPrice);
+            BigDecimal oldPharmacistAmount = pharmacist.getAmount();
+            BigDecimal newPharmacistAmount = oldPharmacistAmount.add(orderPrice);
+            customer.setAmount(newPharmacistAmount);
+            userDao.update(pharmacist);
             DrugOrder order = new DrugOrder(customer, drug, drugAmount, DrugOrder.Status.PROCESSING);
             drugOrderDao.add(order);
             int newDrugAmount = drug.getDrugAmount() - drugAmount;
@@ -122,7 +152,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
-            long statusId = status.ordinal() + 1;
+            int statusId = status.ordinal() + 1;
             drugOrderDao.updateStatusById(drugOrderId, statusId);
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -136,7 +166,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugOrderDao, drugDao, userDao);
         try {
-            long statusId = DrugOrder.Status.REJECTED.ordinal() + 1;
+            int statusId = DrugOrder.Status.REJECTED.ordinal() + 1;
             drugOrderDao.updateStatusById(drugOrderId, statusId);
             Optional<DrugOrder> drugOrderOptional = drugOrderDao.findById(drugOrderId);
             if (drugOrderOptional.isEmpty()) {
@@ -152,9 +182,15 @@ public class DrugOrderServiceImpl implements DrugOrderService {
             drugDao.update(drug);
             User customer = drugOrder.getCustomer();
             BigDecimal orderPrice = drugPrice.multiply(BigDecimal.valueOf(orderDrugsNumber));
-            userService.updateByAmount(customer, orderPrice);
+            BigDecimal oldCustomerAmount = customer.getAmount();
+            BigDecimal newCustomerAmount = oldCustomerAmount.add(orderPrice);
+            customer.setAmount(newCustomerAmount);
+            userDao.update(customer);
             User pharmacist = userDao.findByRole(User.Role.PHARMACIST).get(0);
-            userService.updateByAmount(pharmacist, orderPrice.multiply(BigDecimal.valueOf(-1)));
+            BigDecimal oldPharmacistAmount = customer.getAmount();
+            BigDecimal newPharmacistAmount = oldPharmacistAmount.add(orderPrice.multiply(BigDecimal.valueOf(-1)));
+            customer.setAmount(newPharmacistAmount);
+            userDao.update(pharmacist);
             transaction.commit();
             return true;
         } catch (DaoException e) {

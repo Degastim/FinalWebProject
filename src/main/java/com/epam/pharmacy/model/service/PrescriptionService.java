@@ -79,9 +79,9 @@ public interface PrescriptionService {
      * Checks whether a prescription is needed and whether the customer has one for the given drug
      *
      * @param customerId long value prescription customer ID.
-     * @param drug {@link Drug} object to search for a prescription.
+     * @param drug       {@link Drug} object to search for a prescription.
      * @return boolean value Result of checking.
      * @throws ServiceException if an error occurs while processing.
      */
-    boolean checkPrescription(long customerId, Drug drug) throws ServiceException;
+    boolean checkPrescription(long customerId, Drug drug, int drugAmount) throws ServiceException;
 }

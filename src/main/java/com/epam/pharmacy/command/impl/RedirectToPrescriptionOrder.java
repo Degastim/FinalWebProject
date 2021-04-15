@@ -55,7 +55,5 @@ public class RedirectToPrescriptionOrder implements ActionCommand {
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-
-
     }
 }

@@ -14,14 +14,14 @@ import java.util.GregorianCalendar;
 public class TimeServiceImpl implements TimeService {
 
     /**
-     * Reference to an object of class {@code TimeServiceImpl}.
+     * Reference to an object of class {@link TimeServiceImpl}.
      */
     private static final TimeService instance = new TimeServiceImpl();
 
     /**
      * Method that returns a reference to an object.
      *
-     * @return Reference to an object of class {@code TimeServiceImpl}.
+     * @return Reference to an object of class {@link TimeServiceImpl}.
      */
     public static TimeService getInstance() {
         return instance;

@@ -1,11 +1,15 @@
 package com.epam.pharmacy.model.service.impl;
 
 import com.epam.pharmacy.exception.ServiceException;
+import com.epam.pharmacy.model.entity.Drug;
 import com.epam.pharmacy.model.service.DrugService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.testng.Assert.assertEquals;
 
@@ -53,6 +57,33 @@ public class DrugServiceImplTest {
         int actual = 0;
         try {
             actual = drugService.countLastPaginationPage(currentPaginationPage);
+        } catch (ServiceException e) {
+            Assert.fail(e.getMessage(), e);
+        }
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void testFindDrugIdByDrugNameAndDosage() {
+        Optional<Integer> expected = Optional.of(2);
+        Optional<Integer> actual = Optional.empty();
+        try {
+            actual = drugService.findDrugIdByDrugNameAndDosage("Аналгин", 500);
+        } catch (ServiceException e) {
+            Assert.fail(e.getMessage(), e);
+        }
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void testFindDrugByDrugNameAndDosage() {
+        Drug drug = new Drug(2, "Аналгин", 8, "После приема внутрь метамизол натрия быстро гидролизуется в желудочном соке с образованием активного метаболита 4-метил-амино-антипирина, который после всасывания метаболизируется в 4-формил-амино-антипирин и другие метаболиты.", false, 500, BigDecimal.valueOf(100));
+        Optional<Drug> expected = Optional.of(drug);
+        Optional<Drug> actual = Optional.empty();
+        try {
+            actual = drugService.findDrugByDrugNameAndDosage("Аналгин", 500);
+            Drug drug1 = actual.get();
+            drug1.setDrugPictureList(null);
         } catch (ServiceException e) {
             Assert.fail(e.getMessage(), e);
         }

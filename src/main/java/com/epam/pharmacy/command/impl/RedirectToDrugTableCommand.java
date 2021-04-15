@@ -25,10 +25,10 @@ public class RedirectToDrugTableCommand implements ActionCommand {
         try {
             List<Drug> drugList = drugService.findAllDrugs();
             request.setAttribute(RequestParameter.DRUG_LIST, drugList);
+            CommandResult commandResult = new CommandResult(PagePath.PHARMACIST_DRUG_TABLE_PAGE, CommandResult.Type.FORWARD);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(PagePath.PHARMACIST_DRUG_TABLE_PAGE, CommandResult.Type.FORWARD);
-        return commandResult;
     }
 }

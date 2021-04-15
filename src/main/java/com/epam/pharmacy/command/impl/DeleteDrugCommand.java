@@ -28,10 +28,10 @@ public class DeleteDrugCommand implements ActionCommand {
         int drugId = Integer.parseInt(drugIdString);
         try {
             drugService.deleteById(drugId);
+            CommandResult commandResult = new CommandResult(request.getRequestURL() + REDIRECT_URL_PARAMETER, CommandResult.Type.REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(request.getRequestURL() + REDIRECT_URL_PARAMETER, CommandResult.Type.REDIRECT);
-        return commandResult;
     }
 }

@@ -30,10 +30,10 @@ public class RedirectToCustomerPrescriptionTableCommand implements ActionCommand
         try {
             List<Prescription> prescriptionList = prescriptionService.findAllByCustomerId(customerId);
             request.setAttribute(REQUEST_ATTRIBUTE_PRESCRIPTION_LIST, prescriptionList);
+            CommandResult commandResult = new CommandResult(PagePath.PRESCRIPTION_TABLE_PAGE, CommandResult.Type.FORWARD);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(PagePath.PRESCRIPTION_TABLE_PAGE, CommandResult.Type.FORWARD);
-        return commandResult;
     }
 }

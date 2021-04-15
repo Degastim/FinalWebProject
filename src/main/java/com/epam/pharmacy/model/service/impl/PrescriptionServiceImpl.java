@@ -15,25 +15,24 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class-service for working with {@Prescription}.
+ * Class-service for working with {@link Prescription}.
  *
  * @author Yauheni Tsitou.
- * @see Prescription
  */
 public class PrescriptionServiceImpl implements PrescriptionService {
 
     /**
-     * Reference to an object of class {@code PrescriptionDao}.
+     * Reference to an object of class {@link PrescriptionDao}.
      */
     private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
 
     /**
-     * Reference to an object of class {@code DrugDao}.
+     * Reference to an object of class {@link DrugDao}.
      */
     private static final DrugDao drugDao = DrugDao.getInstance();
 
     /**
-     * Reference to an object of class {@code PrescriptionServiceImpl}.
+     * Reference to an object of class {@link PrescriptionServiceImpl}.
      */
     private static final PrescriptionService instance = new PrescriptionServiceImpl();
 
@@ -43,7 +42,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     /**
      * Method that returns a reference to an object.
      *
-     * @return Reference to an object of class {@code PrescriptionServiceImpl}.
+     * @return Reference to an object of class {@link PrescriptionServiceImpl}.
      */
     public static PrescriptionService getInstance() {
         return instance;
@@ -156,7 +155,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public boolean checkPrescription(long customerId, Drug drug) throws ServiceException {
+    public boolean checkPrescription(long customerId, Drug drug, int drugAmount) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugDao, prescriptionDao);
         try {
@@ -165,9 +164,17 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 return true;
             }
             long drugId = drug.getId();
-            boolean existPrescription = prescriptionDao.existPrescriptionByDrugIdAndCustomerId(drugId,customerId);
+            List<Prescription> prescriptionList = prescriptionDao.findByDrugIdAndCustomerId(drugId, customerId);
+            boolean result = false;
+            for (Prescription prescription : prescriptionList) {
+                int amount = prescription.getAmount();
+                if (amount >= drugAmount) {
+                    result = true;
+                    break;
+                }
+            }
             transaction.commit();
-            return existPrescription;
+            return result;
         } catch (DaoException e) {
             transaction.rollback();
             throw new ServiceException(e);

@@ -47,14 +47,14 @@ public class PrescriptionOrderConfirmationCommand implements ActionCommand {
             commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
             return commandResult;
         }
-        long currentTime = timeService.findCurrentTime();
-        long endTime = timeService.findTimeByDayAndMonthAndYear(day, month, year);
         try {
+            long currentTime = timeService.findCurrentTime();
+            long endTime = timeService.findTimeByDayAndMonthAndYear(day, month, year);
             prescriptionService.updateIssueDateAndEndDateAndStatusById(prescriptionId, currentTime, endTime, Prescription.Status.APPROVED);
+            commandResult = new CommandResult(request.getRequestURL() + SEPARATOR + COMMAND_REDIRECT, CommandResult.Type.REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        commandResult = new CommandResult(request.getRequestURL() + SEPARATOR + COMMAND_REDIRECT, CommandResult.Type.REDIRECT);
-        return commandResult;
     }
 }

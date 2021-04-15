@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class-service for working with {@User}.
+ * Class-service for working with {@link User}.
  *
  * @author Yauheni Tsitou.
  * @see User
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     /**
-     * Reference to an object of class {@code UserServiceImpl}.
+     * Reference to an object of class {@link UserServiceImpl}.
      */
     private static final UserService instance = new UserServiceImpl();
 
@@ -32,13 +32,14 @@ public class UserServiceImpl implements UserService {
     /**
      * Method that returns a reference to an object.
      *
-     * @return Reference to an object of class {@code UserServiceImpl}.
+     * @return Reference to an object of class {@link UserServiceImpl}.
      */
     public static UserService getInstance() {
         return instance;
     }
+
     /**
-     * Reference to an object of class {@code UserDao}.
+     * Reference to an object of class {@link UserDao}.
      */
     private static final UserDao userDao = UserDao.getInstance();
 
@@ -91,17 +92,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateByPassword(long userId, String newPassword, String oldPassword) throws ServiceException {
+    public boolean updateByPassword(User user, String newPassword, String oldPassword) throws ServiceException {
         boolean result = false;
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {
-            boolean passwordComparisonResult = userDao.existByPasswordAndUserId(userId, Encrypter.encrypt(oldPassword));
-            if (passwordComparisonResult) {
-                if (UserValidator.isPasswordValid(newPassword)) {
-                    userDao.updateUserByPassword(userId, Encrypter.encrypt(newPassword));
-                    result = true;
-                }
+            String email = user.getEmail();
+            Optional<String> passwordDaoOptional = userDao.findPasswordByEmail(email);
+            if (passwordDaoOptional.isEmpty()) {
+                return false;
+            }
+            String passwordDao = passwordDaoOptional.get();
+            if (!passwordDao.equals(oldPassword)) {
+                return false;
+            }
+            if (UserValidator.isPasswordValid(newPassword)) {
+                long userId = user.getId();
+                userDao.updatePasswordByUserId(userId, Encrypter.encrypt(newPassword));
+                result = true;
             }
             return result;
         } catch (DaoException e) {
@@ -139,7 +147,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateByAmount(User user, BigDecimal amount) throws ServiceException {
+    public void updateByAddAmount(User user, BigDecimal amount) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {

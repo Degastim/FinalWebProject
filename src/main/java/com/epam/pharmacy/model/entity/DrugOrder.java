@@ -157,7 +157,7 @@ public class DrugOrder extends Entity {
         if (status != order.status) {
             return false;
         }
-        return drugsNumber != order.drugsNumber;
+        return drugsNumber == order.drugsNumber;
     }
 
     @Override

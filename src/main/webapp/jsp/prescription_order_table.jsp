@@ -5,7 +5,7 @@
 </head>
 <body>
 <c:choose>
-    <c:when test="${prescriptionList==null}">
+    <c:when test="${prescriptionList.isEmpty()}">
         <h5><fmt:message key="prescriptionOrderTable.error.noDrug"/></h5>
     </c:when>
     <c:otherwise>
@@ -26,9 +26,11 @@
                     <td>
                         <form action="controller" method="GET">
                             <input type="hidden" name="prescriptionId" value="${prescription.id}">
-                            <button class="btn btn-primary" type="submit" name="command" value="redirect_to_prescription_order">
+                            <button class="btn btn-primary" type="submit" name="command"
+                                    value="redirect_to_prescription_order">
                                 <fmt:message key="prescriptionOrderTable.column.button.renewal"/></button>
-                            <button class="btn btn-danger" type="submit" name="command" value="refusal_prescription_order">
+                            <button class="btn btn-danger" type="submit" name="command"
+                                    value="refusal_prescription_order">
                                 <fmt:message key="prescriptionOrderTable.column.button.renouncement"/></button>
                         </form>
                     </td>

@@ -43,10 +43,10 @@ public class CodeConfirmationCommand implements ActionCommand {
                 session.setAttribute(SessionAttribute.USER, user);
                 session.removeAttribute(SessionAttribute.POSSIBLE_USER);
                 commandResult = new CommandResult(PagePath.START_PAGE, CommandResult.Type.FORWARD);
+                logger.log(Level.INFO, "Successful registration");
             } catch (ServiceException e) {
                 throw new CommandException(e);
             }
-            logger.log(Level.INFO, "Successful registration");
         } else {
             String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
             String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, locale);

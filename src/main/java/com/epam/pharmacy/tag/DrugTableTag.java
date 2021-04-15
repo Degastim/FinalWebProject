@@ -27,29 +27,30 @@ public class DrugTableTag extends TagSupport {
         JspWriter out = pageContext.getOut();
         try {
             List<Drug> drugList = (List<Drug>) pageContext.getRequest().getAttribute(RequestParameter.DRUG_LIST);
-            if (drugList.size() == 0) {
+            if (drugList.isEmpty()) {
                 out.write("<h3>" + MessageManager.getMessage("drugTable.message", locale) + "</h3>");
+            } else {
+                out.write("<form method=\"get\" action=\"controller\">");
+                out.write("<input type=\"hidden\" name=\"command\" value=\"redirect_to_edit_drug\">");
+                out.write("<table class=\"table table-dark table-hover table-bordered\"><tr>");
+                out.write("<td>" + MessageManager.getMessage("drugTable.drugNameColumn", locale) + "</td>");
+                out.write("<td>" + MessageManager.getMessage("drugTable.drugAmountColumn", locale) + "</td>");
+                out.write("<td>" + MessageManager.getMessage("drugTable.drugDescriptionColumn", locale) + "</td>");
+                out.write("<td>" + MessageManager.getMessage("drugTable.drugDosageColumn", locale) + "</td>");
+                out.write("<td>" + MessageManager.getMessage("drugTable.drugPriceColumn", locale) + "</td>");
+                out.write("<td>" + MessageManager.getMessage("drugTable.drugEditColumn", locale) + "</td>");
+                for (Drug drug : drugList) {
+                    out.write("<tr>");
+                    out.write("<td>" + drug.getDrugName() + "</td>");
+                    out.write("<td>" + drug.getDrugAmount() + "</td>");
+                    out.write("<td>" + drug.getDescription() + "</td>");
+                    out.write("<td>" + drug.getDosage() + "</td>");
+                    out.write("<td>" + drug.getPrice() + "</td>");
+                    out.write("<td><button class=\"btn btn-info\" type=\"submit\" name=\"drugId\" value=\"" + drug.getId() + "\">" + MessageManager.getMessage("drugTable.edit", locale) + "</button></td>");
+                    out.write("</tr>");
+                }
+                out.write("</table>");
             }
-            out.write("<form method=\"get\" action=\"controller\">");
-            out.write("<input type=\"hidden\" name=\"command\" value=\"redirect_to_edit_drug\">");
-            out.write("<table class=\"table table-dark table-hover table-bordered\"><tr>");
-            out.write("<td>" + MessageManager.getMessage("drugTable.drugNameColumn", locale) + "</td>");
-            out.write("<td>" + MessageManager.getMessage("drugTable.drugAmountColumn", locale) + "</td>");
-            out.write("<td>" + MessageManager.getMessage("drugTable.drugDescriptionColumn", locale) + "</td>");
-            out.write("<td>" + MessageManager.getMessage("drugTable.drugDosageColumn", locale) + "</td>");
-            out.write("<td>" + MessageManager.getMessage("drugTable.drugPriceColumn", locale) + "</td>");
-            out.write("<td>" + MessageManager.getMessage("drugTable.drugEditColumn", locale) + "</td>");
-            for (Drug drug : drugList) {
-                out.write("<tr>");
-                out.write("<td>" + drug.getDrugName() + "</td>");
-                out.write("<td>" + drug.getDrugAmount() + "</td>");
-                out.write("<td>" + drug.getDescription() + "</td>");
-                out.write("<td>" + drug.getDosage() + "</td>");
-                out.write("<td>" + drug.getPrice() + "</td>");
-                out.write("<td><button class=\"btn btn-info\" type=\"submit\" name=\"drugId\" value=\"" + drug.getId() + "\">" + MessageManager.getMessage("drugTable.edit", locale) + "</button></td>");
-                out.write("</tr>");
-            }
-            out.write("</table>");
             out.write("</form>");
             out.write("<form method=\"get\" action=\"controller\">");
             out.write("<input type=\"hidden\" name=\"command\" value=\"redirect_to_add_drug\">");

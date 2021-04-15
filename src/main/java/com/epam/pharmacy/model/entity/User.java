@@ -191,7 +191,7 @@ public class User extends Entity {
         if (role != null ? !role.equals(user.role) : user.role != null) {
             return false;
         }
-        return amount != null ? !amount.equals(user.amount) : user.amount != null;
+        return amount != null ? amount.compareTo(user.amount)==0 : user.amount != null;
     }
 
     @Override

@@ -47,7 +47,7 @@ public class DrugPicture extends Entity {
             return false;
         }
         DrugPicture that = (DrugPicture) o;
-        return drugPicture != null ? !drugPicture.equals(that.drugPicture) : that.drugPicture != null;
+        return drugPicture != null ? drugPicture.equals(that.drugPicture) : that.drugPicture != null;
     }
 
     @Override

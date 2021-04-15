@@ -31,10 +31,10 @@ public class RedirectToPrescriptionOrderTable implements ActionCommand {
         try {
             List<Prescription> prescriptionList = prescriptionService.findAllByDoctorIdAndStatus(doctorId, Prescription.Status.PROCESSING);
             request.setAttribute(REQUEST_ATTRIBUTE_PRESCRIPTION_LIST, prescriptionList);
+            CommandResult commandResult = new CommandResult(PagePath.PRESCRIPTION_ORDER_TABLE_PAGE, CommandResult.Type.FORWARD);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(PagePath.PRESCRIPTION_ORDER_TABLE_PAGE, CommandResult.Type.FORWARD);
-        return commandResult;
     }
 }

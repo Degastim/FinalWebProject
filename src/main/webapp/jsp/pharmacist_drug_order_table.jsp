@@ -5,7 +5,7 @@
 </head>
 <body>
 <c:choose>
-    <c:when test="${drugOrderList.size()==0}">
+    <c:when test="${drugOrderList.isEmpty()}">
         <fmt:message key="pharmacist_drug_order_table.message.noDrugOrdersFound"/>
     </c:when>
     <c:otherwise>

@@ -35,6 +35,5 @@ public class RedirectToPharmacistDrugOrderTable implements ActionCommand {
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-
     }
 }

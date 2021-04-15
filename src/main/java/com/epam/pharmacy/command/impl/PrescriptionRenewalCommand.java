@@ -28,10 +28,10 @@ public class PrescriptionRenewalCommand implements ActionCommand {
         try {
             Prescription.Status processingStatus = Prescription.Status.PROCESSING;
             prescriptionService.updateStatusById(processingStatus, prescriptionId);
+            CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }
