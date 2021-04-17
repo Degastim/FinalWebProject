@@ -9,7 +9,6 @@
 - [Pharmacist's scope](#pharmacists-scope)
 ***
 ## Project Description
-***
 An online pharmacy allows customers to buy drugs and, if a drug needs a prescription, order a prescription from a doctor. 
 It is also possible to renew prescriptions from a doctor. The doctor can approve and reject requests for prescriptions. 
 The pharmacist looks after the assortment of the pharmacy. Can add or subtract a drug and subtract or add a prescription. 
