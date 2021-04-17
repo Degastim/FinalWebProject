@@ -75,11 +75,14 @@ public class DrugOrderServiceImpl implements DrugOrderService {
             }
             boolean resultPrescriptionChange = true;
             if (drug.isNeedPrescription()) {
-                resultPrescriptionChange=false;
+                resultPrescriptionChange = false;
                 long customerId = customer.getId();
                 long drugId = drug.getId();
                 List<Prescription> prescriptionList = prescriptionDao.findByCustomerIdAndDrugId(customerId, drugId);
-                for (Prescription prescription : prescriptionList) {
+                int index = 0;
+                int size = prescriptionList.size();
+                while (index != size) {
+                    Prescription prescription = prescriptionList.get(index);
                     int prescriptionAmount = prescription.getAmount();
                     if (prescriptionAmount >= drugAmount) {
                         prescriptionAmount -= drugAmount;
@@ -88,12 +91,12 @@ public class DrugOrderServiceImpl implements DrugOrderService {
                         resultPrescriptionChange = true;
                         break;
                     }
+                    index++;
                 }
             }
             if (!resultPrescriptionChange) {
                 return false;
             }
-            System.out.println(22222);
             BigDecimal oldCustomerAmount = customer.getAmount();
             BigDecimal newCustomerAmount = oldCustomerAmount.add(orderPrice.multiply(BigDecimal.valueOf(-1)));
             customer.setAmount(newCustomerAmount);

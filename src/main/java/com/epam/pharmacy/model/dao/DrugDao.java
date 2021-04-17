@@ -73,7 +73,7 @@ public class DrugDao extends AbstractDao<Drug> {
                     int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                     boolean needPrescription = resultSet.getBoolean(COLUMN_NAME_NEED_PRESCRIPTION);
                     String description = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
-                    int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
+                    double dosage = resultSet.getDouble(COLUMN_NAME_DOSAGE);
                     BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
                     pictureList = new ArrayList<>();
                     drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price, pictureList);
@@ -113,7 +113,7 @@ public class DrugDao extends AbstractDao<Drug> {
                 String description = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 List<DrugPicture> pictureList = new ArrayList<>();
                 boolean needPrescription = resultSet.getBoolean(COLUMN_NAME_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DOSAGE);
                 BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
                 String drugPictureString = resultSet.getString(COLUMN_NAME_DRUG_PICTURE);
                 long drugPictureId = resultSet.getLong(COLUMN_NAME_DRUG_PICTURE_ID);
@@ -162,7 +162,7 @@ public class DrugDao extends AbstractDao<Drug> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_DRUG)) {
             String drugName = drug.getDrugName();
             int drugAmount = drug.getDrugAmount();
-            int dosage = drug.getDosage();
+            double dosage = drug.getDosage();
             String description = drug.getDescription();
             boolean needPrescription = drug.isNeedPrescription();
             BigDecimal price = drug.getPrice();
@@ -170,7 +170,7 @@ public class DrugDao extends AbstractDao<Drug> {
             preparedStatement.setInt(2, drugAmount);
             preparedStatement.setString(3, description);
             preparedStatement.setBoolean(4, needPrescription);
-            preparedStatement.setInt(5, dosage);
+            preparedStatement.setDouble(5, dosage);
             preparedStatement.setBigDecimal(6, price);
             preparedStatement.execute();
             logger.log(Level.INFO, "Adding a drug" + drug + " to the database");
@@ -190,7 +190,7 @@ public class DrugDao extends AbstractDao<Drug> {
             long drugId = drug.getId();
             String drugName = drug.getDrugName();
             int drugAmount = drug.getDrugAmount();
-            int dosage = drug.getDosage();
+            double dosage = drug.getDosage();
             String description = drug.getDescription();
             boolean needPrescription = drug.isNeedPrescription();
             BigDecimal price = drug.getPrice();
@@ -198,7 +198,7 @@ public class DrugDao extends AbstractDao<Drug> {
             preparedStatement.setInt(2, drugAmount);
             preparedStatement.setString(3, description);
             preparedStatement.setBoolean(4, needPrescription);
-            preparedStatement.setInt(5, dosage);
+            preparedStatement.setDouble(5, dosage);
             preparedStatement.setBigDecimal(6, price);
             preparedStatement.setLong(7, drugId);
             preparedStatement.execute();
@@ -216,10 +216,10 @@ public class DrugDao extends AbstractDao<Drug> {
      * @return boolean value true if there is a drug.
      * @throws DaoException if the database throws SQLException.
      */
-    public boolean existByDrugNameAndDosage(String drugName, int dosage) throws DaoException {
+    public boolean existByDrugNameAndDosage(String drugName, double dosage) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_EXIST_BY_NAME_AND_DOSAGE)) {
             preparedStatement.setString(1, drugName);
-            preparedStatement.setInt(2, dosage);
+            preparedStatement.setDouble(2, dosage);
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean result = false;
             if (resultSet.next()) {
@@ -239,10 +239,10 @@ public class DrugDao extends AbstractDao<Drug> {
      * @return {@link Optional} object which contains drug.
      * @throws DaoException if the database throws SQLException.
      */
-    public Optional<Boolean> findNeedPrescriptionByDrugNameAndDosage(String drugName, int dosage) throws DaoException {
+    public Optional<Boolean> findNeedPrescriptionByDrugNameAndDosage(String drugName, double dosage) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_NEED_PRESCRIPTION_BY_DRUG_NAME_AND_DOSAGE)) {
             preparedStatement.setString(1, drugName);
-            preparedStatement.setInt(2, dosage);
+            preparedStatement.setDouble(2, dosage);
             ResultSet resultSet = preparedStatement.executeQuery();
             Boolean result = null;
             if (resultSet.next()) {
@@ -262,10 +262,10 @@ public class DrugDao extends AbstractDao<Drug> {
      * @return {@link Optional} object which contains drug.
      * @throws DaoException if the database throws SQLException.
      */
-    public Optional<Drug> findByNameAndDosage(String drugName, int dosage) throws DaoException {
+    public Optional<Drug> findByNameAndDosage(String drugName, double dosage) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BY_NAME_AND_DOSAGE)) {
             preparedStatement.setString(1, drugName);
-            preparedStatement.setInt(2, dosage);
+            preparedStatement.setDouble(2, dosage);
             ResultSet resultSet = preparedStatement.executeQuery();
             Drug drug = null;
             DrugPicture drugPicture;
@@ -304,10 +304,10 @@ public class DrugDao extends AbstractDao<Drug> {
      * @return {@link Optional} object which contains drug.
      * @throws DaoException if the database throws SQLException.
      */
-    public Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, int dosage) throws DaoException {
+    public Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, double dosage) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_DRUG_ID_BY_DRUG_NAME_AND_DOSAGE)) {
             preparedStatement.setString(1, drugName);
-            preparedStatement.setInt(2, dosage);
+            preparedStatement.setDouble(2, dosage);
             ResultSet resultSet = preparedStatement.executeQuery();
             Integer drugId = null;
             if (resultSet.next()) {
@@ -330,25 +330,29 @@ public class DrugDao extends AbstractDao<Drug> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_NEED_PRESCRIPTION)) {
             preparedStatement.setBoolean(1, value);
             ResultSet resultSet = preparedStatement.executeQuery();
+            Drug drug = null;
             List<Drug> drugList = new ArrayList<>();
+            long previousDrugId = 0;
+            List<DrugPicture> pictureList = null;
             while (resultSet.next()) {
                 long drugId = resultSet.getLong(COLUMN_NAME_DRUG_ID);
-                long drugPictureId = resultSet.getLong(COLUMN_NAME_DRUG_PICTURE_ID);
-                String picture = resultSet.getString(COLUMN_NAME_DRUG_PICTURE);
-                DrugPicture drugPicture = new DrugPicture(drugPictureId, picture);
-                List<DrugPicture> imageList = null;
-                if (drugList.size() < drugId) {
+                if (previousDrugId != drugId) {
                     String drugName = resultSet.getString(COLUMN_NAME_DRUG_NAME);
-                    int amount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
+                    int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                     String description = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
-                    int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
+                    double dosage = resultSet.getDouble(COLUMN_NAME_DOSAGE);
                     BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
-                    imageList = new ArrayList<>();
-                    imageList.add(drugPicture);
-                    Drug drug = new Drug(drugId, drugName, amount, description, value, dosage, price, imageList);
+                    pictureList = new ArrayList<>();
+                    drug = new Drug(drugId, drugName, drugAmount, description, value, dosage, price, pictureList);
                     drugList.add(drug);
-                } else {
-                    imageList.add(drugPicture);
+                    previousDrugId = drugId;
+                }
+                String drugPictureString = resultSet.getString(COLUMN_NAME_DRUG_PICTURE);
+                if (drugPictureString != null) {
+                    long drugPictureId = resultSet.getLong(COLUMN_NAME_DRUG_PICTURE_ID);
+                    DrugPicture drugPicture = new DrugPicture(drugPictureId, drugPictureString);
+                    pictureList.add(drugPicture);
+                    drug.setDrugPictureList(pictureList);
                 }
             }
             return drugList;

@@ -65,7 +65,7 @@
                                         key="addPrescriptionOrder.dosage"/>:</label>
                             </div>
                             <div class="col-sm-4">
-                                <input class="form-control" id="dosage" type="number" name="dosage" min="0" required>
+                                <input class="form-control" id="dosage" type="number" name="dosage" min="0" step="any" required>
                             </div>
                         </div>
 

@@ -33,7 +33,7 @@ public class AddDrugCommand implements ActionCommand {
         String drugDescription = request.getParameter(RequestParameter.DRUG_DESCRIPTION);
         String needPrescriptionString = request.getParameter(RequestParameter.NEED_PRESCRIPTION);
         boolean needPrescription = Boolean.parseBoolean(needPrescriptionString);
-        int dosage = Integer.parseInt(dosageString);
+        double dosage = Double.parseDouble(dosageString);
         BigDecimal price = new BigDecimal(priceString);
         int drugAmount = Integer.parseInt(drugAmountString);
         try {

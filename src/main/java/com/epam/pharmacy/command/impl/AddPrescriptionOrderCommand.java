@@ -40,7 +40,7 @@ public class AddPrescriptionOrderCommand implements ActionCommand {
         long doctorId = Long.parseLong(doctorIdString);
         long customerId = user.getId();
         int drugAmount = Integer.parseInt(drugAmountString);
-        int dosage = Integer.parseInt(dosageString);
+        double dosage = Double.parseDouble(dosageString);
         try {
             int drugId = 0;
             boolean comparisonResult = drugService.checkNeedPrescriptionByDrugNameAndDosage(drugName, dosage, true);

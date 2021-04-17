@@ -42,7 +42,7 @@ public class DrugOrderCommand implements ActionCommand {
         String drugAmountString = request.getParameter(RequestParameter.DRUG_AMOUNT);
         int drugAmount = Integer.parseInt(drugAmountString);
         String dosageString = request.getParameter(RequestParameter.DOSAGE);
-        int dosage = Integer.parseInt(dosageString);
+        double dosage = Double.parseDouble(dosageString);
         User customer = (User) session.getAttribute(SessionAttribute.USER);
         try {
             Optional<Drug> drugOptional = drugService.findDrugByDrugNameAndDosage(drugName, dosage);

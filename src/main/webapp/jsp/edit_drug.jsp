@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-sm-6">
                             <input type="number" class="form-control" id="dosage" name="dosage"
-                                   value="${editDrug.dosage}" min="0" required>
+                                   value="${editDrug.dosage}" min="0" step="any" required>
                         </div>
                     </div>
 

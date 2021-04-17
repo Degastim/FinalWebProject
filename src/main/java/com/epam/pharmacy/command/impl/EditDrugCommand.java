@@ -32,7 +32,7 @@ public class EditDrugCommand implements ActionCommand {
         String dosageString = request.getParameter(RequestParameter.DOSAGE);
         String priceString = request.getParameter(RequestParameter.PRICE);
         String needPrescriptionString = request.getParameter(RequestParameter.NEED_PRESCRIPTION);
-        int dosage = Integer.parseInt(dosageString);
+        double dosage = Double.parseDouble(dosageString);
         int drugAmount = Integer.parseInt(drugAmountString);
         BigDecimal price = new BigDecimal(priceString);
         boolean needPrescription = Boolean.parseBoolean(needPrescriptionString);

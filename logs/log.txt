@@ -204,3 +204,14 @@
 16-04-2021 01:02:05  INFO model.validator.UserValidator isSurnameValid -Surname is valid
 16-04-2021 01:02:05  INFO model.validator.UserValidator isPasswordValid -Password is valid
 16-04-2021 01:02:05  INFO model.validator.UserValidator isEmailValid -Email isn't valid
+17-04-2021 00:30:12  INFO model.dao.EntityTransaction initTransaction -Connection issued com.epam.pharmacy.model.dao.DrugDao@15a902e7
+17-04-2021 00:30:12  INFO model.dao.EntityTransaction initTransaction -Connection issued com.epam.pharmacy.model.dao.PrescriptionDao@a77614d
+17-04-2021 17:26:55  INFO model.validator.UserValidator isNameValid -Name is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isSurnameValid -Surname is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isPasswordValid -Password is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isEmailValid -Email is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isNameValid -Name isn't valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isNameValid -Name is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isSurnameValid -Surname is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isPasswordValid -Password is valid
+17-04-2021 17:26:55  INFO model.validator.UserValidator isEmailValid -Email isn't valid

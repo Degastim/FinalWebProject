@@ -100,25 +100,20 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public boolean updateDrug(int drugId, String drugName, int drugAmount, String description, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException {
+    public boolean updateDrug(int drugId, String drugName, int drugAmount, String description, boolean needPrescription, BigDecimal price, double dosage) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
             Optional<Drug> drugDaoOptional = drugDao.findByNameAndDosage(drugName, dosage);
             if (drugDaoOptional.isPresent()) {
                 Drug drug = drugDaoOptional.get();
-                if (drug.getId() == drugId) {
-                    drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
-                    drugDao.update(drug);
-                    return true;
-                } else {
+                if (drug.getId() != drugId) {
                     return false;
                 }
-            } else {
-                Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
-                drugDao.update(drug);
-                return true;
             }
+            Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
+            drugDao.update(drug);
+            return true;
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {
@@ -168,10 +163,11 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws ServiceException {
+    public boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, double dosage, BigDecimal price) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
+            drugName = drugName.trim();
             boolean exist = drugDao.existByDrugNameAndDosage(drugName, dosage);
             if (exist) {
                 return false;
@@ -201,7 +197,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, int dosage, boolean value) throws ServiceException {
+    public boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, double dosage, boolean value) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -215,7 +211,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, int dosage) throws ServiceException {
+    public Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, double dosage) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -227,7 +223,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public Optional<Drug> findDrugByDrugNameAndDosage(String drugName, int dosage) throws ServiceException {
+    public Optional<Drug> findDrugByDrugNameAndDosage(String drugName, double dosage) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {

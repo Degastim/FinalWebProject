@@ -100,7 +100,7 @@ public class PrescriptionDao extends AbstractDao<Prescription> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String drugDescription = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 boolean needDescription = resultSet.getBoolean(COLUMN_NAME_DRUG_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DRUG_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DRUG_DOSAGE);
                 BigDecimal drugPrice = resultSet.getBigDecimal(COLUMN_NAME_DRUG_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, drugDescription, needDescription, dosage, drugPrice);
                 int amount = resultSet.getInt(COLUMN_NAME_PRESCRIPTION_AMOUNT);
@@ -159,7 +159,7 @@ public class PrescriptionDao extends AbstractDao<Prescription> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String drugDescription = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 boolean needDescription = resultSet.getBoolean(COLUMN_NAME_DRUG_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DRUG_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DRUG_DOSAGE);
                 BigDecimal drugPrice = resultSet.getBigDecimal(COLUMN_NAME_DRUG_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, drugDescription, needDescription, dosage, drugPrice);
                 int amount = resultSet.getInt(COLUMN_NAME_PRESCRIPTION_AMOUNT);
@@ -216,7 +216,7 @@ public class PrescriptionDao extends AbstractDao<Prescription> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String drugDescription = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 boolean needDescription = resultSet.getBoolean(COLUMN_NAME_DRUG_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DRUG_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DRUG_DOSAGE);
                 BigDecimal drugPrice = resultSet.getBigDecimal(COLUMN_NAME_DRUG_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, drugDescription, needDescription, dosage, drugPrice);
                 int amount = resultSet.getInt(COLUMN_NAME_PRESCRIPTION_AMOUNT);
@@ -273,7 +273,7 @@ public class PrescriptionDao extends AbstractDao<Prescription> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String drugDescription = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 boolean needDescription = resultSet.getBoolean(COLUMN_NAME_DRUG_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DRUG_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DRUG_DOSAGE);
                 BigDecimal drugPrice = resultSet.getBigDecimal(COLUMN_NAME_DRUG_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, drugDescription, needDescription, dosage, drugPrice);
                 int amount = resultSet.getInt(COLUMN_NAME_PRESCRIPTION_AMOUNT);
@@ -397,7 +397,7 @@ public class PrescriptionDao extends AbstractDao<Prescription> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String drugDescription = resultSet.getString(COLUMN_NAME_DRUG_DESCRIPTION);
                 boolean needDescription = resultSet.getBoolean(COLUMN_NAME_DRUG_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DRUG_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DRUG_DOSAGE);
                 BigDecimal drugPrice = resultSet.getBigDecimal(COLUMN_NAME_DRUG_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, drugDescription, needDescription, dosage, drugPrice);
                 int amount = resultSet.getInt(COLUMN_NAME_PRESCRIPTION_AMOUNT);

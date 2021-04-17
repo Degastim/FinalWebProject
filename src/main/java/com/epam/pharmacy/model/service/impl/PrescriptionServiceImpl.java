@@ -2,7 +2,6 @@ package com.epam.pharmacy.model.service.impl;
 
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.exception.ServiceException;
-import com.epam.pharmacy.model.dao.DrugDao;
 import com.epam.pharmacy.model.dao.EntityTransaction;
 import com.epam.pharmacy.model.dao.PrescriptionDao;
 import com.epam.pharmacy.model.entity.Drug;
@@ -25,11 +24,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
      * Reference to an object of class {@link PrescriptionDao}.
      */
     private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
-
-    /**
-     * Reference to an object of class {@link DrugDao}.
-     */
-    private static final DrugDao drugDao = DrugDao.getInstance();
 
     /**
      * Reference to an object of class {@link PrescriptionServiceImpl}.
@@ -157,7 +151,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public boolean checkPrescription(long customerId, Drug drug, int drugAmount) throws ServiceException {
         EntityTransaction transaction = new EntityTransaction();
-        transaction.initTransaction(drugDao, prescriptionDao);
+        transaction.init(prescriptionDao);
         try {
             boolean needPrescription = drug.isNeedPrescription();
             if (!needPrescription) {
@@ -166,14 +160,18 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             long drugId = drug.getId();
             List<Prescription> prescriptionList = prescriptionDao.findByDrugIdAndCustomerId(drugId, customerId);
             boolean result = false;
-            for (Prescription prescription : prescriptionList) {
+            int index = 0;
+            int size = prescriptionList.size();
+            while (index != size) {
+                Prescription prescription = prescriptionList.get(index);
                 int amount = prescription.getAmount();
-                if (amount >= drugAmount) {
+                Date issueDate = prescription.getIssueDate();
+                if (amount >= drugAmount && issueDate != null) {
                     result = true;
                     break;
                 }
+                index++;
             }
-            transaction.commit();
             return result;
         } catch (DaoException e) {
             transaction.rollback();

@@ -107,7 +107,7 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String description = resultSet.getString(COLUMN_NAME_DESCRIPTION);
                 boolean needPrescription = resultSet.getBoolean(COLUMN_NAME_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DOSAGE);
                 BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 int drugsNumber = resultSet.getInt(COLUMN_NAME_DRUGS_NUMBER);
@@ -150,7 +150,7 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String description = resultSet.getString(COLUMN_NAME_DESCRIPTION);
                 boolean needPrescription = resultSet.getBoolean(COLUMN_NAME_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DOSAGE);
                 BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 int drugsNumber = resultSet.getInt(COLUMN_NAME_DRUGS_NUMBER);
@@ -209,7 +209,7 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
                 int drugAmount = resultSet.getInt(COLUMN_NAME_DRUG_AMOUNT);
                 String description = resultSet.getString(COLUMN_NAME_DESCRIPTION);
                 boolean needPrescription = resultSet.getBoolean(COLUMN_NAME_NEED_PRESCRIPTION);
-                int dosage = resultSet.getInt(COLUMN_NAME_DOSAGE);
+                double dosage = resultSet.getDouble(COLUMN_NAME_DOSAGE);
                 BigDecimal price = resultSet.getBigDecimal(COLUMN_NAME_PRICE);
                 Drug drug = new Drug(drugId, drugName, drugAmount, description, needPrescription, dosage, price);
                 int drugsNumber = resultSet.getInt(COLUMN_NAME_DRUGS_NUMBER);

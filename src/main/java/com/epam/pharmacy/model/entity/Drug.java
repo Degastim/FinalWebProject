@@ -24,7 +24,7 @@ public class Drug extends Entity {
     /**
      * Int value containing dosage of this drug.
      */
-    private int dosage;
+    private double dosage;
 
     /**
      * String value containing the description of this drug.
@@ -57,7 +57,7 @@ public class Drug extends Entity {
      * @param price           drug's price BigDecimal value.
      * @param drugPictureList drug's pictures List value
      */
-    public Drug(long drugId, String drugName, int drugAmount, String description, boolean needPrescription, int dosage, BigDecimal price, List<DrugPicture> drugPictureList) {
+    public Drug(long drugId, String drugName, int drugAmount, String description, boolean needPrescription, double dosage, BigDecimal price, List<DrugPicture> drugPictureList) {
         super(drugId);
         this.drugName = drugName;
         this.drugAmount = drugAmount;
@@ -79,7 +79,7 @@ public class Drug extends Entity {
      * @param dosage           drug's dosage int value.
      * @param price            drug's price BigDecimal value.
      */
-    public Drug(long drugId, String drugName, int drugAmount, String description, boolean needPrescription, int dosage, BigDecimal price) {
+    public Drug(long drugId, String drugName, int drugAmount, String description, boolean needPrescription, double dosage, BigDecimal price) {
         super(drugId);
         this.drugName = drugName;
         this.drugAmount = drugAmount;
@@ -99,7 +99,7 @@ public class Drug extends Entity {
      * @param dosage           drug's dosage int value.
      * @param price            drug's price BigDecimal value.
      */
-    public Drug(String drugName, int drugAmount, String description, boolean needPrescription, int dosage, BigDecimal price) {
+    public Drug(String drugName, int drugAmount, String description, boolean needPrescription, double dosage, BigDecimal price) {
         this.drugName = drugName;
         this.drugAmount = drugAmount;
         this.description = description;
@@ -212,7 +212,7 @@ public class Drug extends Entity {
      *
      * @return drug's dosage int value.
      */
-    public int getDosage() {
+    public double getDosage() {
         return dosage;
     }
 
@@ -221,7 +221,7 @@ public class Drug extends Entity {
      *
      * @param dosage drug's dosage int value.
      */
-    public void setDosage(int dosage) {
+    public void setDosage(double dosage) {
         this.dosage = dosage;
     }
 
@@ -279,7 +279,7 @@ public class Drug extends Entity {
         result += 11 * (description != null ? description.hashCode() : 0);
         result += 7 * Boolean.hashCode(needPrescription);
         result += 3 * price.hashCode();
-        result += 2 * dosage;
+        result += 2 * Double.hashCode(dosage);
         return result;
     }
 

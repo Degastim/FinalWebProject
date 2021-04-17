@@ -45,7 +45,7 @@ public interface DrugService {
      * @return true if the drug has been updated
      * @throws ServiceException if an error occurs while processing.
      */
-    boolean updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, int dosage) throws ServiceException;
+    boolean updateDrug(int drugId, String drugName, int drugAmount, String drugDescription, boolean needPrescription, BigDecimal price, double dosage) throws ServiceException;
 
     /**
      * The method that searches for drugs to be displayed on the jsp
@@ -76,7 +76,7 @@ public interface DrugService {
      * @return true if it was possible to add to the database
      * @throws ServiceException if an error occurs while processing.
      */
-    boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, int dosage, BigDecimal price) throws ServiceException;
+    boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, double dosage, BigDecimal price) throws ServiceException;
 
     /**
      * A method that searches the database for drugs with the correct prescription requirements
@@ -96,7 +96,7 @@ public interface DrugService {
      * @return result of checking.
      * @throws ServiceException if an error occurs while processing.
      */
-    boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, int dosage, boolean value) throws ServiceException;
+    boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, double dosage, boolean value) throws ServiceException;
 
     /**
      * Search for a drug by its name and dosage
@@ -106,7 +106,7 @@ public interface DrugService {
      * @return {@link Optional<Drug>} оbject.
      * @throws ServiceException if an error occurs while processing.
      */
-    Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, int dosage) throws ServiceException;
+    Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, double dosage) throws ServiceException;
 
     /**
      * The method searches for a drug by its name and dosage
@@ -116,7 +116,7 @@ public interface DrugService {
      * @return {@link Optional<Drug>} оbject.
      * @throws ServiceException if an error occurs while processing.
      */
-    Optional<Drug> findDrugByDrugNameAndDosage(String drugName, int dosage) throws ServiceException;
+    Optional<Drug> findDrugByDrugNameAndDosage(String drugName, double dosage) throws ServiceException;
 
     /**
      * Searches for the current page in pagination based on what the user has clicked

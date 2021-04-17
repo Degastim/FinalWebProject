@@ -54,8 +54,8 @@
                             <button class="btn btn-primary me-4 ${user.role!='CUSTOMER'?'disabled':''}" type="submit">
                                 <fmt:message key="main.drugCard.footer.button.buy"/></button>
                             <a><fmt:message key="main.drugCard.footer.amount"/>:${drug.drugAmount}</a>
-                            <a><fmt:message key="main.drugCard.footer.amount"/>:${drug.dosage}</a>
                             <a><fmt:message key="main.drugCard.footer.dosage"/>:${drug.dosage}</a>
+                            <a><fmt:message key="main.drugCard.footer.price"/>:${drug.price}</a>
                             <c:choose>
                                 <c:when test="${drug.needPrescription==true}">
                                     <a><fmt:message key="main.drugCard.footer.prescription"/>:<fmt:message

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 public class DrugServiceImplTest {
     private DrugService drugService;
@@ -28,7 +29,7 @@ public class DrugServiceImplTest {
 
     @DataProvider(name = "lastPaginationPages")
     public Object[][] createLastPaginationPageData() {
-        return new Object[][]{{1, 2}, {2, 3}, {6, 3}};
+        return new Object[][]{{1, 2}, {2,2}};
     }
 
 
@@ -41,7 +42,7 @@ public class DrugServiceImplTest {
         try {
             actual = drugService.findCurrentPaginationPage(paginationPage, currentPaginationPage);
         } catch (ServiceException e) {
-            Assert.fail(e.getMessage(), e);
+            fail(e.getMessage(), e);
         }
         Assert.assertEquals(actual, expected);
     }
@@ -54,39 +55,50 @@ public class DrugServiceImplTest {
 
     @Test(dataProvider = "lastPaginationPages")
     public void testCountLastPaginationPage(int currentPaginationPage, int expected) {
-        int actual = 0;
+        int actual;
         try {
             actual = drugService.countLastPaginationPage(currentPaginationPage);
+            assertEquals(actual, expected);
         } catch (ServiceException e) {
-            Assert.fail(e.getMessage(), e);
+            fail(e.getMessage(), e);
         }
-        assertEquals(actual, expected);
     }
 
     @Test
     public void testFindDrugIdByDrugNameAndDosage() {
+        String drugName = "Аналгин";
+        int drugDosage = 500;
         Optional<Integer> expected = Optional.of(2);
-        Optional<Integer> actual = Optional.empty();
+        Optional<Integer> actual;
         try {
-            actual = drugService.findDrugIdByDrugNameAndDosage("Аналгин", 500);
+            actual = drugService.findDrugIdByDrugNameAndDosage(drugName, drugDosage);
+            assertEquals(actual, expected);
         } catch (ServiceException e) {
-            Assert.fail(e.getMessage(), e);
+            fail(e.getMessage(), e);
         }
-        assertEquals(actual, expected);
     }
 
     @Test
     public void testFindDrugByDrugNameAndDosage() {
-        Drug drug = new Drug(2, "Аналгин", 8, "После приема внутрь метамизол натрия быстро гидролизуется в желудочном соке с образованием активного метаболита 4-метил-амино-антипирина, который после всасывания метаболизируется в 4-формил-амино-антипирин и другие метаболиты.", false, 500, BigDecimal.valueOf(100));
+        long drugId = 2;
+        String drugName = "Аналгин";
+        String description = "После приема внутрь метамизол натрия быстро гидролизуется в желудочном соке с образованием активного метаболита 4-метил-амино-антипирина, который после всасывания метаболизируется в 4-формил-амино-антипирин и другие метаболиты.";
+        boolean needPrescription = false;
+        int drugDosage = 500;
+        BigDecimal price = BigDecimal.valueOf(100);
+        Drug drug = new Drug(drugId, drugName, 8, description, needPrescription, drugDosage, price);
         Optional<Drug> expected = Optional.of(drug);
-        Optional<Drug> actual = Optional.empty();
+        Optional<Drug> actual;
         try {
             actual = drugService.findDrugByDrugNameAndDosage("Аналгин", 500);
+            if (actual.isEmpty()) {
+                fail("No drug found in the database");
+            }
             Drug drug1 = actual.get();
             drug1.setDrugPictureList(null);
+            assertEquals(actual, expected);
         } catch (ServiceException e) {
-            Assert.fail(e.getMessage(), e);
+            fail(e.getMessage(), e);
         }
-        assertEquals(actual, expected);
     }
 }
