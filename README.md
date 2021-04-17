@@ -47,4 +47,4 @@ The pharmacist looks after the assortment of the pharmacy. Can add or subtract a
 - Remove the drug
 - Edit drug 
 - Change password 
-
+- Confirm or reject a drug order
