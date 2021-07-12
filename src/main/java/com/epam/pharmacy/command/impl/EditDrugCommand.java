@@ -28,6 +28,7 @@ public class EditDrugCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
+        String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
         int drugId = Integer.parseInt(request.getParameter(RequestParameter.DRUG_ID));
         String drugName = request.getParameter(RequestParameter.DRUG_NAME);
         String drugAmountString = request.getParameter(RequestParameter.DRUG_AMOUNT);
@@ -42,20 +43,17 @@ public class EditDrugCommand implements ActionCommand {
         try {
             CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
             if (!DrugValidator.isNameValid(drugName)) {
-                String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_NAME_VALIDATION_ERROR_MESSAGE, locale);
                 session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
                 return commandResult;
             }
             if (!DrugValidator.isDescriptionValid(drugDescription)) {
-                String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_DESCRIPTION_VALIDATION_ERROR_MESSAGE, locale);
                 session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
                 return commandResult;
             }
             boolean updateResult = drugService.updateDrug(drugId, drugName, drugAmount, drugDescription, needPrescription, price, dosage);
             if (!updateResult) {
-                String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_MESSAGE, locale);
                 session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
             }

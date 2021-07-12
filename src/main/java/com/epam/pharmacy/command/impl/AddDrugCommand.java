@@ -6,6 +6,7 @@ import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.DrugService;
 import com.epam.pharmacy.model.service.impl.DrugServiceImpl;
+import com.epam.pharmacy.model.validator.DrugValidator;
 import com.epam.pharmacy.util.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import java.math.BigDecimal;
 public class AddDrugCommand implements ActionCommand {
     private static final DrugService drugService = DrugServiceImpl.getInstance();
     private static final String MESSAGE_KEY_ERROR_WRONG_DRUG = "addDrug.error.drug";
+    private static final String MESSAGE_KEY_NAME_VALIDATION_ERROR_MESSAGE = "addDrug.error.drugName";
+    private static final String MESSAGE_KEY_DESCRIPTION_VALIDATION_ERROR_MESSAGE = "addDrug.error.drugDescription";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
@@ -37,15 +40,25 @@ public class AddDrugCommand implements ActionCommand {
         BigDecimal price = new BigDecimal(priceString);
         int drugAmount = Integer.parseInt(drugAmountString);
         try {
+            CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
+            if (!DrugValidator.isNameValid(drugName)) {
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_NAME_VALIDATION_ERROR_MESSAGE, locale);
+                session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
+                return commandResult;
+            }
+            if (!DrugValidator.isDescriptionValid(drugDescription)) {
+                String errorMessage = MessageManager.getMessage(MESSAGE_KEY_DESCRIPTION_VALIDATION_ERROR_MESSAGE, locale);
+                session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
+                return commandResult;
+            }
             boolean additionResult = drugService.add(drugName, drugAmount, drugDescription, needPrescription, dosage, price);
             if (!additionResult) {
                 String errorMessage = MessageManager.getMessage(MESSAGE_KEY_ERROR_WRONG_DRUG, locale);
                 session.setAttribute(SessionAttribute.ERROR_MESSAGE, errorMessage);
             }
+            return commandResult;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        CommandResult commandResult = new CommandResult(CommandResult.Type.RETURN_CURRENT_PAGE_WITH_REDIRECT);
-        return commandResult;
     }
 }
