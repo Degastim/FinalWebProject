@@ -31,13 +31,9 @@ public class DrugPictureServiceImpl implements DrugPictureService {
         return instance;
     }
 
-    /**
-     * Reference to an object of class {@link DrugPictureDao}.
-     */
-    private static final DrugPictureDao drugPictureDao = DrugPictureDao.getInstance();
-
     @Override
     public void add(String drugPictureString, long pictureDrugId) throws ServiceException {
+        DrugPictureDao drugPictureDao = new DrugPictureDao();
         if (!drugPictureString.isBlank()) {
             EntityTransaction transaction = new EntityTransaction();
             transaction.init(drugPictureDao);
@@ -54,6 +50,7 @@ public class DrugPictureServiceImpl implements DrugPictureService {
 
     @Override
     public void delete(long drugPictureId) throws ServiceException {
+        DrugPictureDao drugPictureDao = new DrugPictureDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugPictureDao);
         try {

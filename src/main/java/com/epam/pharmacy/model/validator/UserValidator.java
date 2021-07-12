@@ -28,12 +28,12 @@ public class UserValidator {
     private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,15}$";
 
     /**
-     * Regular expression for name validation.
+     * Regular expression for username validation.
      */
     private static final String NAME_REGEX = "[a-zA-Zа-яА-Я]{5,45}";
 
     /**
-     * Regular expression for surname validation.
+     * Regular expression for user surname validation.
      */
     private static final String SURNAME_REGEX = "[a-zA-Zа-яА-Я]{5,50}";
 
@@ -58,31 +58,31 @@ public class UserValidator {
     }
 
     /**
-     * Method for name validation/
+     * Method for username validation/
      *
-     * @param name String containing name for validation.
+     * @param name String containing username for validation.
      * @return String validation result.
      */
     public static boolean isNameValid(String name) {
         Pattern pattern = Pattern.compile(NAME_REGEX);
         Matcher matcher = pattern.matcher(name);
         boolean result = matcher.matches();
-        String log = result ? "Name is valid" : "Name isn't valid";
+        String log = result ? "Username is valid" : "Username isn't valid";
         logger.log(Level.INFO, log);
         return result;
     }
 
     /**
-     * Method for surname validation
+     * Method for user surname validation
      *
-     * @param surname String containing surname for validation.
+     * @param surname String containing user surname for validation.
      * @return String validation result.
      */
     public static boolean isSurnameValid(String surname) {
         Pattern pattern = Pattern.compile(SURNAME_REGEX);
         Matcher matcher = pattern.matcher(surname);
         boolean result = matcher.matches();
-        String log = result ? "Surname is valid" : "Surname isn't valid";
+        String log = result ? "User surname is valid" : "User surname isn't valid";
         logger.log(Level.INFO, log);
         return result;
     }

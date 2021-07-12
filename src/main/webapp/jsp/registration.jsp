@@ -17,7 +17,7 @@
                 <label for="name" class="form-label"><fmt:message key="registration.label.name"/>:</label>
                 <input type="text" id="name" class="form-control" name="name"
                        placeholder="<fmt:message key="registration.label.name"/>" required
-                       pattern="[A-Za-zА-Яа-яЁё]{1,45}" autofocus>
+                       pattern="[a-zA-Zа-яА-Я]{5,45}" autofocus>
                 <div class="invalid-feedback">
                     <fmt:message key="registration.feedback.name"/>
                 </div>
@@ -27,7 +27,7 @@
                 <label for="surname" class="form-label"><fmt:message key="registration.label.surname"/>:</label>
                 <input type="text" id="surname" class="form-control" name="surname"
                        placeholder="<fmt:message key="registration.label.surname"/>" required
-                       pattern="[A-Za-zА-Яа-яЁё]{1,45}">
+                       pattern="[a-zA-Zа-яА-Я]{5,50}">
                 <div class="invalid-feedback">
                     <fmt:message key="registration.feedback.surname"/>
                 </div>

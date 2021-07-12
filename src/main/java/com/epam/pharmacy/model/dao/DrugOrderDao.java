@@ -21,14 +21,6 @@ public class DrugOrderDao extends AbstractDao<DrugOrder> {
      * Logger for writing logs.
      */
     private static final Logger logger = LogManager.getLogger();
-    private static final DrugOrderDao instance = new DrugOrderDao();
-
-    private DrugOrderDao() {
-    }
-
-    public static DrugOrderDao getInstance() {
-        return instance;
-    }
 
     private static final String SQL_ADD_ORDER = "INSERT INTO webdb.drug_orders(customer_id, drug_order_drug_id,drugs_number,drug_order_status_id) VALUES(?,?,?,?)";
     private static final String SQL_FIND_BY_CUSTOMER_ID = "SELECT drug_order_id,customer_id, name, surname, email, role, users.amount, drug_order_drug_id, drug_name, drug_amount, description, need_prescription, dosage, price, drugs_number, drug_order_status FROM webdb.drug_orders JOIN webdb.drug_order_statuses ON drug_orders.drug_order_status_id=drug_order_statuses.drug_order_status_id JOIN webdb.users ON customer_id=user_id JOIN webdb.roles ON users.role_id=roles.role_id JOIN webdb.drugs ON drug_orders.drug_order_drug_id=drugs.drug_id WHERE customer_id=?";

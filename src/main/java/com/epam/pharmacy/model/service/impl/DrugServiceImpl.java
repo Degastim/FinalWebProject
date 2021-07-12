@@ -40,18 +40,6 @@ public class DrugServiceImpl implements DrugService {
     }
 
     /**
-     * Reference to an object of class {@link DrugDao}.
-     */
-    private static final DrugDao drugDao = DrugDao.getInstance();
-    /**
-     * Reference to an object of class {@link PrescriptionDao}.
-     */
-    private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
-    /**
-     * Reference to an object of class {@link PrescriptionDao}.
-     */
-    private static final DrugOrderDao drugOrderDao = DrugOrderDao.getInstance();
-    /**
      * Field containing the number of drugs on one main page.
      */
     private static final int DRUGS_NUMBER_PER_PAGE = 4;
@@ -73,6 +61,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public List<Drug> findAllDrugs() throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -87,6 +76,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public Optional<Drug> findByIdWithImages(long drugId) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -101,6 +91,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public boolean updateDrug(int drugId, String drugName, int drugAmount, String description, boolean needPrescription, BigDecimal price, double dosage) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -123,6 +114,7 @@ public class DrugServiceImpl implements DrugService {
 
 
     public List<Drug> findPaginationDrugs(int currentPaginationPage) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         List<Drug> drugList = new ArrayList<>();
@@ -147,6 +139,9 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public void deleteById(long drugId) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
+        DrugOrderDao drugOrderDao = new DrugOrderDao();
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugDao, drugOrderDao, prescriptionDao);
         try {
@@ -164,6 +159,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public boolean add(String drugName, int drugAmount, String drugDescription, boolean needPrescription, double dosage, BigDecimal price) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -184,6 +180,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public List<Drug> findDrugByNeedPrescription(boolean value) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -198,6 +195,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public boolean checkNeedPrescriptionByDrugNameAndDosage(String drugName, double dosage, boolean value) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -212,6 +210,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public Optional<Integer> findDrugIdByDrugNameAndDosage(String drugName, double dosage) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -224,6 +223,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public Optional<Drug> findDrugByDrugNameAndDosage(String drugName, double dosage) throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {
@@ -273,6 +273,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     private int countPaginationPageAmount() throws ServiceException {
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugDao);
         try {

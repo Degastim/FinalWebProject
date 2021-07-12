@@ -21,11 +21,6 @@ import java.util.Optional;
 public class PrescriptionServiceImpl implements PrescriptionService {
 
     /**
-     * Reference to an object of class {@link PrescriptionDao}.
-     */
-    private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
-
-    /**
      * Reference to an object of class {@link PrescriptionServiceImpl}.
      */
     private static final PrescriptionService instance = new PrescriptionServiceImpl();
@@ -44,6 +39,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public List<Prescription> findAllByCustomerId(long customerId) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
@@ -58,6 +54,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public boolean updateStatusById(Prescription.Status status, long prescriptionId) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(prescriptionDao);
         try {
@@ -80,6 +77,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public void add(long customerId, long doctorId, int drugId, int drugAmount, Prescription.Status status) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
@@ -99,6 +97,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public List<Prescription> findAllByDoctorIdAndStatus(long doctorId, Prescription.Status status) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
@@ -114,6 +113,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public Optional<Prescription> findPrescriptionById(long prescriptionId) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
@@ -128,6 +128,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public boolean updateIssueDateAndEndDateAndStatusById(long prescriptionId, long issueDate, long endDate, Prescription.Status status) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {
@@ -150,6 +151,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public boolean checkPrescription(long customerId, Drug drug, int drugAmount) throws ServiceException {
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(prescriptionDao);
         try {

@@ -3,13 +3,11 @@ package com.epam.pharmacy.model.dao;
 import com.epam.pharmacy.exception.DaoException;
 import com.epam.pharmacy.model.entity.Drug;
 import com.epam.pharmacy.model.entity.DrugPicture;
-import com.epam.pharmacy.model.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,14 +41,6 @@ public class DrugDao extends AbstractDao<Drug> {
     private static final String COLUMN_NAME_PRICE = "price";
     private static final String COLUMN_NAME_EXIST = "exist";
     private static final String COLUMN_NAME_DRUG_PICTURE_ID = "drug_picture_id";
-    private static final DrugDao instance = new DrugDao();
-
-    private DrugDao() {
-    }
-
-    public static DrugDao getInstance() {
-        return instance;
-    }
 
     /**
      * Searches the database for all drugs
@@ -59,8 +49,7 @@ public class DrugDao extends AbstractDao<Drug> {
      * @throws DaoException if the database throws SQLException.
      */
     public List<Drug> findAll() throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_DRUG)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_DRUG)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             Drug drug = null;
             List<Drug> drugList = new ArrayList<>();

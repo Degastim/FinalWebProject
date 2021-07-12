@@ -1,4 +1,4 @@
-package com.epam.pharmacy.resource;
+package com.epam.pharmacy.util.resource;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

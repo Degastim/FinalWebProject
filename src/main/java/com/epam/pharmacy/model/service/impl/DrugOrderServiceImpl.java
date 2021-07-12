@@ -32,24 +32,6 @@ public class DrugOrderServiceImpl implements DrugOrderService {
      */
     private static final UserService userService = UserServiceImpl.getInstance();
 
-    /**
-     * Reference to an object of class {@link UserDao}.
-     */
-    private static final UserDao userDao = UserDao.getInstance();
-    /**
-     * Reference to an object of class {@link DrugOrderDao}.
-     */
-    private static final DrugOrderDao drugOrderDao = DrugOrderDao.getInstance();
-
-    /**
-     * Reference to an object of class {@link DrugDao}.
-     */
-    private static final DrugDao drugDao = DrugDao.getInstance();
-    /**
-     * Reference to an object of class {@link PrescriptionDao}.
-     */
-    private static final PrescriptionDao prescriptionDao = PrescriptionDao.getInstance();
-
     private DrugOrderServiceImpl() {
     }
 
@@ -64,6 +46,10 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 
     @Override
     public boolean orderPayment(User customer, Drug drug, int drugAmount) throws ServiceException {
+        UserDao userDao = new UserDao();
+        DrugOrderDao drugOrderDao = new DrugOrderDao();
+        DrugDao drugDao = new DrugDao();
+        PrescriptionDao prescriptionDao = new PrescriptionDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(userDao, drugOrderDao, drugDao, prescriptionDao);
         try {
@@ -124,6 +110,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 
     @Override
     public List<DrugOrder> findByCustomerId(long customerId) throws ServiceException {
+        DrugOrderDao drugOrderDao = new DrugOrderDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
@@ -138,6 +125,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 
     @Override
     public List<DrugOrder> findByStatus(DrugOrder.Status status) throws ServiceException {
+        DrugOrderDao drugOrderDao = new DrugOrderDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
@@ -152,6 +140,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 
     @Override
     public void updateStatusById(long drugOrderId, DrugOrder.Status status) throws ServiceException {
+        DrugOrderDao drugOrderDao = new DrugOrderDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(drugOrderDao);
         try {
@@ -166,6 +155,9 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 
     @Override
     public boolean refuseDrugOrderService(long drugOrderId) throws ServiceException {
+        UserDao userDao = new UserDao();
+        DrugOrderDao drugOrderDao = new DrugOrderDao();
+        DrugDao drugDao = new DrugDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.initTransaction(drugOrderDao, drugDao, userDao);
         try {

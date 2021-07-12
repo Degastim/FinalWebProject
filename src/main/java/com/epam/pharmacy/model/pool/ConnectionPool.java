@@ -1,7 +1,7 @@
 package com.epam.pharmacy.model.pool;
 
 import com.epam.pharmacy.exception.ConnectionPoolException;
-import com.epam.pharmacy.resource.DataBaseConfigManager;
+import com.epam.pharmacy.util.resource.DataBaseConfigManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -38,28 +38,27 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-    /**
-     * Reference to an object of class {@link UserDao}.
-     */
-    private static final UserDao userDao = UserDao.getInstance();
-
     @Override
     public boolean add(User user, String password) throws ServiceException {
+        UserDao userDao = new UserDao();
         boolean result = false;
         String name = user.getName();
         String surname = user.getSurname();
         String email = user.getEmail();
         EntityTransaction transaction = new EntityTransaction();
-        transaction.init(userDao);
-        if (UserValidator.isNameValid(name) && UserValidator.isSurnameValid(surname) && UserValidator.isPasswordValid(password) && UserValidator.isEmailValid(email)) {
+        transaction.initTransaction(userDao);
+        if (UserValidator.isNameValid(name) && UserValidator.isSurnameValid(surname) && UserValidator.isEmailValid(email)) {
             try {
                 userDao.add(user);
+                long userId=user.getId();
+                userDao.updatePasswordByUserId(userId, password);
                 result = true;
+                transaction.commit();
             } catch (DaoException e) {
                 transaction.rollback();
                 throw new ServiceException(e);
             } finally {
-                transaction.end();
+                transaction.endTransaction();
             }
         }
         return result;
@@ -67,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmailAndPassword(String email, String password) throws ServiceException {
+        UserDao userDao = new UserDao();
         Optional<User> userOptional;
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
@@ -93,9 +93,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateByPassword(User user, String newPassword, String oldPassword) throws ServiceException {
-        boolean result = false;
+        UserDao userDao = new UserDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
+        boolean result = false;
         try {
             String email = user.getEmail();
             Optional<String> passwordDaoOptional = userDao.findPasswordByEmail(email);
@@ -121,6 +122,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findByRole(User.Role role) throws ServiceException {
+        UserDao userDao = new UserDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {
@@ -135,6 +137,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkRegistrationForm(String name, String surname, String password, String email) throws ServiceException {
+        UserDao userDao = new UserDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {
@@ -148,6 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateByAddAmount(User user, BigDecimal amount) throws ServiceException {
+        UserDao userDao = new UserDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {
@@ -164,6 +168,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(long userId) throws ServiceException {
+        UserDao userDao = new UserDao();
         EntityTransaction transaction = new EntityTransaction();
         transaction.init(userDao);
         try {

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,15 +40,6 @@ public class UserDao extends AbstractDao<User> {
     private static final String COLUMN_NAME_EXIST = "exist";
     private static final String COLUMN_NAME_EMAIL = "email";
     private static final String COLUMN_NAME_PASSWORD = "password";
-
-    private static final UserDao instance = new UserDao();
-
-    private UserDao() {
-    }
-
-    public static UserDao getInstance() {
-        return instance;
-    }
 
     /**
      * Updates the user with the given password.
@@ -147,18 +139,22 @@ public class UserDao extends AbstractDao<User> {
         User.Role role = user.getRole();
         int roleId = role.ordinal() + 1;
         BigDecimal amount = user.getAmount();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, surname);
             preparedStatement.setString(3, email);
             preparedStatement.setInt(4, roleId);
             preparedStatement.setBigDecimal(5, amount);
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            long userId = resultSet.getLong(1);
+            user.setId(userId);
             logger.log(Level.INFO, "Adding a user " + user + " to the database");
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
-
 
     /**
      * Updates the user in the database.

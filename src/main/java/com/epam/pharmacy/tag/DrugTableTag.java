@@ -3,7 +3,7 @@ package com.epam.pharmacy.tag;
 import com.epam.pharmacy.command.RequestParameter;
 import com.epam.pharmacy.command.SessionAttribute;
 import com.epam.pharmacy.model.entity.Drug;
-import com.epam.pharmacy.resource.MessageManager;
+import com.epam.pharmacy.util.resource.MessageManager;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;

@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="drugName" name="drugName"
-                                   value="${editDrug.drugName}" required>
+                                   value="${editDrug.drugName}" required >
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@
                                 key="editDrug.drugDescription"/>:</label>
                         <div class="input-group">
                             <textarea class="form-control" id="drugDescription" name="drugDescription" rows="3"
-                                      required>${editDrug.description}</textarea>
+                                      required>${editDrug.description} </textarea>
                         </div>
                     </div>
                 </div>
@@ -91,11 +91,13 @@
                 ${errorMessage=null}
                 <div class="row">
                     <div class="col-6">
-                        <button class="w-100 btn btn-primary" type="submit" name="command" value="edit_drug"><fmt:message key="editDrug.submit"/></button>
+                        <button class="w-100 btn btn-primary" type="submit" name="command" value="edit_drug">
+                            <fmt:message key="editDrug.submit"/></button>
                     </div>
 
                     <div class="col-6">
-                        <button type="submit" class="w-100 btn btn-danger" name="command" value="delete_drug"><fmt:message key="editDrug.delete"/></button>
+                        <button type="submit" class="w-100 btn btn-danger" name="command" value="delete_drug">
+                            <fmt:message key="editDrug.delete"/></button>
                     </div>
                 </div>
             </form>
@@ -127,7 +129,9 @@
                                     <td class="">${counter.count}</td>
                                     <td><img src="data:;base64,${picture.drugPicture}" width="150" height="150"></td>
                                     <td>
-                                        <button type="submit" class="w-100 btn btn-danger" name="command" value="delete_drug_picture"><fmt:message key="editDrug.delete"/></button>
+                                        <button type="submit" class="w-100 btn btn-danger" name="command"
+                                                value="delete_drug_picture"><fmt:message
+                                                key="editDrug.delete"/></button>
                                     </td>
                                 </tr>
                             </c:forEach>

@@ -21,7 +21,6 @@ public class EntityTransaction {
     /**
      * Internalize a database connection by taking connections from the connection pool.Changes the value of autocommit.
      *
-     * @param dao  {@link AbstractDao} object to which the connection is issued.
      * @param daos {@link AbstractDao} objects to which the connection is issued.
      */
     public void initTransaction(AbstractDao dao, AbstractDao... daos) {

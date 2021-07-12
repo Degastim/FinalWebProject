@@ -6,7 +6,7 @@ import com.epam.pharmacy.exception.ServiceException;
 import com.epam.pharmacy.model.entity.User;
 import com.epam.pharmacy.model.service.UserService;
 import com.epam.pharmacy.model.service.impl.UserServiceImpl;
-import com.epam.pharmacy.resource.MessageManager;
+import com.epam.pharmacy.util.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

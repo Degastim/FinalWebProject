@@ -9,7 +9,7 @@ import com.epam.pharmacy.model.service.PrescriptionService;
 import com.epam.pharmacy.model.service.TimeService;
 import com.epam.pharmacy.model.service.impl.PrescriptionServiceImpl;
 import com.epam.pharmacy.model.service.impl.TimeServiceImpl;
-import com.epam.pharmacy.resource.MessageManager;
+import com.epam.pharmacy.util.resource.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

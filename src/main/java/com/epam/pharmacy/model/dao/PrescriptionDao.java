@@ -57,15 +57,6 @@ public class PrescriptionDao extends AbstractDao<Prescription> {
     private static final String COLUMN_NAME_DRUG_DOSAGE = "dosage";
     private static final String COLUMN_NAME_DRUG_PRICE = "price";
 
-    private static final PrescriptionDao instance = new PrescriptionDao();
-
-    private PrescriptionDao() {
-    }
-
-    public static PrescriptionDao getInstance() {
-        return instance;
-    }
-
     /**
      * Finds all prescriptions by customer ID.
      *
